@@ -20,6 +20,8 @@ import 'package:flutter_grocery/view/screens/notification/notification_screen.da
 import 'package:flutter_grocery/view/screens/profile/profile_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../../../provider/wallet_provider.dart';
+
 class MenuScreen extends StatefulWidget {
 
   @override
@@ -57,6 +59,7 @@ class MenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool _isLoggedIn = Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
+    Provider.of<WalletProvider>(context, listen: false).getWalletPrice(context);
 
     return WillPopScope(
       onWillPop: () async {
@@ -153,39 +156,72 @@ class MenuWidget extends StatelessWidget {
                                           ]),
                                           SizedBox(width: 20,),
                                                 _isLoggedIn ? profileProvider.userInfoModel != null
-                                                        ? Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons
-                                                                    .account_balance_wallet_rounded,
-                                                                size: 30,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                              SizedBox(
-                                                                width: 10,
-                                                              ),
-                                                              Text(
-                                                                '0',
-                                                                style:
-                                                                    poppinsRegular
-                                                                        .copyWith(
-                                                                  color: Provider.of<ThemeProvider>(
-                                                                              context)
-                                                                          .darkTheme
-                                                                      ? ColorResources.getTextColor(
-                                                                          context)
-                                                                      : ResponsiveHelper.isDesktop(
-                                                                              context)
-                                                                          ? ColorResources.getDarkColor(
-                                                                              context)
-                                                                          : ColorResources.getBackgroundColor(
-                                                                              context),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          )
-                                                        : Row(
+                                                        ? Consumer<WalletProvider>(builder: (context, wallet, child) {
+                                                          print("Money ${wallet.walletMoney}");
+                                                         return wallet.walletMoney == "0" ? Row(
+                                                           children: [
+                                                             Icon(
+                                                               Icons
+                                                                   .account_balance_wallet_rounded,
+                                                               size: 30,
+                                                               color: Colors
+                                                                   .white,
+                                                             ),
+                                                             SizedBox(
+                                                               width: 10,
+                                                             ),
+                                                             Text(
+                                                               '0',
+                                                               style:
+                                                               poppinsRegular
+                                                                   .copyWith(
+                                                                 color: Provider.of<ThemeProvider>(
+                                                                     context)
+                                                                     .darkTheme
+                                                                     ? ColorResources.getTextColor(
+                                                                     context)
+                                                                     : ResponsiveHelper.isDesktop(
+                                                                     context)
+                                                                     ? ColorResources.getDarkColor(
+                                                                     context)
+                                                                     : ColorResources.getBackgroundColor(
+                                                                     context),
+                                                               ),
+                                                             ),
+                                                           ],
+                                                         ): Row(
+                                                           children: [
+                                                             Icon(
+                                                               Icons
+                                                                   .account_balance_wallet_rounded,
+                                                               size: 30,
+                                                               color: Colors
+                                                                   .white,
+                                                             ),
+                                                             SizedBox(
+                                                               width: 10,
+                                                             ),
+                                                             Text(
+                                                               wallet.walletMoney,
+                                                               style:
+                                                               poppinsRegular
+                                                                   .copyWith(
+                                                                 color: Provider.of<ThemeProvider>(
+                                                                     context)
+                                                                     .darkTheme
+                                                                     ? ColorResources.getTextColor(
+                                                                     context)
+                                                                     : ResponsiveHelper.isDesktop(
+                                                                     context)
+                                                                     ? ColorResources.getDarkColor(
+                                                                     context)
+                                                                     : ColorResources.getBackgroundColor(
+                                                                     context),
+                                                               ),
+                                                             ),
+                                                           ],
+                                                         );
+                                                          }): Row(
                                                   children: [
                                                     Icon(
                                                       Icons
@@ -198,7 +234,7 @@ class MenuWidget extends StatelessWidget {
                                                       width: 10,
                                                     ),
                                                     Text(
-                                                      '0',
+                                                      '-',
                                                       style:
                                                       poppinsRegular
                                                           .copyWith(
@@ -216,8 +252,7 @@ class MenuWidget extends StatelessWidget {
                                                       ),
                                                     ),
                                                   ],
-                                                )
-                                                    : Container(),
+                                                ): Container()
                                               ],
                                       ),
                                       GestureDetector(
@@ -276,8 +311,9 @@ class MenuWidget extends StatelessWidget {
                         MenuButton(drawerController: drawerController, index: 11, icon: Images.about_us, title: getTranslated('about_us', context)),
                         MenuButton(drawerController: drawerController, index: 12, icon: Images.faq,iconData: Icons.question_answer_outlined, title: getTranslated('faq', context)),
                             SizedBox(height: 20),
-                            Text("All Rights Reserved Developed by LTE IT SERVICES | Sullurpeta",
+                            Text("All Rights Reserved 2023\n Developed by LTE IT SERVICES | Sullurpeta", textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white),),
+                            SizedBox(height: 20),
                       ]);
                     },
                   ),

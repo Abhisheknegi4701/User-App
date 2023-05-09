@@ -26,12 +26,14 @@ import 'package:flutter_grocery/provider/search_provider.dart';
 import 'package:flutter_grocery/provider/splash_provider.dart';
 import 'package:flutter_grocery/provider/theme_provider.dart';
 import 'package:flutter_grocery/helper/route_helper.dart';
+import 'package:flutter_grocery/provider/wallet_provider.dart';
 import 'package:flutter_grocery/provider/wishlist_provider.dart';
 import 'package:flutter_grocery/theme/dark_theme.dart';
 import 'package:flutter_grocery/theme/light_theme.dart';
 import 'package:flutter_grocery/utill/app_constants.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -123,8 +125,8 @@ Future<void> myMainApp() async {
       ChangeNotifierProvider(create: (context) => di.sl<ProfileProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<OrderProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<BannerProvider>()),
-      ChangeNotifierProvider(
-          create: (context) => di.sl<NotificationProvider>()),
+      ChangeNotifierProvider(create: (context) => di.sl<WalletProvider>()),
+      ChangeNotifierProvider(create: (context) => di.sl<NotificationProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<LanguageProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<NewsLetterProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<WishListProvider>()),
@@ -146,6 +148,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     RouteHelper.setupRouter();
 
     if (kIsWeb) {

@@ -36,7 +36,6 @@ class ProductTitleView extends StatelessWidget {
       _startingPrice = product.price;
     }
 
-
     return Container(
       padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
       decoration: BoxDecoration(
@@ -81,16 +80,30 @@ class ProductTitleView extends StatelessWidget {
             ) : SizedBox(),
 
             //Product Price
-            Text(
-              '${PriceConverter.convertPrice(context, _startingPrice, discount: product.discount, discountType: product.discountType)}'
-                  '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(context, _endingPrice, discount: product.discount, discountType: product.discountType)}' : ''}',
-              style: poppinsBold.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_LARGE),
+            Row(
+              children: [
+                Column(
+                  children: [
+                    Text(
+                      '${PriceConverter.convertPrice(context, _startingPrice, discount: product.discount, discountType: product.discountType)}'
+                          '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(context, _endingPrice, discount: product.discount, discountType: product.discountType)}' : ''}',
+                      style: poppinsBold.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_LARGE),
+                    ),
+                    product.discount > 0 ? Text(
+                      '${PriceConverter.convertPrice(context, _startingPrice)}'
+                          '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(context, _endingPrice)}' : ''}',
+                      style: poppinsBold.copyWith(color: ColorResources.getHintColor(context), fontSize: Dimensions.FONT_SIZE_SMALL, decoration: TextDecoration.lineThrough),
+                    ): SizedBox(),
+                  ],
+                ),
+                SizedBox(width: 10,),
+                product.discount > 0 ? Text(
+                  '(You Saved  \u{20B9}${product.discountType == 'amount'? _startingPrice -(_startingPrice - product.discount) : _startingPrice - (_startingPrice - ((product.discount / 100) * _startingPrice))}'
+                      '${_endingPrice!= null ? ' - \u{20B9}${product.discountType == 'amount'? _endingPrice -(_endingPrice - product.discount) : _endingPrice - (_endingPrice - ((product.discount / 100) * _endingPrice))}' : ''})',
+                  style: poppinsBold.copyWith(color: Colors.red, fontSize: Dimensions.FONT_SIZE_LARGE),
+                ): SizedBox(),
+              ],
             ),
-            product.discount > 0 ? Text(
-              '${PriceConverter.convertPrice(context, _startingPrice)}'
-                  '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(context, _endingPrice)}' : ''}',
-              style: poppinsBold.copyWith(color: ColorResources.getHintColor(context), fontSize: Dimensions.FONT_SIZE_SMALL, decoration: TextDecoration.lineThrough),
-            ): SizedBox(),
 
             Row(children: [
 

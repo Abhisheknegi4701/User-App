@@ -19,6 +19,7 @@ import 'package:flutter_grocery/view/screens/home/widget/home_item_view.dart';
 import 'package:flutter_grocery/view/screens/home/widget/product_view.dart';
 import 'package:provider/provider.dart';
 
+import '../../../provider/wallet_provider.dart';
 import '../../../utill/images.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -107,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
 
                         Consumer<BannerProvider>(builder: (context, banner, child) {
-                          return banner.bannerList == null ? BannersView() : Container(
+                          return banner.bannerList == null ? BannersView() : banner.bannerList.length == 0 ? Container(
                               width: MediaQuery.of(context).size.width,
                               height: ResponsiveHelper.isDesktop(context) ? 400 : MediaQuery.of(context).size.width * 0.4,
                               padding: EdgeInsets.only(top: Dimensions.PADDING_SIZE_LARGE, bottom: Dimensions.PADDING_SIZE_SMALL),
@@ -157,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ) : Center(child: Text(getTranslated('no_banner_available', context)))
                               ],
                             ),
-                          );
+                          ) : BannersView();
                         }),
 
                         // Category

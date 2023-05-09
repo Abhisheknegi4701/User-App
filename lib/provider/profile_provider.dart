@@ -10,20 +10,23 @@ import 'package:flutter_grocery/helper/api_checker.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
+import '../data/model/response/wallet_model.dart';
+import '../data/repository/wallet_cart.dart';
+
 class ProfileProvider with ChangeNotifier {
   final ProfileRepo profileRepo;
 
-  ProfileProvider({@required this.profileRepo});
+  ProfileProvider({@required this.profileRepo, @required this.walletRepo});
 
   UserInfoModel _userInfoModel;
-
+  String walletMoney = "0";
   UserInfoModel get userInfoModel => _userInfoModel;
+  final WalletRepo walletRepo;
 
    getUserInfo(BuildContext context) async {
     _isLoading = true;
     ApiResponse apiResponse = await profileRepo.getUserInfo();
     if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
-
       _userInfoModel = UserInfoModel.fromJson(apiResponse.response.data);
     } else {
       ApiChecker.checkApi(context, apiResponse);

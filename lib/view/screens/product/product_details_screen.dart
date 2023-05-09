@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_grocery/data/model/response/cart_model.dart';
 import 'package:flutter_grocery/data/model/response/product_model.dart';
 import 'package:flutter_grocery/helper/price_converter.dart';
@@ -17,8 +16,6 @@ import 'package:flutter_grocery/view/base/custom_button.dart';
 import 'package:flutter_grocery/view/base/custom_snackbar.dart';
 import 'package:flutter_grocery/view/base/footer_view.dart';
 import 'package:flutter_grocery/view/base/rating_bar.dart';
-import 'package:flutter_grocery/view/base/read_more_text.dart';
-import 'package:flutter_grocery/view/base/title_row.dart';
 import 'package:flutter_grocery/view/base/web_app_bar/web_app_bar.dart';
 import 'package:flutter_grocery/view/screens/product/widget/details_app_bar.dart';
 import 'package:flutter_grocery/view/screens/product/widget/product_image_view.dart';

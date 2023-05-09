@@ -11,9 +11,9 @@ import 'package:flutter_grocery/provider/splash_provider.dart';
 import 'package:flutter_grocery/helper/route_helper.dart';
 import 'package:flutter_grocery/utill/app_constants.dart';
 import 'package:flutter_grocery/utill/images.dart';
-import 'package:flutter_grocery/utill/styles.dart';
 import 'package:flutter_grocery/view/screens/menu/menu_screen.dart';
 import 'package:flutter_grocery/view/screens/onboarding/on_boarding_screen.dart';
+import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -35,6 +35,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
+    final newVersion = NewVersion(
+      iOSId: 'org.nativescript.TheFreshMart',
+      androidId: 'org.nativescript.TheFreshMart',
+    );
+
+    advancedStatusCheck(newVersion);
 
     bool _firstTime = true;
     _onConnectivityChanged = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
@@ -63,37 +70,70 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _route() {
-    Provider.of<SplashProvider>(context, listen: false).initConfig(context).then((bool isSuccess) {
+    Provider.of<SplashProvider>(context, listen: false)
+        .initConfig(context)
+        .then((bool isSuccess) {
       if (isSuccess) {
-        if(Provider.of<SplashProvider>(context, listen: false).configModel.maintenanceMode) {
-          Navigator.pushNamedAndRemoveUntil(context, RouteHelper.getMaintenanceRoute(), (route) => false);
-        }else {
+        if (Provider
+            .of<SplashProvider>(context, listen: false)
+            .configModel
+            .maintenanceMode) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, RouteHelper.getMaintenanceRoute(), (route) => false);
+        } else {
           Timer(Duration(seconds: 1), () async {
             double _minimumVersion = 0.0;
-            if(Platform.isAndroid) {
-              if(Provider.of<SplashProvider>(context, listen: false).configModel.playStoreConfig.minVersion!=null){
-                _minimumVersion = Provider.of<SplashProvider>(context, listen: false).configModel.playStoreConfig.minVersion?? 6.0;
-
+            if (Platform.isAndroid) {
+              if (Provider
+                  .of<SplashProvider>(context, listen: false)
+                  .configModel
+                  .playStoreConfig
+                  .minVersion != null) {
+                _minimumVersion = Provider
+                    .of<SplashProvider>(context, listen: false)
+                    .configModel
+                    .playStoreConfig
+                    .minVersion ?? 6.0;
               }
-            }else if(Platform.isIOS) {
-              if(Provider.of<SplashProvider>(context, listen: false).configModel.appStoreConfig.minVersion!=null){
-                _minimumVersion = Provider.of<SplashProvider>(context, listen: false).configModel.appStoreConfig.minVersion?? 6.0;
+            } else if (Platform.isIOS) {
+              if (Provider
+                  .of<SplashProvider>(context, listen: false)
+                  .configModel
+                  .appStoreConfig
+                  .minVersion != null) {
+                _minimumVersion = Provider
+                    .of<SplashProvider>(context, listen: false)
+                    .configModel
+                    .appStoreConfig
+                    .minVersion ?? 6.0;
               }
             }
-            if(AppConstants.APP_VERSION < _minimumVersion && !ResponsiveHelper.isWeb()) {
-              Navigator.pushNamedAndRemoveUntil(context, RouteHelper.getUpdateRoute(), (route) => false);
+            if (AppConstants.APP_VERSION < _minimumVersion &&
+                !ResponsiveHelper.isWeb()) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, RouteHelper.getUpdateRoute(), (route) => false);
             }
-            else{
-              if (Provider.of<AuthProvider>(context, listen: false).isLoggedIn()) {
+            else {
+              if (Provider.of<AuthProvider>(context, listen: false)
+                  .isLoggedIn()) {
                 Provider.of<AuthProvider>(context, listen: false).updateToken();
-                Navigator.of(context).pushNamedAndRemoveUntil(RouteHelper.menu, (route) => false, arguments: MenuScreen());
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    RouteHelper.menu, (route) => false,
+                    arguments: MenuScreen());
               } else {
-                print('===intro=>${Provider.of<SplashProvider>(context, listen: false).showIntro()}');
-                if(Provider.of<SplashProvider>(context, listen: false).showIntro() !=null && Provider.of<SplashProvider>(context, listen: false).showIntro()) {
-                  Navigator.pushNamedAndRemoveUntil(context, RouteHelper.onBoarding, (route) => false, arguments: OnBoardingScreen());
-
-                }else {
-                  Navigator.of(context).pushNamedAndRemoveUntil(RouteHelper.menu, (route) => false, arguments: MenuScreen());
+                print('===intro=>${Provider.of<SplashProvider>(
+                    context, listen: false).showIntro()}');
+                if (Provider.of<SplashProvider>(context, listen: false)
+                    .showIntro() != null &&
+                    Provider.of<SplashProvider>(context, listen: false)
+                        .showIntro()) {
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, RouteHelper.onBoarding, (route) => false,
+                      arguments: OnBoardingScreen());
+                } else {
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      RouteHelper.menu, (route) => false,
+                      arguments: MenuScreen());
                 }
                 // Navigator.pushNamedAndRemoveUntil(context, RouteHelper.onBoarding, (route) => false, arguments: OnBoardingScreen());
               }
@@ -102,6 +142,19 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       }
     });
+  }
+
+  advancedStatusCheck(NewVersion newVersion) async {
+    final status = await newVersion.getVersionStatus();
+    if (status != null) {
+      newVersion.showUpdateDialog(
+        context: context,
+        versionStatus: status,
+        allowDismissal: false,
+        dialogTitle: 'Update Available',
+        dialogText: 'Custom Text',
+      );
+    }
   }
 
   @override

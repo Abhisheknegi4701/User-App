@@ -56,6 +56,8 @@ class AppConstants {
   static const String EMAIL_SUBSCRIBE_URI = '/api/v1/subscribe-newsletter';
   static const String CUSTOMER_REMOVE = '/api/v1/customer/remove-account';
   static const String UNSUSCRIBE = '/api/v1/customer/delete-token';
+  static const String WALLET = '/api/v1/customer/wallet';
+  static const String TRANSACTION = '/api/v1/customer/wallet/transactions';
 
   //MESSAGING
   static const String GET_DELIVERYMAN_MESSAGE_URI = '/api/v1/customer/message/get-order-message';

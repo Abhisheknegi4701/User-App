@@ -220,13 +220,14 @@ class CartScreen extends StatelessWidget {
                       child: CustomButton(
                         buttonText: getTranslated('continue_checkout', context),
                         onPressed: () {
-                          if(_isSelfPickupActive){
+                          String _orderType = Provider.of<OrderProvider>(context, listen: false).orderType;
+                          print(_orderType);
+                          double _discount = Provider.of<CouponProvider>(context, listen: false).discount;
+                          if(_orderType == "delivery"){
                             if(_itemPrice < Provider.of<SplashProvider>(context, listen: false).configModel.minimumOrderValue) {
                               showCustomSnackBar('Minimum order amount is ${PriceConverter.convertPrice(context, Provider.of<SplashProvider>(context, listen: false).configModel
                                   .minimumOrderValue)}, you have ${PriceConverter.convertPrice(context, _itemPrice)} in your cart, please add more item.', context,isError: true);
                             } else {
-                              String _orderType = Provider.of<OrderProvider>(context, listen: false).orderType;
-                              double _discount = Provider.of<CouponProvider>(context, listen: false).discount;
                               Navigator.pushNamed(
                                 context, RouteHelper.getCheckoutRoute(
                                 _total, _discount, _orderType,
@@ -239,27 +240,16 @@ class CartScreen extends StatelessWidget {
                               );
                             }
                           }else{
-                            if(_total >= 300){
-                              if(_itemPrice < Provider.of<SplashProvider>(context, listen: false).configModel.minimumOrderValue) {
-                                showCustomSnackBar('Minimum order amount is ${PriceConverter.convertPrice(context, Provider.of<SplashProvider>(context, listen: false).configModel
-                                    .minimumOrderValue)}, you have ${PriceConverter.convertPrice(context, _itemPrice)} in your cart, please add more item.', context,isError: true);
-                              } else {
-                                String _orderType = Provider.of<OrderProvider>(context, listen: false).orderType;
-                                double _discount = Provider.of<CouponProvider>(context, listen: false).discount;
-                                Navigator.pushNamed(
-                                  context, RouteHelper.getCheckoutRoute(
-                                  _total, _discount, _orderType,
-                                  Provider.of<CouponProvider>(context, listen: false).code,
-                                ),
-                                  arguments: CheckoutScreen(
-                                    amount: _total, orderType: _orderType, discount: _discount,
-                                    couponCode: Provider.of<CouponProvider>(context, listen: false).code,
-                                  ),
-                                );
-                              }
-                            }else{
-                              showCustomSnackBar('Minimum order amount is 300 for Delivery, You have ${_total} in your cart, please add more item.', context,isError: true);
-                            }
+                            Navigator.pushNamed(
+                              context, RouteHelper.getCheckoutRoute(
+                              _total, _discount, _orderType,
+                              Provider.of<CouponProvider>(context, listen: false).code,
+                            ),
+                              arguments: CheckoutScreen(
+                                amount: _total, orderType: _orderType, discount: _discount,
+                                couponCode: Provider.of<CouponProvider>(context, listen: false).code,
+                              ),
+                            );
                           }
                         },
                       ),
