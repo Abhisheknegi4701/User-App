@@ -1,7 +1,4 @@
 
-
-import 'dart:js_interop';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +14,7 @@ import 'package:flutter_grocery/view/screens/order/order_details_screen.dart';
 class NotificationDialog extends StatefulWidget {
   final String title;
   final String body;
-  final int orderId;
+  final int? orderId;
   final String? image;
   final String? type;
   NotificationDialog({required this.title, required this.body, required this.orderId, this.image, this.type});
@@ -55,7 +52,7 @@ class _NewRequestDialogState extends State<NotificationDialog> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE),
             child: Text(
-              '${widget.title} ${!widget.orderId.isNull ? '(${widget.orderId})': ''}',
+              '${widget.title} ${widget.orderId != null ? '(${widget.orderId})': ''}',
               textAlign: TextAlign.center,
               style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),
             ),
@@ -110,7 +107,7 @@ class _NewRequestDialogState extends State<NotificationDialog> {
 
             SizedBox(width: 20),
 
-           if(!widget.orderId.isNull || widget.type == 'message') Flexible(
+           if(widget.orderId != null || widget.type == 'message') Flexible(
              child: SizedBox(
                 width: 120,
                 height: 40,
@@ -121,11 +118,11 @@ class _NewRequestDialogState extends State<NotificationDialog> {
                     Navigator.pop(context);
 
                     try{
-                      if(widget.orderId.isNull) {
+                      if(widget.orderId == null) {
                         Navigator.pushNamed(context, RouteHelper.getChatRoute(orderModel: null));
                       }else{
                         Get.navigator!.push(MaterialPageRoute(
-                          builder: (context) => OrderDetailsScreen(orderModel: null, orderId: widget.orderId),
+                          builder: (context) => OrderDetailsScreen(orderModel: null, orderId: widget.orderId!),
                         ));
                       }
 

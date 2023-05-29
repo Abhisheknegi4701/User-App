@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/category_model.dart';
@@ -99,11 +98,11 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
                           },
                         ),
                       ),
-                      !categoryProvider.subCategoryList.isNull
+                      categoryProvider.subCategoryList != null
                           ? Expanded(
                               child: ListView.builder(
                                 padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
-                                itemCount: categoryProvider.subCategoryList.length + 1,
+                                itemCount: categoryProvider.subCategoryList!.length + 1,
                                 itemBuilder: (context, index) {
 
                                   if(index == 0) {
@@ -130,18 +129,18 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
 
                                       }
                                       Provider.of<ProductProvider>(context, listen: false).initCategoryProductList(
-                                        categoryProvider.subCategoryList[index-1].id.toString(), context,
+                                        categoryProvider.subCategoryList![index-1].id.toString(), context,
                                         Provider.of<LocalizationProvider>(context, listen: false).locale.languageCode,
                                       );
 
                                       Navigator.of(context).pushNamed(
                                         RouteHelper.getCategoryProductsRouteNew(
                                           categoryModel: categoryProvider.categoryList![categoryProvider.categoryIndex],
-                                          subCategory: categoryProvider.subCategoryList[index-1].name,
+                                          subCategory: categoryProvider.subCategoryList![index-1].name,
                                         ),
                                       );
                                     },
-                                    title: Text(categoryProvider.subCategoryList[index-1].name!,
+                                    title: Text(categoryProvider.subCategoryList![index-1].name!,
                                       style: poppinsMedium.copyWith(fontSize: 13, color: ColorResources.getTextColor(context)),
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -227,7 +226,7 @@ class SubCategoryShimmer extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return Shimmer(
           duration: Duration(seconds: 2),
-          enabled: Provider.of<CategoryProvider>(context).subCategoryList.isNull,
+          enabled: Provider.of<CategoryProvider>(context).subCategoryList == null,
           child: Container(
             height: 40,
             margin: EdgeInsets.only(left: 15, right: 15, top: 15),

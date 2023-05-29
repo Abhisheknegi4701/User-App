@@ -1,6 +1,4 @@
 
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/address_model.dart';
 import 'package:flutter_grocery/data/model/response/config_model.dart';
@@ -43,7 +41,7 @@ class ButtonsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        !locationProvider.addressStatusMessage.isNull ?
+        locationProvider.addressStatusMessage.isNotEmpty?
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

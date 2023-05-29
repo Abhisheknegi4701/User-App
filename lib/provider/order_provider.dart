@@ -1,6 +1,4 @@
 
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/body/place_order_body.dart';
 import 'package:flutter_grocery/data/model/body/review_body.dart';
@@ -203,14 +201,14 @@ OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<ResponseModel> trackOrder(String orderID, OrderModel orderModel, BuildContext context, bool fromTracking) async {
+  Future<ResponseModel> trackOrder(String orderID, OrderModel? orderModel, BuildContext context, bool fromTracking) async {
     _trackModel = null;
     ResponseModel _responseModel;
     if(!fromTracking) {
       _orderDetails = null;
     }
     _showCancelled = false;
-    if(orderModel.isNull) {
+    if(orderModel != null) {
       _isLoading = true;
       ApiResponse apiResponse = await orderRepo.trackOrder(orderID);
       if (apiResponse.response.statusCode == 200) {

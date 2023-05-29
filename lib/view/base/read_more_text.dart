@@ -1,7 +1,5 @@
 library readmore;
 
-import 'dart:js_interop';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -124,8 +122,8 @@ class ReadMoreTextState extends State<ReadMoreText> {
         assert(constraints.hasBoundedWidth);
         final double maxWidth = constraints.maxWidth;
 
-        TextSpan preTextSpan;
-        TextSpan postTextSpan;
+        TextSpan? preTextSpan;
+        TextSpan? postTextSpan;
         preTextSpan = TextSpan(
           text: widget.preDataText! + " ",
           style: widget.preDataTextStyle ?? effectiveTextStyle,
@@ -138,9 +136,9 @@ class ReadMoreTextState extends State<ReadMoreText> {
         // Create a TextSpan with data
         final text = TextSpan(
           children: [
-            if (!preTextSpan.isNull) preTextSpan,
+            preTextSpan,
             TextSpan(text: widget.data, style: effectiveTextStyle),
-            if (!postTextSpan.isNull) postTextSpan
+            postTextSpan
           ],
         );
 
@@ -235,9 +233,9 @@ class ReadMoreTextState extends State<ReadMoreText> {
           child: Text.rich(
             TextSpan(
               children: [
-                if (!preTextSpan.isNull) preTextSpan,
+                preTextSpan,
                 textSpan,
-                if (!postTextSpan.isNull) postTextSpan,
+                postTextSpan,
               ],
             ),
             textAlign: textAlign,

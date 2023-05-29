@@ -1,6 +1,4 @@
 
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
 import 'package:flutter_grocery/helper/route_helper.dart';
@@ -86,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         child: FadeInImage.assetNetwork(
                                           placeholder: Images.placeholder(context), height: 170, width: 170, fit: BoxFit.cover,
                                           image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.customerImageUrl!}/'
-                                              '${!profileProvider.userInfoModel.isNull ? profileProvider.userInfoModel!.image : ''}',
+                                              '${profileProvider.userInfoModel != null ? profileProvider.userInfoModel!.image : ''}',
                                           imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 170, width: 170, fit: BoxFit.cover),
                                         ),
                                       ),
@@ -205,7 +203,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(50),
-                                    child: profileProvider.file.isNull ? FadeInImage.assetNetwork(
+                                    child: profileProvider.file == null ? FadeInImage.assetNetwork(
                                       placeholder: Images.placeholder(context),
                                       width: 100, height: 100, fit: BoxFit.cover,
                                       image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.customerImageUrl}/${profileProvider.userInfoModel!.image}',

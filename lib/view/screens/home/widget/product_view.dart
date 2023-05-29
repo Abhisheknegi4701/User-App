@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/product_model.dart';
@@ -75,12 +74,12 @@ class _ProductViewState extends State<ProductView> {
      }
     return Consumer<ProductProvider>(
       builder: (context, prodProvider, child) {
-        List<Product> productList;
+        List<Product>? productList;
         productList = prodProvider.latestProductList!;
 
         return Column(children: [
 
-          !productList.isNull
+          productList.isNotEmpty
               ? productList.length > 0
               ? GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -94,7 +93,7 @@ class _ProductViewState extends State<ProductView> {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (BuildContext context, int index) {
-                      return ProductWidget(product: productList[index], productType: ProductType.LATEST_PRODUCT,);
+                      return ProductWidget(product: productList![index], productType: ProductType.LATEST_PRODUCT,);
                     },
                   )
               : NoDataScreen(isSearch: true)
@@ -110,8 +109,8 @@ class _ProductViewState extends State<ProductView> {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return ResponsiveHelper.isDesktop(context)
-                      ?  WebProductShimmer(isEnabled: productList.isNull)
-                      : ProductShimmer(isEnabled: productList.isNull);
+                      ?  WebProductShimmer(isEnabled: productList == null)
+                      : ProductShimmer(isEnabled: productList == null);
                 },
             ),
 

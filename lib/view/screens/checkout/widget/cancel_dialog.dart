@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/helper/route_helper.dart';
@@ -8,7 +7,7 @@ import 'package:flutter_grocery/utill/styles.dart';
 import 'package:flutter_grocery/view/base/custom_button.dart';
 
 class CancelDialog extends StatelessWidget {
-  final int orderID;
+  final int? orderID;
   CancelDialog({required this.orderID});
 
   @override
@@ -38,7 +37,7 @@ class CancelDialog extends StatelessWidget {
           // ) : SizedBox(),
           // SizedBox(height: fromCheckout ? Dimensions.PADDING_SIZE_SMALL : 0),
 
-          !orderID.isNull || orderID != 'null' ?   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          orderID != null || orderID != 'null' ?   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text('${getTranslated('order_id', context)}:', style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL)),
             SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
             Text(orderID.toString(), style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL)),

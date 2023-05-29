@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
@@ -90,7 +89,7 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
 
                   },
                 ),
-                !locationProvider.pickAddress.isNull
+                locationProvider.pickAddress.isNotEmpty
                     ? InkWell(
                   onTap: () => _openSearchDialog(context, _controller!),
                       child: Container(

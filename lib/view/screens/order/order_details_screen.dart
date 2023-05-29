@@ -1,4 +1,3 @@
- import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/order_details_model.dart';
@@ -49,7 +48,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
   void _loadData(BuildContext context) async {
     await Provider.of<OrderProvider>(context, listen: false).trackOrder(widget.orderId.toString(), widget.orderModel!, context, false);
-    if (widget.orderModel.isNull) {
+    if (widget.orderModel == null) {
       await Provider.of<SplashProvider>(context, listen: false).initConfig(context);
     }
     await Provider.of<LocationProvider>(context, listen: false).initAddressList(context);
@@ -93,11 +92,11 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           _extraDiscount  = order.trackModel!.extraDiscount ?? 0.0;
           double _subTotal = _itemsPrice + _tax;
           double _total = _subTotal - _discount -_extraDiscount + _deliveryCharge - (
-              !order.trackModel.isNull ? order.trackModel!.couponDiscountAmount! : 0
+              order.trackModel != null ? order.trackModel!.couponDiscountAmount! : 0
           );
           _isCashOnDeliveryActive = Provider.of<SplashProvider>(context, listen: false).configModel!.cashOnDelivery == 'true';
 
-          return !order.orderDetails.isNull ? ResponsiveHelper.isDesktop(context) ?
+          return order.orderDetails != null ? ResponsiveHelper.isDesktop(context) ?
           ListView(children: [
             Center(
               child: ConstrainedBox(
@@ -208,7 +207,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                           }else{
                                             showDialog(context: context, barrierDismissible: false, builder: (context) => ChangeMethodDialog(
                                                 orderID: order.trackModel!.id.toString(),
-                                                fromOrder: !widget.orderModel.isNull,
+                                                fromOrder: widget.orderModel != null,
                                                 callback: (String message, bool isSuccess) {
                                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message), duration: Duration(milliseconds: 600), backgroundColor: isSuccess ? Colors.green : Colors.red));
                                                 }),);
@@ -417,7 +416,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                           onPressed: () {
                                             showDialog(context: context, barrierDismissible: false, builder: (context) => OrderCancelDialog(
                                               orderID: order.trackModel!.id.toString(),
-                                              fromOrder: !widget.orderModel.isNull,
+                                              fromOrder: widget.orderModel != null,
                                               callback: (String message, bool isSuccess, String orderID) {
                                                 if (isSuccess) {
                                                   Provider.of<ProductProvider>(context, listen: false).getPopularProductList(context, '1', true,Provider.of<LocalizationProvider>(context, listen: false).locale.languageCode,);
@@ -611,7 +610,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                               }else{
                                 showDialog(context: context, barrierDismissible: false, builder: (context) => ChangeMethodDialog(
                                     orderID: order.trackModel!.id.toString(),
-                                    fromOrder: !widget.orderModel.isNull,
+                                    fromOrder: widget.orderModel != null,
                                     callback: (String message, bool isSuccess) {
                                       showCustomSnackBar(message, context,isError: isSuccess);
                                     }),);
@@ -809,7 +808,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     )), onPressed: () {
                     showDialog(context: context, barrierDismissible: false, builder: (context) => OrderCancelDialog(
                       orderID: order.trackModel!.id.toString(),
-                      fromOrder: !widget.orderModel.isNull,
+                      fromOrder: widget.orderModel != null,
                       callback: (String message, bool isSuccess, String orderID) {
                         if (isSuccess) {
                           Provider.of<ProductProvider>(context, listen: false).getPopularProductList(context, '1', true,Provider.of<LocalizationProvider>(context, listen: false).locale.languageCode,);

@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/product_model.dart';
@@ -17,14 +16,14 @@ class HomeItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ProductProvider>(builder: (context, productProvider, child) {
-      List<Product> _productList = [];
+      List<Product>? _productList = [];
       if(isDailyItem!) {
         _productList = productProvider.dailyItemList!;
       }else{
         _productList = productProvider.popularProductList!;
       }
 
-      return !_productList.isNull ? Column(children: [
+      return _productList.isNotEmpty ? Column(children: [
 
         ResponsiveHelper.isDesktop(context) ? GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -40,7 +39,7 @@ class HomeItemView extends StatelessWidget {
           itemBuilder: (context,index){
             return ProductWidget(
               isGrid: true,
-              product: _productList[index],
+              product: _productList![index],
               productType: ProductType.DAILY_ITEM,
             );
             },
@@ -57,7 +56,7 @@ class HomeItemView extends StatelessWidget {
                 padding: EdgeInsets.all(5),
                 child: ProductWidget(
                   isGrid: true,
-                  product: _productList[index],
+                  product: _productList![index],
                   productType: ProductType.DAILY_ITEM,
                 ),
               );

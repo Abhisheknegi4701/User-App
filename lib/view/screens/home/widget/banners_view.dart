@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +67,7 @@ class BannersView extends StatelessWidget {
                             break;
                           }
                         }
-                        if (!category!.isNull) {
+                        if (category != null) {
                           Navigator.of(context).pushNamed(
                             RouteHelper.getCategoryProductsRouteNew(
                                 categoryModel: category),

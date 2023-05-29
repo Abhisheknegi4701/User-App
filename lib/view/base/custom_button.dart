@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/utill/color_resources.dart';
@@ -7,7 +6,7 @@ import 'package:flutter_grocery/utill/styles.dart';
 
 class CustomButton extends StatelessWidget {
   final String buttonText;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double margin;
   final Color? textColor;
   CustomButton({required this.buttonText, required this.onPressed, this.margin = 0, this.textColor});
@@ -19,7 +18,7 @@ class CustomButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
-          backgroundColor: onPressed.isNull ? ColorResources.getHintColor(context) : Theme.of(context).primaryColor,
+          backgroundColor: onPressed == null ? ColorResources.getHintColor(context) : Theme.of(context).primaryColor,
           minimumSize: Size(MediaQuery.of(context).size.width, 50),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),

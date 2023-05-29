@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/response_model.dart';
@@ -130,8 +129,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
-                                child: !profileProvider.file.isNull
-                                    ? Image.file(profileProvider.file!, width: 80, height: 80, fit: BoxFit.fill) : !profileProvider.data.isNull
+                                child: profileProvider.file != null
+                                    ? Image.file(profileProvider.file!, width: 80, height: 80, fit: BoxFit.fill) : profileProvider.data != null
                                     ? Image.network(profileProvider.data!.path, width: 80, height: 80, fit: BoxFit.fill) : ClipRRect(
                                         borderRadius: BorderRadius.circular(50),
                                         child: FadeInImage.assetNetwork(
@@ -372,7 +371,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     profileProvider.userInfoModel!.lName == _lastName &&
                                     profileProvider.userInfoModel!.phone == _phoneNumber &&
                                     profileProvider.userInfoModel!.email == _emailController.text
-                                    && profileProvider.file.isNull && profileProvider.data.isNull
+                                    && profileProvider.file == null && profileProvider.data == null
                                     && _password.isEmpty && _confirmPassword.isEmpty) {
 
                                   showCustomSnackBar(getTranslated('change_something_to_update', context)!, context);

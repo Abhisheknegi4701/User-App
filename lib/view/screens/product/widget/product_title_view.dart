@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/product_model.dart';
@@ -17,13 +16,11 @@ import 'package:provider/provider.dart';
 class ProductTitleView extends StatelessWidget {
   final Product product;
   final int stock;
-  final int cartIndex;
+  final int? cartIndex;
   ProductTitleView({required this.product, required this.stock,required this.cartIndex});
 
   @override
   Widget build(BuildContext context) {
-    print('==========${cartIndex}');
-
     double _startingPrice;
     double? _endingPrice;
     if(product.variations!.length != 0) {
@@ -74,7 +71,7 @@ class ProductTitleView extends StatelessWidget {
               ),
             ),
 
-            !product.rating.isNull ? Padding(
+            product.rating != null ? Padding(
               padding: const EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_EXTRA_SMALL),
               child: RatingBar(
                 rating: product.rating!.length > 0 ? double.parse(product.rating![0].average!) : 0.0, size: Dimensions.PADDING_SIZE_DEFAULT,
@@ -119,13 +116,13 @@ class ProductTitleView extends StatelessWidget {
               Builder(
                 builder: (context) {
                   return Row(children: [
-                    QuantityButton(isIncrement: false, quantity: productProvider.quantity!, stock: stock,cartIndex: cartIndex),
+                    QuantityButton(isIncrement: false, quantity: productProvider.quantity!, stock: stock,cartIndex: cartIndex!),
                     SizedBox(width: 15),
                     Consumer<CartProvider>(builder: (context, cart, child) {
-                      return Text(!cartIndex.isNull ? cart.cartList[cartIndex].quantity.toString() : productProvider.quantity.toString(), style: poppinsSemiBold);
+                      return Text(cartIndex != null ? cart.cartList[cartIndex!].quantity.toString() : productProvider.quantity.toString(), style: poppinsSemiBold);
                     }),
                     SizedBox(width: 15),
-                    QuantityButton(isIncrement: true, quantity: productProvider.quantity!, stock: stock, cartIndex: cartIndex),
+                    QuantityButton(isIncrement: true, quantity: productProvider.quantity!, stock: stock, cartIndex: cartIndex!),
                   ]);
                 }
               ),
@@ -142,7 +139,7 @@ class QuantityButton extends StatelessWidget {
   final int quantity;
   final bool isCartWidget;
   final int stock;
-  final int cartIndex;
+  final int? cartIndex;
 
   QuantityButton({
     required this.isIncrement,
@@ -156,19 +153,19 @@ class QuantityButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if(!cartIndex.isNull) {
+        if(cartIndex != null) {
           if(isIncrement) {
-            if (Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].quantity! < Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].stock!) {
-              Provider.of<CartProvider>(context, listen: false).setQuantity(true, cartIndex, showMessage: true, context: context);
+            if (Provider.of<CartProvider>(context, listen: false).cartList[cartIndex!].quantity! < Provider.of<CartProvider>(context, listen: false).cartList[cartIndex!].stock!) {
+              Provider.of<CartProvider>(context, listen: false).setQuantity(true, cartIndex!, showMessage: true, context: context);
             } else {
               showCustomSnackBar(getTranslated('out_of_stock', context)!, context);
             }
           }else {
-            if (Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].quantity! > 1) {
-              Provider.of<CartProvider>(context, listen: false).setQuantity(false, cartIndex, showMessage: true, context: context);
+            if (Provider.of<CartProvider>(context, listen: false).cartList[cartIndex!].quantity! > 1) {
+              Provider.of<CartProvider>(context, listen: false).setQuantity(false, cartIndex!, showMessage: true, context: context);
             } else {
-              Provider.of<ProductProvider>(context, listen: false).setExistData(cartIndex);
-              Provider.of<CartProvider>(context, listen: false).removeFromCart(cartIndex, context);
+              Provider.of<ProductProvider>(context, listen: false).setExistData(cartIndex!);
+              Provider.of<CartProvider>(context, listen: false).removeFromCart(cartIndex!, context);
             }
           }
         }else {

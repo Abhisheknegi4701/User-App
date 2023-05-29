@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:js_interop';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -123,7 +122,7 @@ class _ChatScreenState extends State<ChatScreen> {
               Consumer<ChatProvider>(
                   builder: (context, chatProvider,child) {
                     return  Expanded(
-                      child: !chatProvider.messageList.isNull ? chatProvider.messageList.length > 0 ? ListView.builder(
+                      child: chatProvider.messageList.isNotEmpty ? chatProvider.messageList.length > 0 ? ListView.builder(
                           reverse: true,
                           physics: AlwaysScrollableScrollPhysics(),
                           itemCount: chatProvider.messageList.length,

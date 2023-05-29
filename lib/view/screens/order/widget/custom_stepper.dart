@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/utill/color_resources.dart';
@@ -25,7 +24,7 @@ class CustomStepper extends StatelessWidget {
                 margin: EdgeInsets.only(left: 14),
                 color: isActive ? Theme.of(context).primaryColor : ColorResources.getGreyColor(context),
               ),
-              child.isNull ? SizedBox() : child!,
+              child == null ? SizedBox() : child!,
             ])
           : SizedBox(),
       Row(children: [

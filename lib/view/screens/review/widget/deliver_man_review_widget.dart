@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/body/review_body.dart';
@@ -18,7 +17,7 @@ import '../../../../helper/responsive_helper.dart';
 import '../../../base/footer_view.dart';
 
 class DeliveryManReviewWidget extends StatefulWidget {
-  final DeliveryMan deliveryMan;
+  final DeliveryMan? deliveryMan;
   final String orderID;
   DeliveryManReviewWidget({required this.deliveryMan, required this.orderID});
 
@@ -46,7 +45,7 @@ class _DeliveryManReviewWidgetState extends State<DeliveryManReviewWidget> {
                     width: 1170,
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
 
-                      !widget.deliveryMan.isNull ? DeliveryManWidget(deliveryMan: widget.deliveryMan) : SizedBox(),
+                      widget.deliveryMan != null ? DeliveryManWidget(deliveryMan: widget.deliveryMan!) : SizedBox(),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
                       Container(
@@ -121,7 +120,7 @@ class _DeliveryManReviewWidgetState extends State<DeliveryManReviewWidget> {
                                         currentFocus.unfocus();
                                       }
                                       ReviewBody reviewBody = ReviewBody(
-                                        deliveryManId: widget.deliveryMan.id.toString(),
+                                        deliveryManId: widget.deliveryMan!.id.toString(),
                                         rating: orderProvider.deliveryManRating.toString(),
                                         comment: _controller.text,
                                         orderId: widget.orderID, productId: widget.orderID, fileUpload: [],

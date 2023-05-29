@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/order_details_model.dart';
@@ -17,7 +16,7 @@ import 'package:provider/provider.dart';
 
 class RateReviewScreen extends StatefulWidget {
   final List<OrderDetailsModel> orderDetailsList;
-  final DeliveryMan deliveryMan;
+  final DeliveryMan? deliveryMan;
   RateReviewScreen({required this.orderDetailsList, required this.deliveryMan});
 
   @override
@@ -30,7 +29,7 @@ class _RateReviewScreenState extends State<RateReviewScreen> with TickerProvider
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: widget.deliveryMan.isNull ? 1 : 2, initialIndex: 0, vsync: this);
+    _tabController = TabController(length: widget.deliveryMan == null ? 1 : 2, initialIndex: 0, vsync: this);
     Provider.of<OrderProvider>(context, listen: false).initRatingData(widget.orderDetailsList);
   }
   @override
@@ -49,7 +48,7 @@ class _RateReviewScreenState extends State<RateReviewScreen> with TickerProvider
             indicatorWeight: 3,
             unselectedLabelStyle: poppinsRegular.copyWith(color: ColorResources.getHintColor(context), fontSize: Dimensions.FONT_SIZE_SMALL),
             labelStyle: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL),
-            tabs: !widget.deliveryMan.isNull ? [
+            tabs: widget.deliveryMan != null ? [
               Tab(text: getTranslated(widget.orderDetailsList.length > 1 ? 'items' : 'item', context)),
               Tab(text: getTranslated('delivery_man', context)),
             ] : [
@@ -60,9 +59,9 @@ class _RateReviewScreenState extends State<RateReviewScreen> with TickerProvider
 
         Expanded(child: TabBarView(
           controller: _tabController,
-          children: !widget.deliveryMan.isNull ? [
+          children: widget.deliveryMan != null ? [
             ProductReviewWidget(orderDetailsList: widget.orderDetailsList),
-            DeliveryManReviewWidget(deliveryMan: widget.deliveryMan, orderID: widget.orderDetailsList[0].orderId.toString()),
+            DeliveryManReviewWidget(deliveryMan: widget.deliveryMan!, orderID: widget.orderDetailsList[0].orderId.toString()),
           ] : [
             ProductReviewWidget(orderDetailsList: widget.orderDetailsList),
           ],

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:js_interop';
 import 'package:path/path.dart';
 
 import 'package:dio/dio.dart';
@@ -42,10 +41,10 @@ class ProfileRepo{
     }
   }
 
-  Future<http.StreamedResponse> updateProfile(UserInfoModel userInfoModel, String pass, File file, PickedFile data, String token) async {
+  Future<http.StreamedResponse> updateProfile(UserInfoModel userInfoModel, String pass, File? file, PickedFile data, String token) async {
     http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse('${AppConstants.BASE_URL}${AppConstants.UPDATE_PROFILE_URI}'));
     request.headers.addAll(<String,String>{'Authorization': 'Bearer $token'});
-    if(!file.isNull) {
+    if(file != null) {
       request.files.add(http.MultipartFile('image', file.readAsBytes().asStream(), file.lengthSync(), filename: file.path.split('/').last));
     }else {   Uint8List _list = await data.readAsBytes();
     http.MultipartFile part = http.MultipartFile('image', data.readAsBytes().asStream(), _list.length, filename: basename(data.path));

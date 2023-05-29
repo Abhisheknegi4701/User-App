@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/cart_model.dart';
@@ -114,12 +113,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>  with Ticke
             double priceWithDiscount = PriceConverter.convertWithDiscount(context, price, productProvider.product!.discount!, productProvider.product!.discountType!);
 
             try{
-              priceWithQuantity = priceWithDiscount * (!productProvider.cartIndex.isNull ? cart.cartList[productProvider.cartIndex!].quantity! : productProvider.quantity!);
+              priceWithQuantity = priceWithDiscount * (productProvider.cartIndex != null ? cart.cartList[productProvider.cartIndex!].quantity! : productProvider.quantity!);
             }catch (e){
               priceWithQuantity = priceWithDiscount;
             }
 
-            return !productProvider.product.isNull ?
+            return productProvider.product != null ?
             !ResponsiveHelper.isDesktop(context) ? Column(
               children: [
                 Expanded(
@@ -170,9 +169,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>  with Ticke
                     width: 1170,
                     child: CustomButton(
                       margin: Dimensions.PADDING_SIZE_SMALL,
-                      buttonText: getTranslated(!productProvider.cartIndex.isNull ? 'already_added' : _stock <= 0 ? 'out_of_stock' : 'add_to_card', context)!,
-                      onPressed: (productProvider.cartIndex .isNull && _stock > 0) ? () {
-                        if (productProvider.cartIndex.isNull && _stock > 0) {
+                      buttonText: getTranslated(productProvider.cartIndex != null ? 'already_added' : _stock <= 0 ? 'out_of_stock' : 'add_to_card', context)!,
+                      onPressed: (productProvider.cartIndex == null && _stock > 0) ? () {
+                        if (productProvider.cartIndex == null && _stock > 0) {
                           Provider.of<CartProvider>(context, listen: false).addToCart(_cartModel);
                           //   _key.currentState.shake();
 
@@ -223,7 +222,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>  with Ticke
                                 ),
                                 const SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                                 Container(height: 100,
-                                  child: !productProvider.product!.image.isNull ? ListView.builder(
+                                  child: productProvider.product!.image != null ? ListView.builder(
                                       itemCount: productProvider.product!.image!.length,
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context,index){
@@ -257,7 +256,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>  with Ticke
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  !productProvider.product.isNull? WebProductInformation(product: productProvider.product!, stock: _stock, cartIndex: productProvider.cartIndex!,priceWithQuantity: priceWithQuantity) : CircularProgressIndicator(),
+                                  productProvider.product != null? WebProductInformation(product: productProvider.product!, stock: _stock, cartIndex: productProvider.cartIndex!,priceWithQuantity: priceWithQuantity) : CircularProgressIndicator(),
                                   const SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_LARGE),
 
                                   Builder(
@@ -265,9 +264,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>  with Ticke
                                       child: Container(
                                         width: 1170,
                                         child: CustomButton(
-                                          buttonText: getTranslated(!productProvider.cartIndex.isNull ? 'already_added' : _stock <= 0 ? 'out_of_stock' : 'add_to_card', context)!,
-                                          onPressed: (productProvider.cartIndex.isNull && _stock > 0) ? () {
-                                            if (productProvider.cartIndex.isNull && _stock > 0) {
+                                          buttonText: getTranslated(productProvider.cartIndex != null ? 'already_added' : _stock <= 0 ? 'out_of_stock' : 'add_to_card', context)!,
+                                          onPressed: (productProvider.cartIndex != null && _stock > 0) ? () {
+                                            if (productProvider.cartIndex == null && _stock > 0) {
                                               Provider.of<CartProvider>(context, listen: false).addToCart(_cartModel);
 
                                               showCustomSnackBar(getTranslated('added_to_cart', context)!,context, isError: false);
@@ -396,7 +395,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>  with Ticke
             padding: EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_DEFAULT, horizontal: Dimensions.PADDING_SIZE_DEFAULT),
             itemBuilder: (context, index) {
 
-              return !productProvider.product!.activeReviews.isNull
+              return productProvider.product!.activeReviews != null
                   ? ReviewWidget(reviewModel: productProvider.product!.activeReviews![index])
                   : ReviewShimmer();
             },

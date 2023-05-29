@@ -27,7 +27,7 @@ class CategoryProvider extends ChangeNotifier {
   bool _pageLastIndex = false;
 
   List<CategoryModel>? get categoryList => _categoryList;
-  List<CategoryModel> get subCategoryList => _subCategoryList;
+  List<CategoryModel>? get subCategoryList => _subCategoryList;
   List<Product> get categoryProductList => _categoryProductList;
   CategoryModel? get categoryModel => _categoryModel;
   bool get pageFirstIndex => _pageFirstIndex;

@@ -1,6 +1,4 @@
 
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/address_model.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
@@ -82,8 +80,8 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
         Provider.of<LocationProvider>(context, listen: false).updateAddressIndex(2, false);
       }
     }else {
-      _contactPersonNameController.text = _userModel.isNull ? '' : '${_userModel!.fName}' ' ${_userModel.lName}';
-      _contactPersonNumberController.text =  (_userModel.isNull ? '' : _userModel!.phone)!;
+      _contactPersonNameController.text = _userModel == null ? '' : '${_userModel.fName}' ' ${_userModel.lName}';
+      _contactPersonNumberController.text =  (_userModel == null ? '' : _userModel.phone)!;
     }
 
 

@@ -1,5 +1,4 @@
 import 'dart:collection';
-import 'dart:js_interop';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -18,10 +17,10 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TrackingMapWidget extends StatefulWidget {
-  final DeliveryManModel deliveryManModel;
+  final DeliveryManModel? deliveryManModel;
   final String orderID;
   final int branchID;
-  final DeliveryAddress addressModel;
+  final DeliveryAddress? addressModel;
   TrackingMapWidget({required this.deliveryManModel, required this.orderID, required this.addressModel, required this.branchID});
 
   @override
@@ -47,9 +46,9 @@ class _TrackingMapWidgetState extends State<TrackingMapWidget> {
         break;
       }
     }
-    _deliveryBoyLatLng = widget.deliveryManModel.isNull
-        ? LatLng(double.parse(widget.deliveryManModel.latitude ?? '0'), double.parse(widget.deliveryManModel.longitude ?? '0')) : LatLng(0, 0);
-    _addressLatLng = widget.addressModel.isNull ? LatLng(double.parse(widget.addressModel.latitude!), double.parse(widget.addressModel.longitude!)) : LatLng(0,0);
+    _deliveryBoyLatLng = widget.deliveryManModel == null
+        ? LatLng(double.parse(widget.deliveryManModel!.latitude ?? '0'), double.parse(widget.deliveryManModel!.longitude ?? '0')) : LatLng(0, 0);
+    _addressLatLng = widget.addressModel == null ? LatLng(double.parse(widget.addressModel!.latitude!), double.parse(widget.addressModel!.longitude!)) : LatLng(0,0);
     _restaurantLatLng = _branch!;
   }
 
@@ -72,7 +71,7 @@ class _TrackingMapWidgetState extends State<TrackingMapWidget> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
       ),
-      child: widget.deliveryManModel.latitude != null ? Stack(
+      child: widget.deliveryManModel!.latitude != null ? Stack(
         children: [
           GoogleMap(
             minMaxZoomPreference: MinMaxZoomPreference(0, 16),
@@ -87,7 +86,7 @@ class _TrackingMapWidgetState extends State<TrackingMapWidget> {
             },
             onTap: (latLng) async {
               await Provider.of<OrderProvider>(context, listen: false).getDeliveryManData(widget.orderID, context);
-              String url ='https://www.google.com/maps/dir/?api=1&origin=${widget.deliveryManModel.latitude},${widget.deliveryManModel.longitude}'
+              String url ='https://www.google.com/maps/dir/?api=1&origin=${widget.deliveryManModel!.latitude},${widget.deliveryManModel!.longitude}'
                   '&destination=${_addressLatLng.latitude},${_addressLatLng.longitude}&mode=d';
               if (await canLaunchUrl(Uri.parse(url))) {
                 await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
@@ -149,7 +148,7 @@ class _TrackingMapWidgetState extends State<TrackingMapWidget> {
       ),
       icon: BitmapDescriptor.fromBytes(restaurantImageData),
     ));
-    widget.deliveryManModel.latitude != null ? _markers.add(Marker(
+    widget.deliveryManModel!.latitude != null ? _markers.add(Marker(
       markerId: MarkerId('delivery_boy'),
       position: _deliveryBoyLatLng,
       infoWindow: InfoWindow(

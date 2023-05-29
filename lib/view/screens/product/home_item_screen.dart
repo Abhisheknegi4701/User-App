@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/product_model.dart';
@@ -47,7 +46,7 @@ class _HomeItemScreenState extends State<HomeItemScreen> {
     final _productProvider = Provider.of<ProductProvider>(context, listen: false);
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent == scrollController.position.pixels &&
-          (!_productProvider.popularProductList.isNull || !_productProvider.dailyItemList.isNull) && !_productProvider.isLoading
+          (_productProvider.popularProductList != null || _productProvider.dailyItemList != null) && !_productProvider.isLoading
       ) {
         pageSize = (_productProvider.popularPageSize! / 10).ceil();
         if (_productProvider.popularOffset! < pageSize) {
@@ -112,7 +111,7 @@ class _HomeItemScreenState extends State<HomeItemScreen> {
                               productList = productProvider.popularProductList!;
                             }
 
-                          return !productList.isNull ? productList.length > 0 ?
+                          return productList.isNotEmpty ? productList.length > 0 ?
                           Column(children: [
                             GridView.builder(
                               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

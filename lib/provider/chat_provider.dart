@@ -1,6 +1,4 @@
 
-import 'dart:js_interop';
-
 import 'package:flutter_grocery/data/model/response/base/api_response.dart';
 import 'package:flutter_grocery/data/model/response/chat_model.dart';
 import 'package:flutter_grocery/data/repository/chat_repo.dart';
@@ -55,16 +53,16 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getMessages (BuildContext context, int offset, OrderModel orderModel, bool isFirst) async {
+  Future<void> getMessages (BuildContext context, int offset, OrderModel? orderModel, bool isFirst) async {
     ApiResponse _apiResponse;
     if(isFirst) {
       _messageList = [];
     }
 
-    if(orderModel.isNull) {
+    if(orderModel != null) {
       _apiResponse = await chatRepo.getAdminMessage(1);
     }else {
-     _apiResponse = await chatRepo.getDeliveryManMessage(orderModel.id!, 1);;
+     _apiResponse = await chatRepo.getDeliveryManMessage(orderModel!.id!, 1);;
     }
     if (_apiResponse.response.data['messages'] != {} && _apiResponse.response.statusCode == 200) {
       _messageList = [];
@@ -113,14 +111,14 @@ class ChatProvider extends ChangeNotifier {
     return response;
   }
 
-  Future<http.StreamedResponse> sendMessage(String message, BuildContext context, String token, OrderModel order) async {
+  Future<http.StreamedResponse> sendMessage(String message, BuildContext context, String token, OrderModel? order) async {
     http.StreamedResponse _response;
     _isLoading = true;
     // notifyListeners();
-    if(order.isNull) {
+    if(order != null) {
       _response = await chatRepo.sendMessageToAdmin(message, _chatImage, token);
     }else {
-      _response = await chatRepo.sendMessageToDeliveryMan(message, _chatImage, order.id!, token);
+      _response = await chatRepo.sendMessageToDeliveryMan(message, _chatImage, order!.id!, token);
     }
     if (_response.statusCode == 200) {
       // _imageFiles = [];

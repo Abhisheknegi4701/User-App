@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/body/place_order_body.dart';
@@ -204,9 +203,8 @@ class MyInAppBrowser extends InAppBrowser {
         close();
       }
       if(_isSuccess){
-        String _token = url.replaceAll('${AppConstants.BASE_URL}${RouteHelper.orderSuccessful}/success?token=', '');
-        print('token is: $_token');
-        if(!_token.isNull) {
+        String? _token = url.replaceAll('${AppConstants.BASE_URL}${RouteHelper.orderSuccessful}/success?token=', '');
+        if(_token.isNotEmpty) {
           String _decodeValue = utf8.decode(base64Url.decode(_token.replaceAll(' ', '+')));
           String _paymentMethod = _decodeValue.substring(0, _decodeValue.indexOf('&&'));
           String _transactionReference = _decodeValue.substring(_decodeValue.indexOf('&&') + '&&'.length, _decodeValue.length);

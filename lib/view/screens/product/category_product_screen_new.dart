@@ -1,6 +1,4 @@
 
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/category_model.dart';
 import 'package:flutter_grocery/helper/price_converter.dart';
@@ -66,7 +64,7 @@ class _CategoryProductScreenNewState extends State<CategoryProductScreenNew> {
       _appBarText = widget.subCategoryName;
     }else{
       _appBarText =
-      !Provider.of<CategoryProvider>(context).categoryModel.isNull ? Provider.of<CategoryProvider>(context).categoryModel!.name! : 'name';
+      Provider.of<CategoryProvider>(context).categoryModel != null ? Provider.of<CategoryProvider>(context).categoryModel!.name! : 'name';
     }
     Provider.of<ProductProvider>(context, listen: false).initializeAllSortBy(context);
     return Scaffold(
@@ -82,7 +80,7 @@ class _CategoryProductScreenNewState extends State<CategoryProductScreenNew> {
             children: [
               Container(height: 70,width: 1170,child: Consumer<CategoryProvider>(
                   builder: (context, categoryProvider, child){
-                    return !categoryProvider.subCategoryList.isNull ? Container(
+                    return categoryProvider.subCategoryList != null ? Container(
                       margin: EdgeInsets.symmetric(vertical: 15),
                       height: 32,
                       child: SizedBox(
@@ -120,7 +118,7 @@ class _CategoryProductScreenNewState extends State<CategoryProductScreenNew> {
                                 ),
                                 ListView.builder(
                                     physics: NeverScrollableScrollPhysics(),
-                                    itemCount: categoryProvider.subCategoryList.length ,
+                                    itemCount: categoryProvider.subCategoryList!.length ,
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (BuildContext context, int index){
@@ -130,10 +128,9 @@ class _CategoryProductScreenNewState extends State<CategoryProductScreenNew> {
                                           print('index: $index');
 
                                           Provider.of<ProductProvider>(context, listen: false).initCategoryProductList(
-                                            categoryProvider.subCategoryList[index].id.toString(), context,
+                                            categoryProvider.subCategoryList![index].id.toString(), context,
                                             Provider.of<LocalizationProvider>(context, listen: false).locale.languageCode,
                                           );
-
                                         },
                                         hoverColor: Colors.transparent,
                                         child: Container(
@@ -144,7 +141,7 @@ class _CategoryProductScreenNewState extends State<CategoryProductScreenNew> {
                                               color: categoryProvider.categorySelectedIndex == index ? Theme.of(context).primaryColor : ColorResources.getGreyColor(context),
                                               borderRadius: BorderRadius.circular(7)),
                                           child: Text(
-                                            categoryProvider.subCategoryList[index].name!,
+                                            categoryProvider.subCategoryList![index].name!,
                                             style: poppinsRegular.copyWith(
                                               color:  categoryProvider.categorySelectedIndex == index ? ColorResources.getBackgroundColor(context) : Colors.black,
                                             ),

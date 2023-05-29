@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
@@ -114,13 +113,13 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                     children: [
                                       Row(
                                         children: [
-                                          !searchProvider.searchProductList.isNull?
+                                          searchProvider.searchProductList != null?
                                           Text(
                                             "${searchProvider.searchProductList!.length}",
                                             style: poppinsMedium.copyWith(color: Theme.of(context).primaryColor),
                                           ):SizedBox.shrink(),
                                           Text(
-                                            '${!searchProvider.searchProductList.isNull?"":0} ${getTranslated('items_found', context)}',
+                                            '${searchProvider.searchProductList != null?"":0} ${getTranslated('items_found', context)}',
                                             style: poppinsMedium.copyWith(color: ColorResources.getTextColor(context)),
                                           )
                                         ],
@@ -164,7 +163,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 22),
-                                searchProvider.searchProductList.isNull
+                                searchProvider.searchProductList == null
                                     ? searchProvider.searchProductList!.length > 0
                                         ?
                                 GridView.builder(
@@ -191,7 +190,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                         physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: 10,
-                                        itemBuilder: (context, index) => ResponsiveHelper.isDesktop(context) ?  WebProductShimmer(isEnabled: searchProvider.searchProductList.isNull) :ProductShimmer(isEnabled: searchProvider.searchProductList.isNull),
+                                        itemBuilder: (context, index) => ResponsiveHelper.isDesktop(context) ?  WebProductShimmer(isEnabled: searchProvider.searchProductList == null) :ProductShimmer(isEnabled: searchProvider.searchProductList == null),
                                       ),
                               ],
                             ),

@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/base/api_response.dart';
@@ -11,7 +10,7 @@ class NotificationProvider extends ChangeNotifier {
   NotificationProvider({required this.notificationRepo});
 
   List<NotificationModel>? _notificationList;
-  List<NotificationModel>? get notificationList => !_notificationList.isNull ? _notificationList!.reversed.toList() : _notificationList;
+  List<NotificationModel>? get notificationList => !_notificationList!.isNotEmpty ? _notificationList!.reversed.toList() : _notificationList;
 
   Future<void> initNotificationList(BuildContext context) async {
     ApiResponse apiResponse = await notificationRepo.getNotificationList();

@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/product_model.dart';
@@ -38,7 +37,7 @@ class ReviewWidget extends StatelessWidget {
 
             child: FadeInImage.assetNetwork(
               image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.customerImageUrl}/${
-                  !reviewModel.customer.isNull ? reviewModel.customer!.image : ''}',
+                  reviewModel.customer != null ? reviewModel.customer!.image : ''}',
               placeholder: Images.placeholder(context),
               width: 30, height: 30, fit: BoxFit.cover,
               imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 30, width: 30, fit: BoxFit.cover),

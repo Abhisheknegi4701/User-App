@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/order_model.dart';
@@ -24,7 +23,7 @@ class OrderView extends StatelessWidget {
           List<OrderModel> orderList;
           orderList = isRunning ? order.runningOrderList!.reversed.toList() : order.historyOrderList!.reversed.toList();
 
-          return !orderList.isNull ? orderList.length > 0 ? RefreshIndicator(
+          return orderList.isNotEmpty ? orderList.length > 0 ? RefreshIndicator(
             onRefresh: () async {
               await Provider.of<OrderProvider>(context, listen: false).getOrderList(context);
               },

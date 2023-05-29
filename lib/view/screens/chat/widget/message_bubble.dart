@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/chat_model.dart';
@@ -21,7 +20,7 @@ class MessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final _profileProvider = Provider.of<ProfileProvider>(context, listen: false);
-    return !isAdmin! ? !messages!.deliverymanId!.isNull ?
+    return !isAdmin! ? messages!.deliverymanId != null ?
     Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.PADDING_SIZE_SMALL),

@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/response_model.dart';
@@ -35,7 +34,7 @@ class ProfileScreenWeb extends StatefulWidget {
   final UserInfoModel userInfoModel;
 
   final VoidCallback pickImage;
-  final PickedFile file;
+  final PickedFile? file;
   final String image;
   const ProfileScreenWeb({
     Key? key,
@@ -89,12 +88,12 @@ class _ProfileScreenWebState extends State<ProfileScreenWeb> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  !profileProvider.userInfoModel.isNull ? Text(
+                                  profileProvider.userInfoModel != null ? Text(
                                     '${profileProvider.userInfoModel!.fName} ${profileProvider.userInfoModel!.lName}',
                                     style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE, color: ColorResources.getTextColor(context)),
                                   ) : SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT, width: 150),
                                   SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                                  !profileProvider.userInfoModel.isNull ? Text(
+                                  profileProvider.userInfoModel != null ? Text(
                                     '${profileProvider.userInfoModel!.email}',
                                     style: poppinsRegular.copyWith(color: ColorResources.getTextColor(context)),
                                   ) : SizedBox(height: 15, width: 100),
@@ -268,7 +267,7 @@ class _ProfileScreenWebState extends State<ProfileScreenWeb> {
                                         if (profileProvider.userInfoModel!.fName == _firstName &&
                                             profileProvider.userInfoModel!.lName == _lastName &&
                                             profileProvider.userInfoModel!.phone == _phoneNumber &&
-                                            profileProvider.userInfoModel!.email == widget.emailController.text && widget.file.isNull
+                                            profileProvider.userInfoModel!.email == widget.emailController.text && widget.file == null
                                             && _password.isEmpty && _confirmPassword.isEmpty) {
                                           showCustomSnackBar(getTranslated('change_something_to_update', context)!, context);
                                         }else if (_firstName.isEmpty) {
@@ -325,12 +324,12 @@ class _ProfileScreenWebState extends State<ProfileScreenWeb> {
                                     boxShadow: [BoxShadow(color: Colors.white.withOpacity(0.1), blurRadius: 22, offset: Offset(0, 8.8) )],
                                 color: ColorResources.getWhiteColor(context)),
                                 child: ClipOval(
-                                  child: !profileProvider.file.isNull
-                                      ?  Image.file(profileProvider.file!, width: 80, height: 80, fit: BoxFit.contain) : !profileProvider.data.isNull
+                                  child: profileProvider.file != null
+                                      ?  Image.file(profileProvider.file!, width: 80, height: 80, fit: BoxFit.contain) : profileProvider.data != null
                                       ?  Image.network(profileProvider.data!.path, width: 80, height: 80, fit: BoxFit.fill) : FadeInImage.assetNetwork(
                                     placeholder: Images.placeholder(context), height: 170, width: 170, fit: BoxFit.cover,
                                     image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.customerImageUrl}/'
-                                        '${!profileProvider.userInfoModel.isNull ? profileProvider.userInfoModel!.image : widget.image}',
+                                        '${profileProvider.userInfoModel != null ? profileProvider.userInfoModel!.image : widget.image}',
                                     imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 170, width: 170, fit: BoxFit.cover),
                                   ),
                                 ),

@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -26,12 +25,12 @@ class _SocialLoginWidgetState extends State<SocialLoginWidget> {
 
   void route(
       bool isRoute,
-      String token,
+      String? token,
       String temporaryToken,
       String errorMessage,
       ) async {
     if (isRoute) {
-      if(!token.isNull){
+      if(token != null){
         Navigator.pushNamedAndRemoveUntil(context, RouteHelper.menu, (route) => false, arguments: MenuScreen());
 
       }else if(temporaryToken.isNotEmpty){
