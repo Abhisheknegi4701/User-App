@@ -10,7 +10,7 @@ import '../../../../helper/responsive_helper.dart';
 
 class VariationView extends StatelessWidget {
   final Product product;
-  VariationView({@required this.product});
+  VariationView({required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +18,12 @@ class VariationView extends StatelessWidget {
       builder: (context, productProvider, child) {
         return ListView.builder(
           shrinkWrap: true,
-          itemCount: product.choiceOptions.length,
+          itemCount: product.choiceOptions!.length,
           padding: ResponsiveHelper.isDesktop(context) ? EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_SMALL) : EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
           physics:  NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
             return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(product.choiceOptions[index].title, style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
+              Text(product.choiceOptions![index].title!, style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
               SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
               GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -34,7 +34,7 @@ class VariationView extends StatelessWidget {
                 ),
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
-                itemCount: product.choiceOptions[index].options.length,
+                itemCount: product.choiceOptions![index].options!.length,
                 itemBuilder: (context, i) {
                   return InkWell(
                     onTap: () {
@@ -44,21 +44,21 @@ class VariationView extends StatelessWidget {
                       alignment: Alignment.center,
                       padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                       decoration: BoxDecoration(
-                        color: productProvider.variationIndex[index] != i ? ColorResources.getBackgroundColor(context) : Theme.of(context).primaryColor,
+                        color: productProvider.variationIndex![index] != i ? ColorResources.getBackgroundColor(context) : Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.circular(5),
-                        border: productProvider.variationIndex[index] != i ? Border.all(color: ColorResources.getGreyColor(context), width: 2) : null,
+                        border: productProvider.variationIndex![index] != i ? Border.all(color: ColorResources.getGreyColor(context), width: 2) : null,
                       ),
                       child: Text(
-                        product.choiceOptions[index].options[i].trim(), maxLines: 1, overflow: TextOverflow.ellipsis,
+                        product.choiceOptions![index].options![i].trim(), maxLines: 1, overflow: TextOverflow.ellipsis,
                         style: poppinsRegular.copyWith(
-                          color: productProvider.variationIndex[index] != i ? Colors.black : Colors.white,
+                          color: productProvider.variationIndex![index] != i ? Colors.black : Colors.white,
                         ),
                       ),
                     ),
                   );
                 },
               ),
-              SizedBox(height: index != product.choiceOptions.length-1 ? Dimensions.PADDING_SIZE_LARGE : 0),
+              SizedBox(height: index != product.choiceOptions!.length-1 ? Dimensions.PADDING_SIZE_LARGE : 0),
             ]);
           },
         );

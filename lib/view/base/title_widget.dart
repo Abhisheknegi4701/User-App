@@ -7,8 +7,8 @@ import 'package:flutter_grocery/utill/styles.dart';
 
 class TitleWidget extends StatelessWidget {
   final String title;
-  final Function onTap;
-  TitleWidget({@required this.title, this.onTap});
+  final VoidCallback? onTap;
+  TitleWidget({required this.title, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class TitleWidget extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.fromLTRB(10, 5, 0, 5),
             child: Text(
-              getTranslated('view_all', context),
+              getTranslated('view_all', context)!,
               style: ResponsiveHelper.isDesktop(context) ?  poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE, color: Theme.of(context).primaryColor) : poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL, color: Theme.of(context).primaryColor.withOpacity(0.8)),
             ),
           ),

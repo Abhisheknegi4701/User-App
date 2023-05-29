@@ -7,18 +7,18 @@ import 'package:provider/provider.dart';
 
 class AppBarBase extends StatelessWidget implements PreferredSizeWidget{
   final String title;
-  const AppBarBase({Key key, this.title = ''}) : super(key: key);
+  const AppBarBase({Key? key, this.title = ''}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back, color: Theme.of(context).textTheme.bodyText1.color,)),
-      title: Text(title, style: poppinsMedium.copyWith(color: Theme.of(context).textTheme.bodyText1.color)),
+      leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back, color: Theme.of(context).textTheme.bodyLarge!.color,)),
+      title: Text(title, style: poppinsMedium.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color)),
       backgroundColor: Theme.of(context).cardColor,
       actions: [
         IconButton(
             icon: Stack(clipBehavior: Clip.none, children: [
-              Image.asset(Images.cart_icon, color: Theme.of(context).textTheme.bodyText1.color, width: 25),
+              Image.asset(Images.cart_icon, color: Theme.of(context).textTheme.bodyLarge!.color, width: 25),
               Positioned(
                 top: -7,
                 right: -2,
@@ -34,7 +34,7 @@ class AppBarBase extends StatelessWidget implements PreferredSizeWidget{
               Navigator.pushNamed(context, RouteHelper.cart);
             }),
         IconButton(
-            icon: Icon(Icons.search, size: 30, color: Theme.of(context).textTheme.bodyText1.color),
+            icon: Icon(Icons.search, size: 30, color: Theme.of(context).textTheme.bodyLarge!.color),
             onPressed: () {
               Navigator.pushNamed(context, RouteHelper.searchProduct);
               // Navigator.of(context).push(MaterialPageRoute(builder: (_) => SearchScreen()));

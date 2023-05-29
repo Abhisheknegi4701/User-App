@@ -28,22 +28,22 @@ class DetailsView extends StatelessWidget {
   final FocusNode houseNode;
   final FocusNode florNode;
   const DetailsView({
-    Key key,
-    @required this.locationProvider,
-    @required this.contactPersonNameController,
-    @required this.contactPersonNumberController,
-    @required this.addressNode, @required this.nameNode,
-    @required this.numberNode,
-    @required this.isEnableUpdate,
-    @required this.fromCheckout,
-    @required this.address,
-    @required this.locationTextController,
-    @required this.streetNumberController,
-    @required this.houseNumberController,
-    @required this.stateNode,
-    @required this.houseNode,
-    @required this.florNumberController,
-    @required this.florNode,
+    Key? key,
+    required this.locationProvider,
+    required this.contactPersonNameController,
+    required this.contactPersonNumberController,
+    required this.addressNode, required this.nameNode,
+    required this.numberNode,
+    required this.isEnableUpdate,
+    required this.fromCheckout,
+    required this.address,
+    required this.locationTextController,
+    required this.streetNumberController,
+    required this.houseNumberController,
+    required this.stateNode,
+    required this.houseNode,
+    required this.florNumberController,
+    required this.florNode,
   }) : super(key: key);
 
   @override
@@ -69,26 +69,26 @@ class DetailsView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 24.0),
             child: Text(
-              getTranslated('delivery_address', context),
+              getTranslated('delivery_address', context)!,
               style:
-              Theme.of(context).textTheme.headline3.copyWith(color: ColorResources.getHintColor(context), fontSize: Dimensions.FONT_SIZE_LARGE),
+              Theme.of(context).textTheme.displaySmall!.copyWith(color: ColorResources.getHintColor(context), fontSize: Dimensions.FONT_SIZE_LARGE),
             ),
           ),
           // for Address Field
           Text(
-            getTranslated('address_line_01', context),
+            getTranslated('address_line_01', context)!,
             style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
           ),
           SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
 
           CustomTextField(
-            hintText: getTranslated('address_line_02', context),
+            hintText: getTranslated('address_line_02', context)!,
             isShowBorder: true,
             inputType: TextInputType.streetAddress,
             inputAction: TextInputAction.next,
             focusNode: addressNode,
             nextFocus: stateNode,
-            controller: locationTextController ??'',
+            controller: locationTextController,
           ),
           SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
@@ -99,13 +99,13 @@ class DetailsView extends StatelessWidget {
           SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
 
           CustomTextField(
-            hintText: getTranslated('ex_10_th', context),
+            hintText: getTranslated('ex_10_th', context)!,
             isShowBorder: true,
             inputType: TextInputType.streetAddress,
             inputAction: TextInputAction.next,
             focusNode: stateNode,
             nextFocus: houseNode,
-            controller: streetNumberController ??'',
+            controller: streetNumberController,
           ),
           SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
@@ -119,13 +119,13 @@ class DetailsView extends StatelessWidget {
           Row(children: [
             Expanded(
               child: CustomTextField(
-                hintText: getTranslated('ex_2', context),
+                hintText: getTranslated('ex_2', context)!,
                 isShowBorder: true,
                 inputType: TextInputType.streetAddress,
                 inputAction: TextInputAction.next,
                 focusNode: houseNode,
                 nextFocus: florNode,
-                controller: houseNumberController ??'',
+                controller: houseNumberController,
               ),
             ),
 
@@ -133,13 +133,13 @@ class DetailsView extends StatelessWidget {
 
             Expanded(
               child: CustomTextField(
-                hintText: getTranslated('ex_2b', context),
+                hintText: getTranslated('ex_2b', context)!,
                 isShowBorder: true,
                 inputType: TextInputType.streetAddress,
                 inputAction: TextInputAction.next,
                 focusNode: florNode,
                 nextFocus: nameNode,
-                controller: florNumberController ??'',
+                controller: florNumberController,
               ),
             ),
 
@@ -148,12 +148,12 @@ class DetailsView extends StatelessWidget {
 
           // for Contact Person Name
           Text(
-            getTranslated('contact_person_name', context),
+            getTranslated('contact_person_name', context)!,
             style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
           ),
           SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
           CustomTextField(
-            hintText: getTranslated('enter_contact_person_name', context),
+            hintText: getTranslated('enter_contact_person_name', context)!,
             isShowBorder: true,
             inputType: TextInputType.name,
             controller: contactPersonNameController,
@@ -166,12 +166,12 @@ class DetailsView extends StatelessWidget {
 
           // for Contact Person Number
           Text(
-            getTranslated('contact_person_number', context),
+            getTranslated('contact_person_number', context)!,
             style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
           ),
           SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
           CustomTextField(
-            hintText: getTranslated('enter_contact_person_number', context),
+            hintText: getTranslated('enter_contact_person_number', context)!,
             isShowBorder: true,
             inputType: TextInputType.phone,
             inputAction: TextInputAction.done,

@@ -15,11 +15,11 @@ class MaintenanceScreen extends StatelessWidget {
 
             Image.asset(Images.maintenance, width: 200, height: 200),
 
-            Text(getTranslated('maintenance_mode', context),style: TextStyle(fontSize: 30.0,fontWeight: FontWeight.w700),),
+            Text(getTranslated('maintenance_mode', context)!,style: TextStyle(fontSize: 30.0,fontWeight: FontWeight.w700),),
             SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
 
             Text(
-              getTranslated('maintenance_text', context),
+              getTranslated('maintenance_text', context)!,
               textAlign: TextAlign.center,
 
             ),

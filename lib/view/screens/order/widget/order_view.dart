@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/order_model.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
@@ -11,7 +13,7 @@ import 'order_card.dart';
 
 class OrderView extends StatelessWidget {
   final bool isRunning;
-  OrderView({@required this.isRunning});
+  OrderView({required this.isRunning});
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +22,9 @@ class OrderView extends StatelessWidget {
       body: Consumer<OrderProvider>(
         builder: (context, order, index) {
           List<OrderModel> orderList;
-          if (order.runningOrderList != null) {
-            orderList = isRunning ? order.runningOrderList.reversed.toList() : order.historyOrderList.reversed.toList();
-          }
+          orderList = isRunning ? order.runningOrderList!.reversed.toList() : order.historyOrderList!.reversed.toList();
 
-          return orderList != null ? orderList.length > 0 ? RefreshIndicator(
+          return !orderList.isNull ? orderList.length > 0 ? RefreshIndicator(
             onRefresh: () async {
               await Provider.of<OrderProvider>(context, listen: false).getOrderList(context);
               },

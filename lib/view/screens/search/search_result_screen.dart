@@ -1,8 +1,9 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
 import 'package:flutter_grocery/localization/language_constrants.dart';
 import 'package:flutter_grocery/provider/search_provider.dart';
-import 'package:flutter_grocery/provider/theme_provider.dart';
 import 'package:flutter_grocery/utill/color_resources.dart';
 import 'package:flutter_grocery/utill/dimensions.dart';
 import 'package:flutter_grocery/utill/styles.dart';
@@ -18,7 +19,7 @@ import 'package:provider/provider.dart';
 class SearchResultScreen extends StatefulWidget {
   final String searchString;
 
-  SearchResultScreen({this.searchString});
+  SearchResultScreen({required this.searchString});
 
   @override
   State<SearchResultScreen> createState() => _SearchResultScreenState();
@@ -66,7 +67,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                     color: ColorResources.getCardBgColor(context),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 200],
+                                        color: Colors.grey,
                                         spreadRadius: 0.5,
                                         blurRadius: 0.5,
                                         offset: Offset(0, 3), // changes position of shadow
@@ -101,7 +102,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                     color: ColorResources.getCardBgColor(context),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 200],
+                                        color: Colors.grey,
                                         spreadRadius: 0.5,
                                         blurRadius: 0.5,
                                         offset: Offset(0, 3), // changes position of shadow
@@ -113,31 +114,31 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                     children: [
                                       Row(
                                         children: [
-                                          searchProvider.searchProductList!=null?
+                                          !searchProvider.searchProductList.isNull?
                                           Text(
-                                            "${searchProvider.searchProductList.length??0}",
+                                            "${searchProvider.searchProductList!.length}",
                                             style: poppinsMedium.copyWith(color: Theme.of(context).primaryColor),
                                           ):SizedBox.shrink(),
                                           Text(
-                                            '${searchProvider.searchProductList!=null?"":0} ${getTranslated('items_found', context)}',
+                                            '${!searchProvider.searchProductList.isNull?"":0} ${getTranslated('items_found', context)}',
                                             style: poppinsMedium.copyWith(color: ColorResources.getTextColor(context)),
                                           )
                                         ],
                                       ),
-                                      searchProvider.searchProductList != null
+                                      searchProvider.searchProductList!.isNotEmpty
                                           ? InkWell(
                                               onTap: () {
                                                 showDialog(
                                                     context: context,
                                                     builder: (BuildContext context) {
                                                       List<double> _prices = [];
-                                                      searchProvider.filterProductList.forEach((product) => _prices.add(product.price));
+                                                      searchProvider.filterProductList!.forEach((product) => _prices.add(product.price!));
                                                       _prices.sort();
                                                       double _maxValue = _prices.length > 0 ? _prices[_prices.length-1] : 1000;
 
                                                       return Dialog(
                                                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-                                                        child: FilterWidget(maxValue: _maxValue),
+                                                        child: FilterWidget(maxValue: _maxValue, index: 0,),
                                                       );
                                                     });
                                               },
@@ -163,8 +164,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 22),
-                                searchProvider.searchProductList != null
-                                    ? searchProvider.searchProductList.length > 0
+                                searchProvider.searchProductList.isNull
+                                    ? searchProvider.searchProductList!.length > 0
                                         ?
                                 GridView.builder(
                                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -172,12 +173,12 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                       mainAxisSpacing: ResponsiveHelper.isDesktop(context) ? 13 : 5,
                                       childAspectRatio: ResponsiveHelper.isDesktop(context) ? (1/1.4) : 2.8,
                                       crossAxisCount: ResponsiveHelper.isDesktop(context) ? 5 : ResponsiveHelper.isTab(context) ? 2 : 1),
-                                  itemCount: searchProvider.searchProductList.length,
+                                  itemCount: searchProvider.searchProductList!.length,
                                   padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL,vertical: ResponsiveHelper.isDesktop(context) ? Dimensions.PADDING_SIZE_LARGE : 0.0),
                                   physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemBuilder: (BuildContext context, int index) {
-                                    return ProductWidget(product: searchProvider.searchProductList[index]);
+                                    return ProductWidget(product: searchProvider.searchProductList![index]);
                                   },
                                 )
                                         : NoDataScreen(isSearch: true)
@@ -190,7 +191,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                                         physics: NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: 10,
-                                        itemBuilder: (context, index) => ResponsiveHelper.isDesktop(context) ?  WebProductShimmer(isEnabled: searchProvider.searchProductList == null) :ProductShimmer(isEnabled: searchProvider.searchProductList == null),
+                                        itemBuilder: (context, index) => ResponsiveHelper.isDesktop(context) ?  WebProductShimmer(isEnabled: searchProvider.searchProductList.isNull) :ProductShimmer(isEnabled: searchProvider.searchProductList.isNull),
                                       ),
                               ],
                             ),

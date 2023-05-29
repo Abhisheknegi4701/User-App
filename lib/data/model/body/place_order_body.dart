@@ -1,40 +1,40 @@
 class PlaceOrderBody {
-  List<Cart> _cart;
-  double _couponDiscountAmount;
-  String _couponDiscountTitle;
-  double _orderAmount;
-  String _orderType;
-  int _branchId;
-  int _deliveryAddressId;
-  int _timeSlotId;
-  String _deliveryDate;
-  String _paymentMethod;
-  String _orderNote;
-  String _couponCode;
-  double _distance;
-  String _transactionReference;
+  List<Cart>? _cart;
+  double? _couponDiscountAmount;
+  String? _couponDiscountTitle;
+  double? _orderAmount;
+  String? _orderType;
+  int? _branchId;
+  int? _deliveryAddressId;
+  int? _timeSlotId;
+  String? _deliveryDate;
+  String? _paymentMethod;
+  String? _orderNote;
+  String? _couponCode;
+  double? _distance;
+  String? _transactionReference;
 
-  PlaceOrderBody copyWith({String paymentMethod, String transactionReference}) {
+  PlaceOrderBody copyWith({required String paymentMethod, required String transactionReference}) {
     _paymentMethod = paymentMethod;
     _transactionReference = transactionReference;
     return this;
   }
 
   PlaceOrderBody(
-      {List<Cart> cart,
-        double couponDiscountAmount,
-        String couponDiscountTitle,
-        double orderAmount,
-        String orderType,
-        int branchId,
-        int deliveryAddressId,
-        int timeSlotId,
-        String deliveryDate,
-        String paymentMethod,
-        String orderNote,
-        String couponCode,
-        double distance,
-        String transactionReference,
+      {required List<Cart> cart,
+        required double couponDiscountAmount,
+        required String couponDiscountTitle,
+        required double orderAmount,
+        required String orderType,
+        required int branchId,
+        required int deliveryAddressId,
+        required int timeSlotId,
+        required String deliveryDate,
+        required String paymentMethod,
+        required String orderNote,
+        required String couponCode,
+        required double distance,
+        required String transactionReference,
       }) {
     this._cart = cart;
     this._couponDiscountAmount = couponDiscountAmount;
@@ -52,26 +52,26 @@ class PlaceOrderBody {
     this._transactionReference = transactionReference;
   }
 
-  List<Cart> get cart => _cart;
-  double get couponDiscountAmount => _couponDiscountAmount;
-  String get couponDiscountTitle => _couponDiscountTitle;
-  double get orderAmount => _orderAmount;
-  String get orderType => _orderType;
-  int get branchId => _branchId;
-  int get deliveryAddressId => _deliveryAddressId;
-  int get timeSlotId => _timeSlotId;
-  String get deliveryDate => _deliveryDate;
-  String get paymentMethod => _paymentMethod;
-  String get orderNote => _orderNote;
-  String get couponCode => _couponCode;
-  double get distance => _distance;
-  String get transactionReference => _transactionReference;
+  List<Cart>? get cart => _cart;
+  double? get couponDiscountAmount => _couponDiscountAmount;
+  String? get couponDiscountTitle => _couponDiscountTitle;
+  double? get orderAmount => _orderAmount;
+  String? get orderType => _orderType;
+  int? get branchId => _branchId;
+  int? get deliveryAddressId => _deliveryAddressId;
+  int? get timeSlotId => _timeSlotId;
+  String? get deliveryDate => _deliveryDate;
+  String? get paymentMethod => _paymentMethod;
+  String? get orderNote => _orderNote;
+  String? get couponCode => _couponCode;
+  double? get distance => _distance;
+  String? get transactionReference => _transactionReference;
 
   PlaceOrderBody.fromJson(Map<String, dynamic> json) {
     if (json['cart'] != null) {
       _cart = [];
       json['cart'].forEach((v) {
-        _cart.add(new Cart.fromJson(v));
+        _cart!.add(new Cart.fromJson(v));
       });
     }
     _couponDiscountAmount = json['coupon_discount_amount'].toDouble();
@@ -90,9 +90,7 @@ class PlaceOrderBody {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this._cart != null) {
-      data['cart'] = this._cart.map((v) => v.toJson()).toList();
-    }
+    data['cart'] = this._cart!.map((v) => v.toJson()).toList();
     data['coupon_discount_amount'] = this._couponDiscountAmount;
     data['coupon_discount_title'] = this._couponDiscountTitle;
     data['order_amount'] = this._orderAmount;
@@ -105,30 +103,28 @@ class PlaceOrderBody {
     data['order_note'] = this._orderNote;
     data['coupon_code'] = this._couponCode;
     data['distance'] = this._distance;
-    if(_transactionReference != null) {
-      data['transaction_reference'] = this._transactionReference;
-    }
+    data['transaction_reference'] = this._transactionReference;
     return data;
   }
 }
 
 class Cart {
-  int _productId;
-  double _price;
-  String _variant;
-  List<Variation> _variation;
-  double _discountAmount;
-  int _quantity;
-  double _taxAmount;
+  int? _productId;
+  double? _price;
+  String? _variant;
+  List<Variation>? _variation;
+  double? _discountAmount;
+  int? _quantity;
+  double? _taxAmount;
 
   Cart(
-      {int productId,
-        double price,
-        String variant,
-        List<Variation> variation,
-        double discountAmount,
-        int quantity,
-        double taxAmount}) {
+      {required int productId,
+        required double price,
+        required String variant,
+        required List<Variation> variation,
+        required double discountAmount,
+        required int quantity,
+        required double taxAmount}) {
     this._productId = productId;
     this._price = price;
     this._variant = variant;
@@ -138,13 +134,13 @@ class Cart {
     this._taxAmount = taxAmount;
   }
 
-  int get productId => _productId;
-  double get price => _price;
-  String get variant => _variant;
-  List<Variation> get variation => _variation;
-  double get discountAmount => _discountAmount;
-  int get quantity => _quantity;
-  double get taxAmount => _taxAmount;
+  int? get productId => _productId;
+  double? get price => _price;
+  String? get variant => _variant;
+  List<Variation>? get variation => _variation;
+  double? get discountAmount => _discountAmount;
+  int? get quantity => _quantity;
+  double? get taxAmount => _taxAmount;
 
   Cart.fromJson(Map<String, dynamic> json) {
     _productId = json['product_id'];
@@ -153,7 +149,7 @@ class Cart {
     if (json['variation'] != null) {
       _variation = [];
       json['variation'].forEach((v) {
-        _variation.add(new Variation.fromJson(v));
+        _variation!.add(new Variation.fromJson(v));
       });
     }
     _discountAmount = json['discount_amount'].toDouble();
@@ -166,9 +162,7 @@ class Cart {
     data['product_id'] = this._productId;
     data['price'] = this._price;
     data['variant'] = this._variant;
-    if (this._variation != null) {
-      data['variation'] = this._variation.map((v) => v.toJson()).toList();
-    }
+    data['variation'] = this._variation!.map((v) => v.toJson()).toList();
     data['discount_amount'] = this._discountAmount;
     data['quantity'] = this._quantity;
     data['tax_amount'] = this._taxAmount;
@@ -177,13 +171,13 @@ class Cart {
 }
 
 class Variation {
-  String _type;
+  String? _type;
 
-  Variation({String type}) {
+  Variation({required String type}) {
     this._type = type;
   }
 
-  String get type => _type;
+  String? get type => _type;
 
   Variation.fromJson(Map<String, dynamic> json) {
     _type = json['type'];

@@ -6,7 +6,7 @@ import 'package:flutter_grocery/view/screens/menu/menu_screen.dart';
 import 'package:provider/provider.dart';
 
 class DetailsAppBar extends StatefulWidget implements PreferredSizeWidget {
-  final Key key;
+  final Key? key;
   DetailsAppBar({this.key});
 
   @override
@@ -17,7 +17,7 @@ class DetailsAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class DetailsAppBarState extends State<DetailsAppBar> with SingleTickerProviderStateMixin {
-  AnimationController controller;
+  late AnimationController controller;
 
   @override
   void initState() {
@@ -41,7 +41,7 @@ class DetailsAppBarState extends State<DetailsAppBar> with SingleTickerProviderS
 
     return AppBar(
       leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).textTheme.bodyText1.color, size: 20),
+        icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).textTheme.bodyLarge!.color, size: 20),
         onPressed: () => Navigator.pop(context),
       ),
       elevation: 1,
@@ -54,7 +54,7 @@ class DetailsAppBarState extends State<DetailsAppBar> with SingleTickerProviderS
             padding: EdgeInsets.only(left: offsetAnimation.value + 15.0, right: 15.0 - offsetAnimation.value),
             child: IconButton(
               icon: Stack(clipBehavior: Clip.none, children: [
-                Image.asset(Images.cart_icon, width: 23, height: 25, color: Theme.of(context).textTheme.bodyText1.color),
+                Image.asset(Images.cart_icon, width: 23, height: 25, color: Theme.of(context).textTheme.bodyLarge!.color),
                 Positioned(
                   top: -7, right: -2,
                   child: Container(

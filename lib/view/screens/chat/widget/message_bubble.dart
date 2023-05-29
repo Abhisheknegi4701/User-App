@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/chat_model.dart';
 import 'package:flutter_grocery/helper/date_converter.dart';
@@ -12,14 +14,14 @@ import 'package:flutter_grocery/view/screens/chat/widget/image_dialog.dart';
 import 'package:provider/provider.dart';
 
 class MessageBubble extends StatelessWidget {
-  final Messages messages;
-  final bool isAdmin;
-  const MessageBubble({Key key, this.messages, this.isAdmin}) : super(key: key);
+  final Messages? messages;
+  final bool? isAdmin;
+  const MessageBubble({Key? key, this.messages, this.isAdmin}) : super(key: key);
   @override
   Widget build(BuildContext context) {
 
     final _profileProvider = Provider.of<ProfileProvider>(context, listen: false);
-    return !isAdmin ? messages.deliverymanId != null ?
+    return !isAdmin! ? !messages!.deliverymanId!.isNull ?
     Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.PADDING_SIZE_SMALL),
@@ -30,7 +32,7 @@ class MessageBubble extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(messages.deliverymanId.name??'',style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),),
+            Text(messages!.deliverymanId!.name??'',style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),),
             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +47,7 @@ class MessageBubble extends StatelessWidget {
                     child: ClipRRect(
                       child: FadeInImage.assetNetwork(
                         placeholder: Images.profile_placeholder, fit: BoxFit.cover, width: 40, height: 40,
-                        image: '${Provider.of<SplashProvider>(context,listen: false).baseUrls.deliveryManImageUrl}/${messages.deliverymanId.image??''}',
+                        image: '${Provider.of<SplashProvider>(context,listen: false).baseUrls!.deliveryManImageUrl}/${messages!.deliverymanId!.image??''}',
                         imageErrorBuilder: (c, o, s) => Image.asset(Images.profile_placeholder, fit: BoxFit.cover),
                       ),
                       borderRadius: BorderRadius.circular(50.0),
@@ -57,7 +59,7 @@ class MessageBubble extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                     if(messages.message != null) Flexible(
+                     if(messages!.message != null) Flexible(
                         child: Container(
                           decoration: BoxDecoration(
                             color: Theme.of(context).secondaryHeaderColor,
@@ -68,13 +70,13 @@ class MessageBubble extends StatelessWidget {
                             ),
                           ),
                           child: Container(child: Padding(
-                            padding: EdgeInsets.all(messages.message != null?Dimensions.PADDING_SIZE_DEFAULT:0),
-                            child: Text(messages.message??''),
+                            padding: EdgeInsets.all(messages!.message != null?Dimensions.PADDING_SIZE_DEFAULT:0),
+                            child: Text(messages!.message??''),
                           ),),
                         ),
                       ),
-                     if( messages.attachment !=null) SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                      messages.attachment !=null? GridView.builder(
+                     if( messages!.attachment !=null) SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                      messages!.attachment !=null? GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                             childAspectRatio: 1,
                             crossAxisCount: ResponsiveHelper.isDesktop(context) ? 8 : 3,
@@ -82,16 +84,16 @@ class MessageBubble extends StatelessWidget {
                         ),
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: messages.attachment.length,
+                        itemCount: messages!.attachment!.length,
                         itemBuilder: (BuildContext context, index){
-                          return  messages.attachment.length > 0?
+                          return  messages!.attachment!.length > 0?
                           InkWell(
-                            onTap: () => showDialog(context: context, builder: (ctx)  =>  ImageDialog(imageUrl: messages.attachment[index]), ),
+                            onTap: () => showDialog(context: context, builder: (ctx)  =>  ImageDialog(imageUrl: messages!.attachment![index]), ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
                               child:FadeInImage.assetNetwork(
                                 placeholder: Images.placeholder(context), height: 100, width: 100, fit: BoxFit.cover,
-                                image: '${messages.attachment[index] ?? ''}',
+                                image: '${messages!.attachment![index]}',
                                 imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 100, width: 100, fit: BoxFit.cover),
                               ),
                             ),
@@ -111,7 +113,7 @@ class MessageBubble extends StatelessWidget {
 
             SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
             SizedBox(),
-            Text(DateConverter.localDateToIsoStringAMPM(DateTime.parse(messages.createdAt), context), style: poppinsRegular.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.FONT_SIZE_SMALL),),
+            Text(DateConverter.localDateToIsoStringAMPM(DateTime.parse(messages!.createdAt!), context), style: poppinsRegular.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.FONT_SIZE_SMALL),),
           ],
         ),
       ),
@@ -129,7 +131,7 @@ class MessageBubble extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text('${_profileProvider.userInfoModel.fName} ${_profileProvider.userInfoModel.lName}',style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),),
+              Text('${_profileProvider.userInfoModel!.fName} ${_profileProvider.userInfoModel!.lName}',style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),),
               SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,7 +142,7 @@ class MessageBubble extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                       if(messages.message != null) Flexible(
+                       if(messages!.message != null) Flexible(
                           child: Container(
                             decoration: BoxDecoration(
                               color: ColorResources.getChatAdminColor(context),
@@ -151,13 +153,13 @@ class MessageBubble extends StatelessWidget {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsets.all(messages.message != null ? Dimensions.PADDING_SIZE_DEFAULT:0),
-                              child: Text(messages.message??''),
+                              padding: EdgeInsets.all(messages!.message != null ? Dimensions.PADDING_SIZE_DEFAULT:0),
+                              child: Text(messages!.message??''),
                             ),
                           ),
                         ),
-                        messages.attachment != null ? SizedBox(height: Dimensions.PADDING_SIZE_SMALL) : SizedBox(),
-                        messages.attachment !=null? Directionality(
+                        messages!.attachment != null ? SizedBox(height: Dimensions.PADDING_SIZE_SMALL) : SizedBox(),
+                        messages!.attachment !=null? Directionality(
                           textDirection: TextDirection.rtl,
                           child: GridView.builder(
                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -167,16 +169,16 @@ class MessageBubble extends StatelessWidget {
                             ),
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
-                            itemCount: messages.attachment.length,
+                            itemCount: messages!.attachment!.length,
                             itemBuilder: (BuildContext context, index){
-                              return  (messages.attachment.length !=null  &&  messages.attachment.length > 0) ?
+                              return  (messages!.attachment!.length > 0) ?
                               InkWell(
-                                onTap: () => showDialog(context: context, builder: (ctx)  =>  ImageDialog(imageUrl: messages.attachment[index]), ),
+                                onTap: () => showDialog(context: context, builder: (ctx)  =>  ImageDialog(imageUrl: messages!.attachment![index]), ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(5),
                                   child: FadeInImage.assetNetwork(
                                     placeholder: Images.placeholder(context), height: 100, width: 100, fit: BoxFit.cover,
-                                    image: '${messages.attachment[index] ?? ''}',
+                                    image: '${messages!.attachment![index]}',
                                     imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 100, width: 100, fit: BoxFit.cover),
                                   ),
                                 ),
@@ -194,7 +196,7 @@ class MessageBubble extends StatelessWidget {
                       child: ClipRRect(
                         child: FadeInImage.assetNetwork(
                           placeholder: Images.placeholder(context), fit: BoxFit.cover, width: 40, height: 40,
-                          image: '${Provider.of<SplashProvider>(context,listen: false).baseUrls.customerImageUrl}/${_profileProvider.userInfoModel.image}',
+                          image: '${Provider.of<SplashProvider>(context,listen: false).baseUrls!.customerImageUrl}/${_profileProvider.userInfoModel!.image}',
 
                           imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), width: 40, height: 40, fit: BoxFit.cover),
                         ),
@@ -209,7 +211,7 @@ class MessageBubble extends StatelessWidget {
 
 
               SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-              Text(DateConverter.localDateToIsoStringAMPM(DateTime.parse(messages.createdAt), context), style: poppinsRegular.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.FONT_SIZE_SMALL),),
+              Text(DateConverter.localDateToIsoStringAMPM(DateTime.parse(messages!.createdAt!), context), style: poppinsRegular.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.FONT_SIZE_SMALL),),
 
             ],
           ),
@@ -219,7 +221,7 @@ class MessageBubble extends StatelessWidget {
     //customer to admin
         :Padding(
       padding: const EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_DEFAULT, vertical: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-      child: (messages.isReply != null && messages.isReply) ?
+      child: (messages!.isReply!) ?
       Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimensions.PADDING_SIZE_SMALL),
@@ -230,7 +232,7 @@ class MessageBubble extends StatelessWidget {
           padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('${Provider.of<SplashProvider>(context,listen: false).configModel.ecommerceName}',style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),),
+              Text('${Provider.of<SplashProvider>(context,listen: false).configModel!.ecommerceName}',style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),),
               SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -239,7 +241,7 @@ class MessageBubble extends StatelessWidget {
                   ClipRRect(
                     child: FadeInImage.assetNetwork(
                       placeholder: Images.app_logo, fit: BoxFit.cover, width: 40, height: 40,
-                      image: '${Provider.of<SplashProvider>(context,listen: false).baseUrls.ecommerceImageUrl}/${Provider.of<SplashProvider>(context,listen: false).configModel.ecommerceLogo}',
+                      image: '${Provider.of<SplashProvider>(context,listen: false).baseUrls!.ecommerceImageUrl}/${Provider.of<SplashProvider>(context,listen: false).configModel!.ecommerceLogo}',
                       imageErrorBuilder: (c, o, s) => Image.asset(Images.app_logo, fit: BoxFit.contain, width: 40, height: 40),
                     ),
                     borderRadius: BorderRadius.circular(20.0),
@@ -252,7 +254,7 @@ class MessageBubble extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                      if(messages.reply != null && messages.reply.isNotEmpty)  Flexible(
+                      if(messages!.reply!.isNotEmpty)  Flexible(
                           child: Container(
                             decoration: BoxDecoration(
                               color: Theme.of(context).secondaryHeaderColor,
@@ -263,14 +265,14 @@ class MessageBubble extends StatelessWidget {
                               ),
                             ),
                             child: Container(child: Padding(
-                              padding: EdgeInsets.all(messages.reply != null?Dimensions.PADDING_SIZE_DEFAULT:0),
-                              child: Text(messages.reply??''),
+                              padding: EdgeInsets.all(messages!.reply != null?Dimensions.PADDING_SIZE_DEFAULT:0),
+                              child: Text(messages!.reply??''),
                             ),),
                           ),
                         ),
-                        if(messages.reply != null && messages.reply.isNotEmpty) SizedBox(height: 8.0),
+                        if(messages!.reply!.isNotEmpty) SizedBox(height: 8.0),
 
-                        messages.image != null ? GridView.builder(
+                        messages!.image != null ? GridView.builder(
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                               childAspectRatio: 1,
                               crossAxisCount: ResponsiveHelper.isDesktop(context) ? 8 : 3,
@@ -278,19 +280,19 @@ class MessageBubble extends StatelessWidget {
                           ),
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: messages.image.length,
+                          itemCount: messages!.image!.length,
                           itemBuilder: (BuildContext context, index){
-                            return  messages.image.length > 0?
+                            return  messages!.image!.length > 0?
                             Padding(
                               padding: const EdgeInsets.only(right: 8),
                               child: InkWell(
                                 hoverColor: Colors.transparent,
-                                onTap: () => showDialog(context: context, builder: (ctx)  =>  ImageDialog(imageUrl: '${Provider.of<SplashProvider>(context,listen: false).baseUrls.chatImageUrl}/${messages.image[index]}'), ),
+                                onTap: () => showDialog(context: context, builder: (ctx)  =>  ImageDialog(imageUrl: '${Provider.of<SplashProvider>(context,listen: false).baseUrls!.chatImageUrl}/${messages!.image![index]}'), ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: FadeInImage.assetNetwork(
                                     placeholder: Images.placeholder(context), height: 100, width: 100, fit: BoxFit.cover,
-                                    image: '${Provider.of<SplashProvider>(context,listen: false).baseUrls.chatImageUrl}/${messages.image[index] ?? ''}',
+                                    image: '${Provider.of<SplashProvider>(context,listen: false).baseUrls!.chatImageUrl}/${messages!.image![index]}',
                                     imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 100, width: 100, fit: BoxFit.cover),
                                   ),
                                 ),
@@ -312,7 +314,7 @@ class MessageBubble extends StatelessWidget {
 
 
               SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-              Text(DateConverter.localDateToIsoStringAMPM(DateTime.parse(messages.createdAt), context), style: poppinsRegular.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.FONT_SIZE_SMALL),),
+              Text(DateConverter.localDateToIsoStringAMPM(DateTime.parse(messages!.createdAt!), context), style: poppinsRegular.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.FONT_SIZE_SMALL),),
             ],
           ),
         ),
@@ -330,7 +332,7 @@ class MessageBubble extends StatelessWidget {
               builder: (context, profileController,_) {
                 return Column(crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('${profileController.userInfoModel != null?profileController.userInfoModel.fName??'':''} ${profileController.userInfoModel != null?profileController.userInfoModel.lName??'':''}', style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),),
+                    Text('${profileController.userInfoModel != null?profileController.userInfoModel!.fName??'':''} ${profileController.userInfoModel != null?profileController.userInfoModel!.lName??'':''}', style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),),
                     SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -342,7 +344,7 @@ class MessageBubble extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              (messages.message != null && messages.message.isNotEmpty) ? Flexible(
+                              (messages!.message!.isNotEmpty) ? Flexible(
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: ColorResources.getChatAdminColor(context),
@@ -353,12 +355,12 @@ class MessageBubble extends StatelessWidget {
                                     ),
                                   ),
                                   child: Container(child: Padding(
-                                    padding: EdgeInsets.all(messages.message != null?Dimensions.PADDING_SIZE_DEFAULT:0),
-                                    child: Text(messages.message??''),
+                                    padding: EdgeInsets.all(messages!.message != null?Dimensions.PADDING_SIZE_DEFAULT:0),
+                                    child: Text(messages!.message??''),
                                   ),),
                                 ),
                               ) : SizedBox(),
-                              messages.image != null ? Directionality(
+                              messages!.image != null ? Directionality(
                                 textDirection: TextDirection.rtl,
                                 child: GridView.builder(
                                   reverse: true,
@@ -369,21 +371,21 @@ class MessageBubble extends StatelessWidget {
                                   ),
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
-                                  itemCount: messages.image.length,
+                                  itemCount: messages!.image!.length,
                                   itemBuilder: (BuildContext context, index){
-                                    return  messages.image.length > 0?
+                                    return  messages!.image!.length > 0?
                                     InkWell(
-                                      onTap: () => showDialog(context: context, builder: (ctx)  =>  ImageDialog(imageUrl: messages.image[index])),
+                                      onTap: () => showDialog(context: context, builder: (ctx)  =>  ImageDialog(imageUrl: messages!.image![index])),
                                       child: Padding(
                                         padding: EdgeInsets.only(
                                           left: Dimensions.PADDING_SIZE_SMALL ,
                                           right:  0,
-                                          top: (messages.message != null && messages.message.isNotEmpty) ? Dimensions.PADDING_SIZE_SMALL : 0,                                       ),
+                                          top: (messages!.message!.isNotEmpty) ? Dimensions.PADDING_SIZE_SMALL : 0,                                       ),
                                         child:ClipRRect(
                                           borderRadius: BorderRadius.circular(5),
                                           child: FadeInImage.assetNetwork(
                                             placeholder: Images.placeholder(context), height: 100, width: 100, fit: BoxFit.cover,
-                                            image: '${messages.image[index] ?? ''}',
+                                            image: '${messages!.image![index]}',
                                             imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 100, width: 100, fit: BoxFit.cover),
                                           ),
                                         ),
@@ -404,7 +406,7 @@ class MessageBubble extends StatelessWidget {
                             child: ClipRRect(
                               child: FadeInImage.assetNetwork(
                                 placeholder: Images.placeholder(context), fit: BoxFit.cover, width: 40, height: 40,
-                                image: profileController.userInfoModel != null? '${Provider.of<SplashProvider>(context, listen: false).baseUrls.customerImageUrl}/${profileController.userInfoModel.image}':'',
+                                image: profileController.userInfoModel != null? '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.customerImageUrl}/${profileController.userInfoModel!.image}':'',
                                 imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), fit: BoxFit.cover),
                               ),
                               borderRadius: BorderRadius.circular(20.0),
@@ -416,7 +418,7 @@ class MessageBubble extends StatelessWidget {
 
 
                     SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
-                    Text(DateConverter.localDateToIsoStringAMPM(DateTime.parse(messages.createdAt), context), style: poppinsRegular.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.FONT_SIZE_SMALL),),
+                    Text(DateConverter.localDateToIsoStringAMPM(DateTime.parse(messages!.createdAt!), context), style: poppinsRegular.copyWith(color: Theme.of(context).hintColor,fontSize: Dimensions.FONT_SIZE_SMALL),),
                     SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT),
                   ],
                 );

@@ -1,4 +1,6 @@
 
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/product_model.dart';
 import 'package:flutter_grocery/helper/price_converter.dart';
@@ -19,23 +21,23 @@ class WebProductInformation extends StatelessWidget {
   final int stock;
   final int cartIndex;
   final  double priceWithQuantity;
-  WebProductInformation({@required this.product, @required this.stock, @required this.cartIndex, @required this.priceWithQuantity});
+  WebProductInformation({required this.product, required this.stock, required this.cartIndex, required this.priceWithQuantity});
 
   @override
   Widget build(BuildContext context) {
 
     double _startingPrice;
-    double _endingPrice;
-    if(product.variations.length != 0) {
+    double? _endingPrice;
+    if(product.variations!.length != 0) {
       List<double> _priceList = [];
-      product.variations.forEach((variation) => _priceList.add(variation.price));
+      product.variations!.forEach((variation) => _priceList.add(variation.price!));
       _priceList.sort((a, b) => a.compareTo(b));
       _startingPrice = _priceList[0];
       if(_priceList[0] < _priceList[_priceList.length-1]) {
         _endingPrice = _priceList[_priceList.length-1];
       }
     }else {
-      _startingPrice = product.price;
+      _startingPrice = product.price!;
     }
 
 
@@ -58,8 +60,8 @@ class WebProductInformation extends StatelessWidget {
       ),
      SizedBox(height: 5),
 
-     product.rating != null ? RatingBar(
-       rating: product.rating.length > 0 ? double.parse(product.rating[0].average) : 0.0,
+     !product.rating.isNull ? RatingBar(
+       rating: product.rating!.length > 0 ? double.parse(product.rating![0].average!) : 0.0,
        size: Dimensions.PADDING_SIZE_DEFAULT,
      ) : SizedBox(),
 
@@ -75,14 +77,14 @@ class WebProductInformation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            '${PriceConverter.convertPrice(context, _startingPrice, discount: product.discount, discountType: product.discountType)}'
-                '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(context, _endingPrice, discount: product.discount, discountType: product.discountType)}' : ''}',
+            '${PriceConverter.convertPrice(context, _startingPrice, discount: product.discount!, discountType: product.discountType!)}'
+                '${_endingPrice != null ? ' - ${PriceConverter.convertPrice(context, _endingPrice, discount: product.discount!, discountType: product.discountType!)}' : ''}',
             style: poppinsBold.copyWith(color: Theme.of(context).primaryColor, fontSize: Dimensions.FONT_SIZE_OVER_LARGE),
           ),
           const SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-          product.discount > 0 ? Text(
+          product.discount! > 0 ? Text(
             '${PriceConverter.convertPrice(context, _startingPrice)}'
-                '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(context, _endingPrice)}' : ''}',
+                '${_endingPrice != null ? ' - ${PriceConverter.convertPrice(context, _endingPrice)}' : ''}',
             style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_DEFAULT, color: ColorResources.RED_COLOR,decoration: TextDecoration.lineThrough),
           ): SizedBox(),
         ],
@@ -99,15 +101,15 @@ class WebProductInformation extends StatelessWidget {
       Builder(
         builder: (context) {
           return Row(children: [
-            QuantityButton(isIncrement: false, quantity: Provider.of<ProductProvider>(context, listen: false).quantity, stock: stock, cartIndex: cartIndex),
+            QuantityButton(isIncrement: false, quantity: Provider.of<ProductProvider>(context, listen: false).quantity!, stock: stock, cartIndex: cartIndex),
             SizedBox(width: 30),
             Consumer<ProductProvider>(builder: (context, product, child) {
               return Consumer<CartProvider>(builder: (context, cart, child) {
-                return Text(cartIndex != null ? cart.cartList[cartIndex].quantity.toString() : product.quantity.toString(), style: poppinsSemiBold);
+                return Text(!cartIndex.isNull ? cart.cartList[cartIndex].quantity.toString() : product.quantity.toString(), style: poppinsSemiBold);
               });
             }),
             SizedBox(width: 30),
-            QuantityButton(isIncrement: true, quantity: Provider.of<ProductProvider>(context, listen: false).quantity, stock: stock, cartIndex: cartIndex),
+            QuantityButton(isIncrement: true, quantity: Provider.of<ProductProvider>(context, listen: false).quantity!, stock: stock, cartIndex: cartIndex),
           ]);
         }
       ),
@@ -134,29 +136,29 @@ class QuantityButton extends StatelessWidget {
   final bool isCartWidget;
   final int stock;
   QuantityButton({
-    @required this.isIncrement,
-    @required this.quantity,
-    @required this.stock,
+    required this.isIncrement,
+    required this.quantity,
+    required this.stock,
     this.isCartWidget = false,
-    @required this.cartIndex,
+    required this.cartIndex,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if(cartIndex != null) {
+        if(!cartIndex.isNull) {
           if(isIncrement) {
-            if (Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].quantity < Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].stock) {
+            if (Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].quantity! < Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].stock!) {
               Provider.of<CartProvider>(context, listen: false).setQuantity(true, cartIndex, showMessage: true, context: context);
             } else {
-              showCustomSnackBar(getTranslated('out_of_stock', context), context);
+              showCustomSnackBar(getTranslated('out_of_stock', context)!, context);
             }
           }else {
-            if (Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].quantity > 1) {
+            if (Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].quantity! > 1) {
               Provider.of<CartProvider>(context, listen: false).setQuantity(false, cartIndex, showMessage: true, context: context);
             } else {
-              Provider.of<ProductProvider>(context, listen: false).setExistData(null);
+              Provider.of<ProductProvider>(context, listen: false).setExistData(cartIndex);
               Provider.of<CartProvider>(context, listen: false).removeFromCart(cartIndex, context);
             }
           }
@@ -167,7 +169,7 @@ class QuantityButton extends StatelessWidget {
             if(quantity < stock) {
               Provider.of<ProductProvider>(context, listen: false).setQuantity(true);
             }else {
-              showCustomSnackBar(getTranslated('out_of_stock', context), context);
+              showCustomSnackBar(getTranslated('out_of_stock', context)!, context);
             }
           }
         }

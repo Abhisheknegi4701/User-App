@@ -10,20 +10,20 @@ import 'package:provider/provider.dart';
 class ProductImageScreen extends StatefulWidget {
   final String title;
   final List<dynamic> imageList;
-  ProductImageScreen({@required this.title, @required this.imageList});
+  ProductImageScreen({required this.title, required this.imageList});
 
   @override
   _ProductImageScreenState createState() => _ProductImageScreenState();
 }
 
 class _ProductImageScreenState extends State<ProductImageScreen> {
-  int pageIndex;
-  PageController _pageController;
+  late int pageIndex;
+  late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
-    pageIndex = Provider.of<ProductProvider>(context, listen: false).imageSliderIndex;
+    pageIndex = Provider.of<ProductProvider>(context, listen: false).imageSliderIndex!;
     _pageController = PageController(initialPage: pageIndex = 0);
     //NetworkInfo.checkConnectivity(context);
   }
@@ -46,7 +46,7 @@ class _ProductImageScreenState extends State<ProductImageScreen> {
                     scrollPhysics: const BouncingScrollPhysics(),
                     builder: (BuildContext context, int index) {
                       return PhotoViewGalleryPageOptions(
-                        imageProvider: NetworkImage('${Provider.of<SplashProvider>(context,listen: false).baseUrls.productImageUrl}/${widget.imageList[index]}'),
+                        imageProvider: NetworkImage('${Provider.of<SplashProvider>(context,listen: false).baseUrls!.productImageUrl}/${widget.imageList[index]}'),
                         initialScale: PhotoViewComputedScale.contained,
                       );
                     },
@@ -57,7 +57,7 @@ class _ProductImageScreenState extends State<ProductImageScreen> {
                         width: 20.0,
                         height: 20.0,
                         child: CircularProgressIndicator(
-                          value: event == null ? 0 : event.cumulativeBytesLoaded / event.expectedTotalBytes,
+                          value: event == null ? 0 : event.cumulativeBytesLoaded / event.expectedTotalBytes!,
                           valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
                         ),
                       ),

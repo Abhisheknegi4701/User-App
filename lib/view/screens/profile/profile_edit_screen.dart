@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/response_model.dart';
 import 'package:flutter_grocery/data/model/response/userinfo_model.dart';
@@ -19,7 +21,7 @@ import 'package:provider/provider.dart';
 class ProfileEditScreen extends StatefulWidget {
   final UserInfoModel userInfoModel;
 
-  ProfileEditScreen({this.userInfoModel});
+  ProfileEditScreen({required this.userInfoModel});
 
   @override
   _ProfileEditScreenState createState() => _ProfileEditScreenState();
@@ -27,19 +29,19 @@ class ProfileEditScreen extends StatefulWidget {
 
 class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
-  TextEditingController _firstNameController;
-  TextEditingController _lastNameController;
-  TextEditingController _emailController;
-  TextEditingController _phoneController;
-  TextEditingController _passwordController;
-  TextEditingController _confirmPasswordController;
+  TextEditingController _firstNameController = TextEditingController();
+  TextEditingController _lastNameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmPasswordController = TextEditingController();
 
-  FocusNode firstNameFocus;
-  FocusNode lastNameFocus;
-  FocusNode emailFocus;
-  FocusNode phoneFocus;
-  FocusNode passwordFocus;
-  FocusNode confirmPasswordFocus;
+  FocusNode firstNameFocus = FocusNode();
+  FocusNode lastNameFocus = FocusNode();
+  FocusNode emailFocus = FocusNode();
+  FocusNode phoneFocus = FocusNode();
+  FocusNode passwordFocus = FocusNode();
+  FocusNode confirmPasswordFocus = FocusNode();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -48,23 +50,10 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     super.initState();
     Provider.of<ProfileProvider>(context, listen: false).getUserInfo(context);
 
-    _firstNameController = TextEditingController();
-    _lastNameController = TextEditingController();
-    _emailController = TextEditingController();
-    _phoneController = TextEditingController();
-    _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
-    firstNameFocus = FocusNode();
-    lastNameFocus = FocusNode();
-    emailFocus = FocusNode();
-    phoneFocus = FocusNode();
-    passwordFocus = FocusNode();
-    confirmPasswordFocus = FocusNode();
-
-    _firstNameController.text = widget.userInfoModel.fName ?? '';
-    _lastNameController.text = widget.userInfoModel.lName ?? '';
-    _emailController.text = widget.userInfoModel.email ?? '';
-    _phoneController.text = widget.userInfoModel.phone ?? '';
+    _firstNameController.text = widget.userInfoModel.fName!;
+    _lastNameController.text = widget.userInfoModel.lName!;
+    _emailController.text = widget.userInfoModel.email!;
+    _phoneController.text = widget.userInfoModel.phone!;
   }
 
   @override
@@ -79,17 +68,17 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               Provider.of<SplashProvider>(context, listen: false).setPageIndex(0);
               Navigator.of(context).pop();
             }),
-        title: Text(getTranslated('update_profile', context) ?? '',
+        title: Text(getTranslated('update_profile', context)!,
             style: poppinsMedium.copyWith(
               fontSize: Dimensions.FONT_SIZE_SMALL,
-              color: Theme.of(context).textTheme.bodyText1.color,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
             )),
       ),
       body: ResponsiveHelper.isDesktop(context)
           ?  Consumer<ProfileProvider>(
             builder: (context, profileProvider, child) {
               return ProfileScreenWeb(
-                file: profileProvider.data,
+                file: profileProvider.data!,
                 pickImage: profileProvider.pickImage,
                 confirmPasswordController: _confirmPasswordController,
                 confirmPasswordFocus: confirmPasswordFocus,
@@ -103,7 +92,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 passwordFocus: passwordFocus,
                 phoneNumberController: _phoneController,
                 phoneNumberFocus: phoneFocus,
-                image: widget.userInfoModel.image,
+                image: widget.userInfoModel.image!,
                 userInfoModel: widget.userInfoModel,
               );
             }
@@ -141,15 +130,15 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
-                                child: profileProvider.file != null
-                                    ? Image.file(profileProvider.file, width: 80, height: 80, fit: BoxFit.fill) : profileProvider.data != null
-                                    ? Image.network(profileProvider.data.path, width: 80, height: 80, fit: BoxFit.fill) : ClipRRect(
+                                child: !profileProvider.file.isNull
+                                    ? Image.file(profileProvider.file!, width: 80, height: 80, fit: BoxFit.fill) : !profileProvider.data.isNull
+                                    ? Image.network(profileProvider.data!.path, width: 80, height: 80, fit: BoxFit.fill) : ClipRRect(
                                         borderRadius: BorderRadius.circular(50),
                                         child: FadeInImage.assetNetwork(
                                           placeholder: Images.placeholder(context),
                                           width: 80, height: 80, fit: BoxFit.cover,
-                                          image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.customerImageUrl}'
-                                              '/${profileProvider.userInfoModel.image}',
+                                          image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.customerImageUrl}'
+                                              '/${profileProvider.userInfoModel!.image}',
                                           imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 80, width: 80, fit: BoxFit.cover),
                                         ),
                                       ),
@@ -182,7 +171,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 20),
                                     child: Text(
-                                      getTranslated('first_name', context),
+                                      getTranslated('first_name', context)!,
                                       style: poppinsRegular.copyWith(
                                         fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL,
                                         color: ColorResources.getHintColor(context),
@@ -190,7 +179,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     ),
                                   ),
                                   CustomTextField(
-                                    hintText: getTranslated('enter_first_name', context),
+                                    hintText: getTranslated('enter_first_name', context)!,
                                     isElevation: false,
                                     isPadding: false,
                                     controller: _firstNameController,
@@ -213,7 +202,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 20),
                                     child: Text(
-                                      getTranslated('last_name', context),
+                                      getTranslated('last_name', context)!,
                                       style:
                                           poppinsRegular.copyWith(
                                             fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL,
@@ -222,7 +211,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     ),
                                   ),
                                   CustomTextField(
-                                    hintText: getTranslated('enter_last_name', context),
+                                    hintText: getTranslated('enter_last_name', context)!,
                                     isElevation: false,
                                     isPadding: false,
                                     controller: _lastNameController,
@@ -244,7 +233,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 20),
                                     child: Text(
-                                      getTranslated('email', context),
+                                      getTranslated('email', context)!,
                                       style: poppinsRegular.copyWith(
                                         fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL,
                                         color: ColorResources.getHintColor(context),
@@ -252,7 +241,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     ),
                                   ),
                                   CustomTextField(
-                                    hintText: getTranslated('enter_email_address', context),
+                                    hintText: getTranslated('enter_email_address', context)!,
                                     isElevation: false,
                                     isPadding: false,
                                     isEnabled: false,
@@ -276,7 +265,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 20),
                                     child: Text(
-                                      getTranslated('phone_number', context) ?? '',
+                                      getTranslated('phone_number', context)!,
                                       style: poppinsRegular.copyWith(
                                         fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL,
                                         color: ColorResources.getHintColor(context),
@@ -284,7 +273,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                     ),
                                   ),
                                   CustomTextField(
-                                    hintText: getTranslated('enter_phone_number', context),
+                                    hintText: getTranslated('enter_phone_number', context)!,
                                     isElevation: false,
                                     isPadding: false,
                                     controller: _phoneController,
@@ -299,7 +288,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                           ),
                           SizedBox(height: 15),
 
-                          if(profileProvider.userInfoModel.loginMedium == 'general')
+                          if(profileProvider.userInfoModel!.loginMedium == 'general')
                             Column(children: [
                               Stack(
                                 children: [
@@ -309,7 +298,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                       Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 20),
                                         child: Text(
-                                          getTranslated('password', context) ?? '',
+                                          getTranslated('password', context)!,
                                           style: poppinsRegular.copyWith(
                                             fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL,
                                             color: ColorResources.getHintColor(context),
@@ -317,7 +306,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         ),
                                       ),
                                       CustomTextField(
-                                        hintText: getTranslated('password_hint', context),
+                                        hintText: getTranslated('password_hint', context)!,
                                         isElevation: false,
                                         isPadding: false,
                                         isPassword: true,
@@ -341,7 +330,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                       Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 20),
                                         child: Text(
-                                          getTranslated('confirm_password', context) ?? '',
+                                          getTranslated('confirm_password', context)!,
                                           style:
                                           poppinsRegular.copyWith(
                                             fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL,
@@ -350,7 +339,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                         ),
                                       ),
                                       CustomTextField(
-                                        hintText: getTranslated('password_hint', context),
+                                        hintText: getTranslated('password_hint', context)!,
                                         isElevation: false,
                                         isPadding: false,
                                         isPassword: true,
@@ -379,41 +368,41 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 String _phoneNumber = _phoneController.text.trim();
                                 String _password = _passwordController.text.trim();
                                 String _confirmPassword = _confirmPasswordController.text.trim();
-                                if (profileProvider.userInfoModel.fName == _firstName &&
-                                    profileProvider.userInfoModel.lName == _lastName &&
-                                    profileProvider.userInfoModel.phone == _phoneNumber &&
-                                    profileProvider.userInfoModel.email == _emailController.text
-                                    && profileProvider.file == null && profileProvider.data == null
+                                if (profileProvider.userInfoModel!.fName == _firstName &&
+                                    profileProvider.userInfoModel!.lName == _lastName &&
+                                    profileProvider.userInfoModel!.phone == _phoneNumber &&
+                                    profileProvider.userInfoModel!.email == _emailController.text
+                                    && profileProvider.file.isNull && profileProvider.data.isNull
                                     && _password.isEmpty && _confirmPassword.isEmpty) {
 
-                                  showCustomSnackBar(getTranslated('change_something_to_update', context), context);
+                                  showCustomSnackBar(getTranslated('change_something_to_update', context)!, context);
                                 }else if (_firstName.isEmpty) {
-                                  showCustomSnackBar(getTranslated('enter_first_name', context), context);
+                                  showCustomSnackBar(getTranslated('enter_first_name', context)!, context);
                                 }else if (_lastName.isEmpty) {
-                                  showCustomSnackBar(getTranslated('enter_last_name', context), context);
+                                  showCustomSnackBar(getTranslated('enter_last_name', context)!, context);
                                 }else if (_phoneNumber.isEmpty) {
-                                  showCustomSnackBar(getTranslated('enter_phone_number', context), context);
+                                  showCustomSnackBar(getTranslated('enter_phone_number', context)!, context);
                                 } else if((_password.isNotEmpty && _password.length < 6)
                                     || (_confirmPassword.isNotEmpty && _confirmPassword.length < 6)) {
-                                  showCustomSnackBar(getTranslated('password_should_be', context), context);
+                                  showCustomSnackBar(getTranslated('password_should_be', context)!, context);
                                 } else if(_password != _confirmPassword) {
-                                  showCustomSnackBar(getTranslated('password_did_not_match', context), context);
+                                  showCustomSnackBar(getTranslated('password_did_not_match', context)!, context);
                                 } else {
-                                  UserInfoModel updateUserInfoModel = profileProvider.userInfoModel;
-                                  updateUserInfoModel.fName = _firstNameController.text ?? "";
-                                  updateUserInfoModel.lName = _lastNameController.text ?? "";
-                                  updateUserInfoModel.phone = _phoneController.text ?? '';
+                                  UserInfoModel updateUserInfoModel = profileProvider.userInfoModel!;
+                                  updateUserInfoModel.fName = _firstNameController.text;
+                                  updateUserInfoModel.lName = _lastNameController.text;
+                                  updateUserInfoModel.phone = _phoneController.text;
 
                                   ResponseModel _responseModel = await profileProvider.updateUserInfo(
                                     updateUserInfoModel,_password,
-                                    profileProvider.file, profileProvider.data,
+                                    profileProvider.file!, profileProvider.data!,
                                     Provider.of<AuthProvider>(context, listen: false).getUserToken(),
                                   );
                                   if (_responseModel.isSuccess) {
                                     profileProvider.getUserInfo(context);
                                     _passwordController.text = '';
                                     _confirmPasswordController.text = '';
-                                    showCustomSnackBar(getTranslated('updated_successfully', context),context,isError: false);
+                                    showCustomSnackBar(getTranslated('updated_successfully', context)!,context,isError: false);
                                   } else {
                                     showCustomSnackBar(_responseModel.message,context,isError: true);
 
@@ -430,7 +419,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 ),
                                 child: Center(
                                   child: Text(
-                                    getTranslated('save', context),
+                                    getTranslated('save', context)!,
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 15,

@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class CategoryProvider extends ChangeNotifier {
   final CategoryRepo categoryRepo;
 
-  CategoryProvider({@required this.categoryRepo});
+  CategoryProvider({required this.categoryRepo});
 
   int _categorySelectedIndex = -1;
   int _categoryIndex = 0;
@@ -18,27 +18,27 @@ class CategoryProvider extends ChangeNotifier {
   int get categorySelectedIndex => _categorySelectedIndex;
   int get categoryIndex => _categoryIndex;
 
-  List<CategoryModel> _categoryList;
+  List<CategoryModel>? _categoryList;
   List<CategoryModel> _subCategoryList = [];
   List<Product> _categoryProductList = [];
   List<Product> _categoryAllProductList = [];
-  CategoryModel _categoryModel;
+  CategoryModel? _categoryModel;
   bool _pageFirstIndex = true;
   bool _pageLastIndex = false;
 
-  List<CategoryModel> get categoryList => _categoryList;
+  List<CategoryModel>? get categoryList => _categoryList;
   List<CategoryModel> get subCategoryList => _subCategoryList;
   List<Product> get categoryProductList => _categoryProductList;
-  CategoryModel get categoryModel => _categoryModel;
+  CategoryModel? get categoryModel => _categoryModel;
   bool get pageFirstIndex => _pageFirstIndex;
   bool get pageLastIndex => _pageLastIndex;
 
 
-  Future<ApiResponse> getCategoryList( BuildContext context,String languageCode, bool reload, {int id}) async {
+  Future<ApiResponse> getCategoryList( BuildContext context,String languageCode, bool reload, {int? id}) async {
     ApiResponse apiResponse = await categoryRepo.getCategoryList(languageCode);
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
       _categoryList = [];
-      apiResponse.response.data.forEach((category) => _categoryList.add(CategoryModel.fromJson(category)));
+      apiResponse.response.data.forEach((category) => _categoryList!.add(CategoryModel.fromJson(category)));
       _categorySelectedIndex = -1;
       _categoryIndex = 0;
     } else {
@@ -51,11 +51,11 @@ class CategoryProvider extends ChangeNotifier {
   void getCategory(int id, BuildContext context) async {
     if(_categoryList == null) {
       await getCategoryList(context,Provider.of<LocalizationProvider>(context, listen: false).locale.languageCode, true);
-      _categoryModel = _categoryList.firstWhere((category) => category.id == id);
+      _categoryModel = _categoryList!.firstWhere((category) => category.id == id);
       notifyListeners();
     }else {
       try{
-        _categoryModel = _categoryList.firstWhere((category) => category.id == id);
+        _categoryModel = _categoryList!.firstWhere((category) => category.id == id);
       }catch(e){
         print('error : $e');
       }
@@ -63,10 +63,10 @@ class CategoryProvider extends ChangeNotifier {
   }
 
   void getSubCategoryList(BuildContext context, String categoryID, String languageCode) async {
-    _subCategoryList = null;
+    _subCategoryList = [];
 
     ApiResponse apiResponse = await categoryRepo.getSubCategoryList(categoryID,languageCode);
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
       _subCategoryList = [];
       apiResponse.response.data.forEach((category) => _subCategoryList.add(CategoryModel.fromJson(category)));
       getCategoryProductList(context, categoryID,languageCode);
@@ -80,7 +80,7 @@ class CategoryProvider extends ChangeNotifier {
     _categoryProductList = [];
 
     ApiResponse apiResponse = await categoryRepo.getCategoryProductList(categoryID,languageCode);
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
       _categoryProductList = [];
       apiResponse.response.data.forEach((category) => _categoryProductList.add(Product.fromJson(category)));
       _categoryAllProductList.addAll(_categoryProductList);

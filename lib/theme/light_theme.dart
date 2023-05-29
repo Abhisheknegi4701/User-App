@@ -8,7 +8,7 @@ ThemeData light = ThemeData(
   focusColor: Color(0xFFADC4C8),
   hintColor: Color(0xFF52575C),
 
-  textTheme: TextTheme(headline6: TextStyle(color: Color(0xFFE0E0E0))),
+  textTheme: TextTheme(titleLarge: TextStyle(color: Color(0xFFE0E0E0))),
   pageTransitionsTheme: PageTransitionsTheme(builders: {
     TargetPlatform.android: ZoomPageTransitionsBuilder(),
     TargetPlatform.iOS: ZoomPageTransitionsBuilder(),

@@ -32,14 +32,14 @@ class NotLoggedInScreen extends StatelessWidget {
                   SizedBox(height: MediaQuery.of(context).size.height*0.03),
 
                   Text(
-                    getTranslated('guest_mode', context),
+                    getTranslated('guest_mode', context)!,
                     style: poppinsRegular.copyWith(fontSize: MediaQuery.of(context).size.height*0.023),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height*0.02),
 
                   Text(
-                    getTranslated('now_you_are_in_guest_mode', context),
+                    getTranslated('now_you_are_in_guest_mode', context)!,
                     style: poppinsRegular.copyWith(fontSize: MediaQuery.of(context).size.height*0.0175),
                     textAlign: TextAlign.center,
                   ),
@@ -48,7 +48,7 @@ class NotLoggedInScreen extends StatelessWidget {
                   SizedBox(
                     width: 100,
                     height: 45,
-                    child: CustomButton(buttonText: getTranslated('login', context), onPressed: () {
+                    child: CustomButton(buttonText: getTranslated('login', context)!, onPressed: () {
                       // Navigator.push(context, MaterialPageRoute(builder: (_) => LoginScreen()));
                       Navigator.pushNamed(context, RouteHelper.login);
                     }),

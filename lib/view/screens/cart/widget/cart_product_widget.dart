@@ -19,23 +19,21 @@ import '../../../../provider/product_provider.dart';
 class CartProductWidget extends StatelessWidget {
   final CartModel cart;
   final int index;
-  CartProductWidget({@required this.cart, @required this.index});
+  CartProductWidget({required this.cart, required this.index});
 
   @override
   Widget build(BuildContext context) {
 
     String _variationText = '';
-    if(cart.variation !=null ) {
-      List<String> _variationTypes = cart.variation.type.split('-');
-      if(_variationTypes.length == cart.product.choiceOptions.length) {
-        int _index = 0;
-        cart.product.choiceOptions.forEach((choice) {
-          _variationText = _variationText + '${(_index == 0) ? '' : ',  '}${choice.title} - ${_variationTypes[_index]}';
-          _index = _index + 1;
-        });
-      }else {
-        _variationText = cart.product.variations[0].type;
-      }
+    List<String> _variationTypes = cart.variation!.type!.split('-');
+    if(_variationTypes.length == cart.product!.choiceOptions!.length) {
+      int _index = 0;
+      cart.product!.choiceOptions!.forEach((choice) {
+        _variationText = _variationText + '${(_index == 0) ? '' : ',  '}${choice.title} - ${_variationTypes[_index]}';
+        _index = _index + 1;
+      });
+    }else {
+      _variationText = cart.product!.variations![0].type!;
     }
 
     return Container(
@@ -55,7 +53,7 @@ class CartProductWidget extends StatelessWidget {
           Dismissible(
             key: UniqueKey(),
             onDismissed: (DismissDirection direction) {
-              Provider.of<ProductProvider>(context, listen: false).setExistData(null);
+              Provider.of<ProductProvider>(context, listen: false).setExistData(index);
               Provider.of<CouponProvider>(context, listen: false).removeCouponData(false);
               Provider.of<CartProvider>(context, listen: false).removeFromCart(index, context);
             },
@@ -67,7 +65,7 @@ class CartProductWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 900 : 300],
+                    color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 900 : 300]!,
                     blurRadius: 5,
                     spreadRadius: 1,
                   )
@@ -78,7 +76,7 @@ class CartProductWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   child: FadeInImage.assetNetwork(
                     placeholder: Images.placeholder(context),
-                    image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.productImageUrl}/${cart.image}',
+                    image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.productImageUrl}/${cart.image}',
                     height: 70, width: 85,
                     imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 70, width: 85,fit: BoxFit.cover),
                   ),
@@ -94,10 +92,10 @@ class CartProductWidget extends StatelessWidget {
                           children: [
                             Expanded(
                                 flex: 2,
-                                child: Text(cart.name,
+                                child: Text(cart.name!,
                                     style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL), maxLines: 2, overflow: TextOverflow.ellipsis)),
                             Text(
-                              PriceConverter.convertPrice(context, cart.price),
+                              PriceConverter.convertPrice(context, cart.price!),
                               style: poppinsSemiBold.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL),
                             ),
                             SizedBox(width: 10),
@@ -109,11 +107,11 @@ class CartProductWidget extends StatelessWidget {
                           InkWell(
                             onTap: () {
                               Provider.of<CouponProvider>(context, listen: false).removeCouponData(false);
-                              if (cart.quantity > 1) {
+                              if (cart.quantity! > 1) {
                                 Provider.of<CartProvider>(context, listen: false).setQuantity(false, index,showMessage: true, context: context);
                               }else if(cart.quantity == 1){
                                 Provider.of<CartProvider>(context, listen: false).removeFromCart(index, context);
-                                Provider.of<ProductProvider>(context, listen: false).setExistData(null);
+                                Provider.of<ProductProvider>(context, listen: false).setExistData(index);
                               }
                             },
                             child: Padding(
@@ -124,11 +122,11 @@ class CartProductWidget extends StatelessWidget {
                           Text(cart.quantity.toString(), style: poppinsSemiBold.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE,color: Theme.of(context).primaryColor)),
                           InkWell(
                             onTap: () {
-                              if(cart.quantity < cart.stock) {
+                              if(cart.quantity! < cart.stock!) {
                                 Provider.of<CouponProvider>(context, listen: false).removeCouponData(false);
                                 Provider.of<CartProvider>(context, listen: false).setQuantity(true, index, showMessage: true, context: context);
                               }else {
-                                showCustomSnackBar(getTranslated('out_of_stock', context), context);
+                                showCustomSnackBar(getTranslated('out_of_stock', context)!, context);
                               }
                             },
                             child: Padding(
@@ -137,7 +135,7 @@ class CartProductWidget extends StatelessWidget {
                             ),
                           ),
                         ]),
-                        cart.product.variations.length > 0 ? Row(children: [
+                        cart.product!.variations!.length > 0 ? Row(children: [
                           Text('${getTranslated('variation', context)}: ', style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL)),
                           Flexible(child: Text(
                             _variationText,maxLines: 1,
@@ -154,7 +152,7 @@ class CartProductWidget extends StatelessWidget {
                   child: IconButton(
                     onPressed: () {
                       Provider.of<CartProvider>(context, listen: false).removeFromCart(index, context);
-                      Provider.of<ProductProvider>(context, listen: false).setExistData(null);
+                      Provider.of<ProductProvider>(context, listen: false).setExistData(index);
                     },
                     icon: Icon(Icons.delete, color: Colors.red),
                   ),

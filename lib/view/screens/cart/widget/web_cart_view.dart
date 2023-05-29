@@ -23,16 +23,16 @@ import 'package:provider/provider.dart';
 
 class WebCartView extends StatelessWidget {
   const WebCartView({
-    Key key,
-    @required TextEditingController couponController,
-    @required double total,
-    @required bool isSelfPickupActive,
-    @required bool kmWiseCharge,
-    @required double itemPrice,
-    @required double tax,
-    @required double discount,
-    @required this.cart,
-    @required this.deliveryCharge,
+    Key? key,
+    required TextEditingController couponController,
+    required double total,
+    required bool isSelfPickupActive,
+    required bool kmWiseCharge,
+    required double itemPrice,
+    required double tax,
+    required double discount,
+    required this.cart,
+    required this.deliveryCharge,
   }) : _couponController = couponController, _total = total, _isSelfPickupActive = isSelfPickupActive, _kmWiseCharge = kmWiseCharge, _itemPrice = itemPrice, _tax = tax, _discount = discount, super(key: key);
 
   final TextEditingController _couponController;
@@ -82,7 +82,7 @@ class WebCartView extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 900 : 300],
+                                  color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 900 : 300]!,
                                   blurRadius: 5,
                                   spreadRadius: 1,
                                 )
@@ -130,14 +130,14 @@ class WebCartView extends StatelessWidget {
                                               if (discount > 0) {
                                                 showCustomSnackBar('You got ${PriceConverter.convertPrice(context, discount)} discount', context,isError: false);
                                               } else {
-                                                showCustomSnackBar(getTranslated('invalid_code_or_failed', context),context,isError: true);
+                                                showCustomSnackBar(getTranslated('invalid_code_or_failed', context)!,context,isError: true);
                                               }
                                             });
                                           } else {
                                             coupon.removeCouponData(true);
                                           }
                                         }else {
-                                          showCustomSnackBar(getTranslated('enter_a_coupon_code', context),context,isError: true);
+                                          showCustomSnackBar(getTranslated('enter_a_coupon_code', context)!,context,isError: true);
 
                                         }
                                       },
@@ -155,7 +155,7 @@ class WebCartView extends StatelessWidget {
                                         child: coupon.discount <= 0
                                             ? !coupon.isLoading
                                             ? Text(
-                                          getTranslated('apply', context),
+                                          getTranslated('apply', context)!,
                                           style: poppinsMedium.copyWith(color: Colors.white),
                                         )
                                             : CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white))
@@ -170,34 +170,34 @@ class WebCartView extends StatelessWidget {
 
                             // Order type
                             _isSelfPickupActive ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                              Text(getTranslated('delivery_option', context), style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
-                              DeliveryOptionButton(value: 'delivery', title: getTranslated('delivery', context), kmWiseFee: _kmWiseCharge),
-                              DeliveryOptionButton(value: 'self_pickup', title: getTranslated('self_pickup', context), kmWiseFee: _kmWiseCharge),
+                              Text(getTranslated('delivery_option', context)!, style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
+                              DeliveryOptionButton(value: 'delivery', title: getTranslated('delivery', context)!, kmWiseFee: _kmWiseCharge, price: 0,),
+                              DeliveryOptionButton(value: 'self_pickup', title: getTranslated('self_pickup', context)!, kmWiseFee: _kmWiseCharge, price: 0,),
                               SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                             ]) : SizedBox(),
 
                             // Total
                             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                              Text(getTranslated('items_price', context), style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
+                              Text(getTranslated('items_price', context)!, style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
                               Text(PriceConverter.convertPrice(context, _itemPrice), style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
                             ]),
                             SizedBox(height: 10),
 
                             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                              Text(getTranslated('tax', context), style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
+                              Text(getTranslated('tax', context)!, style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
                               Text('(+) ${PriceConverter.convertPrice(context, _tax)}', style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
                             ]),
                             SizedBox(height: 10),
 
                             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                              Text(getTranslated('discount', context), style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
+                              Text(getTranslated('discount', context)!, style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
                               Text('(-) ${PriceConverter.convertPrice(context, _discount)}',
                                   style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
                             ]),
                             SizedBox(height: 10),
 
                             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                              Text(getTranslated('coupon_discount', context), style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
+                              Text(getTranslated('coupon_discount', context)!, style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
                               Text(
                                 '(-) ${PriceConverter.convertPrice(context, Provider.of<CouponProvider>(context).discount)}',
                                 style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),
@@ -207,7 +207,7 @@ class WebCartView extends StatelessWidget {
 
                             _kmWiseCharge ? SizedBox() : Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                               Text(
-                                getTranslated('delivery_fee', context),
+                                getTranslated('delivery_fee', context)!,
                                 style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),
                               ),
                               Text(
@@ -222,7 +222,7 @@ class WebCartView extends StatelessWidget {
                             ),
 
                             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                              Text(getTranslated(_kmWiseCharge ? 'subtotal' : 'total_amount', context), style: poppinsMedium.copyWith(
+                              Text(getTranslated(_kmWiseCharge ? 'subtotal' : 'total_amount', context)!, style: poppinsMedium.copyWith(
                                 fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE,
                                 color: Theme.of(context).primaryColor,
                               )),
@@ -240,14 +240,14 @@ class WebCartView extends StatelessWidget {
                           // width: 100,
                           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                           child: CustomButton(
-                            buttonText: getTranslated('continue_checkout', context),
+                            buttonText: getTranslated('continue_checkout', context)!,
                             onPressed: () {
-                              if(_itemPrice < Provider.of<SplashProvider>(context, listen: false).configModel.minimumOrderValue) {
-                                showCustomSnackBar('${getTranslated('minimum_order_amount_is', context)}${PriceConverter.convertPrice(context, Provider.of<SplashProvider>(context, listen: false).configModel
-                                    .minimumOrderValue)},${getTranslated('you_have', context)} ${PriceConverter.convertPrice(context, _itemPrice)} ${getTranslated('in_your_cart_please_add_more_item', context)}',context,isError: true);
+                              if(_itemPrice < Provider.of<SplashProvider>(context, listen: false).configModel!.minimumOrderValue!) {
+                                showCustomSnackBar('${getTranslated('minimum_order_amount_is', context)}${PriceConverter.convertPrice(context, Provider.of<SplashProvider>(context, listen: false).configModel!
+                                    .minimumOrderValue!)},${getTranslated('you_have', context)} ${PriceConverter.convertPrice(context, _itemPrice)} ${getTranslated('in_your_cart_please_add_more_item', context)}',context,isError: true);
 
                               } else {
-                                String _orderType = Provider.of<OrderProvider>(context, listen: false).orderType;
+                                String _orderType = Provider.of<OrderProvider>(context, listen: false).orderType!;
                                 double _discount = Provider.of<CouponProvider>(context, listen: false).discount;
                                 Navigator.pushNamed(
                                   context, RouteHelper.getCheckoutRoute(

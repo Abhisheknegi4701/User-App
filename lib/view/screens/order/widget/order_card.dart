@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 import '../order_details_screen.dart';
 class OrderCard extends StatelessWidget {
-  const OrderCard({Key key, @required this.orderList, @required this.index}) : super(key: key);
+  const OrderCard({Key? key, required this.orderList, required this.index}) : super(key: key);
 
   final List<OrderModel> orderList;
   final int index;
@@ -25,7 +25,7 @@ class OrderCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         boxShadow: [BoxShadow(
-          color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 900 : 300],
+          color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 900 : 300]!,
           spreadRadius: 1, blurRadius: 5,
         )],
         borderRadius: BorderRadius.circular(10),
@@ -34,12 +34,12 @@ class OrderCard extends StatelessWidget {
         //date and money
         Row(children: [
           Text(
-            DateConverter.isoDayWithDateString(orderList[index].updatedAt),
+            DateConverter.isoDayWithDateString(orderList[index].updatedAt!),
             style: poppinsMedium.copyWith(color: ColorResources.getTextColor(context)),
           ),
           Expanded(child: SizedBox.shrink()),
           Text(
-            PriceConverter.convertPrice(context, orderList[index].orderAmount),
+            PriceConverter.convertPrice(context, orderList[index].orderAmount!),
             style: poppinsBold.copyWith(color: Theme.of(context).primaryColor),
           ),
         ]),
@@ -54,7 +54,7 @@ class OrderCard extends StatelessWidget {
           Icon(Icons.circle, color: Theme.of(context).primaryColor, size: 16),
           SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
           Text(
-            '${getTranslated('order_is', context)} ${getTranslated(orderList[index].orderStatus, context)}',
+            '${getTranslated('order_is', context)} ${getTranslated(orderList[index].orderStatus!, context)}',
             style: poppinsMedium.copyWith(color: Theme.of(context).primaryColor),
           ),
         ]),
@@ -66,8 +66,8 @@ class OrderCard extends StatelessWidget {
             InkWell(
               onTap: () {
                 Navigator.of(context).pushNamed(
-                  RouteHelper.getOrderDetailsRoute(orderList[index].id),
-                  arguments: OrderDetailsScreen(orderId: orderList[index].id, orderModel: orderList[index]),
+                  RouteHelper.getOrderDetailsRoute(orderList[index].id!),
+                  arguments: OrderDetailsScreen(orderId: orderList[index].id!, orderModel: orderList[index]),
                 );
               },
               child: Container(
@@ -78,12 +78,12 @@ class OrderCard extends StatelessWidget {
                     color: ColorResources.getGreyColor(context),
                     boxShadow: [
                       BoxShadow(
-                          color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 900 : 100],
+                          color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 900 : 100]!,
                           spreadRadius: 1,
                           blurRadius: 5)
                     ],
                     borderRadius: BorderRadius.circular(10)),
-                child: Text(getTranslated('view_details', context),
+                child: Text(getTranslated('view_details', context)!,
                     style: poppinsRegular.copyWith(
                       color: Colors.black,
                       fontSize: Dimensions.FONT_SIZE_DEFAULT,
@@ -99,9 +99,9 @@ class OrderCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       side: BorderSide(width: 2, color: Theme.of(context).primaryColor))),
               onPressed: () {
-                Navigator.of(context).pushNamed(RouteHelper.getOrderTrackingRoute(orderList[index].id));
+                Navigator.of(context).pushNamed(RouteHelper.getOrderTrackingRoute(orderList[index].id!));
               },
-              child: Text(getTranslated('track_your_order', context),
+              child: Text(getTranslated('track_your_order', context)!,
                 style: poppinsRegular.copyWith(
                   color: Theme.of(context).primaryColor,
                   fontSize: Dimensions.FONT_SIZE_DEFAULT,

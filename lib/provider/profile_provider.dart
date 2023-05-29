@@ -10,23 +10,22 @@ import 'package:flutter_grocery/helper/api_checker.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 
-import '../data/model/response/wallet_model.dart';
 import '../data/repository/wallet_cart.dart';
 
 class ProfileProvider with ChangeNotifier {
   final ProfileRepo profileRepo;
 
-  ProfileProvider({@required this.profileRepo, @required this.walletRepo});
+  ProfileProvider({required this.profileRepo, required this.walletRepo});
 
-  UserInfoModel _userInfoModel;
+  UserInfoModel? _userInfoModel;
   String walletMoney = "0";
-  UserInfoModel get userInfoModel => _userInfoModel;
+  UserInfoModel? get userInfoModel => _userInfoModel;
   final WalletRepo walletRepo;
 
    getUserInfo(BuildContext context) async {
     _isLoading = true;
     ApiResponse apiResponse = await profileRepo.getUserInfo();
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
       _userInfoModel = UserInfoModel.fromJson(apiResponse.response.data);
     } else {
       ApiChecker.checkApi(context, apiResponse);
@@ -39,12 +38,12 @@ class ProfileProvider with ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
-  File _file;
-  PickedFile _data;
+  File? _file;
+  PickedFile? _data;
 
-  PickedFile get data => _data;
+  PickedFile? get data => _data;
 
-  File get file => _file;
+  File? get file => _file;
   final picker = ImagePicker();
 
   void choosePhoto() async {
@@ -76,7 +75,7 @@ class ProfileProvider with ChangeNotifier {
       print(message);
     } else {
       _responseModel = ResponseModel(
-        false, ErrorResponse.fromJson(jsonDecode(await response.stream.bytesToString())).errors[0].message,
+        false, ErrorResponse.fromJson(jsonDecode(await response.stream.bytesToString())).errors![0].message!,
       );
       print('${response.statusCode} ${response.reasonPhrase}');
     }

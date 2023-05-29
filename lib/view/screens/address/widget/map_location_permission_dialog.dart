@@ -12,7 +12,7 @@ class MyDialog extends StatelessWidget {
   final IconData icon;
   final String title;
   final String description;
-  MyDialog({this.isFailed = false, this.rotateAngle = 0, @required this.icon, @required this.title, @required this.description});
+  MyDialog({this.isFailed = false, this.rotateAngle = 0, required this.icon, required this.title, required this.description});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class MyDialog extends StatelessWidget {
               SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE),
-                child: CustomButton(buttonText: getTranslated('ok', context), onPressed: () => Navigator.pop(context)),
+                child: CustomButton(buttonText: getTranslated('ok', context)!, onPressed: () => Navigator.pop(context)),
               ),
             ]),
           ),

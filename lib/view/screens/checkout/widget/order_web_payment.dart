@@ -10,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OrderWebPayment extends StatefulWidget {
-  final String token;
-  const OrderWebPayment({Key key, this.token}) : super(key: key);
+  final String? token;
+  const OrderWebPayment({Key? key, this.token}) : super(key: key);
 
   @override
   State<OrderWebPayment> createState() => _OrderWebPaymentState();
@@ -23,7 +23,7 @@ class _OrderWebPaymentState extends State<OrderWebPayment> {
     if(html.window.location.href.contains('success')){
       final orderProvider =  Provider.of<OrderProvider>(context, listen: false);
       String _placeOrderString =  utf8.decode(base64Url.decode(orderProvider.getPlaceOrder().replaceAll(' ', '+')));
-      String _tokenString = utf8.decode(base64Url.decode(widget.token.replaceAll(' ', '+')));
+      String _tokenString = utf8.decode(base64Url.decode(widget.token!.replaceAll(' ', '+')));
       String _paymentMethod = _tokenString.substring(0, _tokenString.indexOf('&&'));
       String _transactionReference = _tokenString.substring(_tokenString.indexOf('&&') + '&&'.length, _tokenString.length);
 

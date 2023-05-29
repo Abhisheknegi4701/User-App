@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider with ChangeNotifier {
   final SharedPreferences sharedPreferences;
-  ThemeProvider({@required this.sharedPreferences}) {
+  ThemeProvider({required this.sharedPreferences}) {
     _loadCurrentTheme();
   }
 

@@ -40,11 +40,11 @@ class WebAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _WebAppBarState extends State<WebAppBar> {
-  String chooseLanguage;
+  String? chooseLanguage;
   
   List<PopupMenuEntry<Object>> popUpMenuList(BuildContext context) {
     List<PopupMenuEntry<Object>> list = <PopupMenuEntry<Object>>[];
-    List<CategoryModel> _categoryList =  Provider.of<CategoryProvider>(context, listen: false).categoryList;
+    List<CategoryModel> _categoryList =  Provider.of<CategoryProvider>(context, listen: false).categoryList!;
     list.add(
         PopupMenuItem(
           padding: EdgeInsets.symmetric(horizontal: 5),
@@ -78,7 +78,7 @@ class _WebAppBarState extends State<WebAppBar> {
     final RenderBox overlay = Overlay
         .of(context)
         .context
-        .findRenderObject();
+        .findRenderObject() as RenderBox;
     await showMenu(
       context: context,
       position: RelativeRect.fromLTRB(
@@ -132,7 +132,7 @@ class _WebAppBarState extends State<WebAppBar> {
 
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                        child: Text(getTranslated('dark_mode',context), style: poppinsRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.PADDING_SIZE_DEFAULT)),
+                        child: Text(getTranslated('dark_mode',context)!, style: poppinsRegular.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.PADDING_SIZE_DEFAULT)),
                       ),
                       // StatusWidget(),
                       Transform.scale(
@@ -184,7 +184,7 @@ class _WebAppBarState extends State<WebAppBar> {
                           ),
 
                           Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                            child: Text(getTranslated('log_out', context), style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_DEFAULT, color: ColorResources.getTextColor(context))),
+                            child: Text(getTranslated('log_out', context)!, style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_DEFAULT, color: ColorResources.getTextColor(context))),
                           ),
 
                         ],),
@@ -199,7 +199,7 @@ class _WebAppBarState extends State<WebAppBar> {
                             child: Image.asset(Images.lock,height: 16,fit: BoxFit.contain, color: Theme.of(context).primaryColor),
                           ),
                           Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                            child: Text(getTranslated('login', context), style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_DEFAULT, color: ColorResources.getTextColor(context))),
+                            child: Text(getTranslated('login', context)!, style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_DEFAULT, color: ColorResources.getTextColor(context))),
                           ),
                         ],
                         ),
@@ -231,7 +231,7 @@ class _WebAppBarState extends State<WebAppBar> {
                                     child: Consumer<SplashProvider>(
                                       builder:(context, splash, child) => FadeInImage.assetNetwork(
                                         placeholder: Images.app_logo,
-                                        image: splash.baseUrls != null ? '${splash.baseUrls.ecommerceImageUrl}/${splash.configModel.ecommerceLogo}' : '',fit: BoxFit.contain,
+                                        image: splash.baseUrls != null ? '${splash.baseUrls!.ecommerceImageUrl}/${splash.configModel!.ecommerceLogo}' : '',fit: BoxFit.contain,
                                         imageErrorBuilder: (c,b,v)=> Image.asset(Images.app_logo),
                                       ),
                                     ) ),
@@ -247,7 +247,7 @@ class _WebAppBarState extends State<WebAppBar> {
                                 return InkWell(onTap: () {
                                   Provider.of<ProductProvider>(context, listen: false).offset = 1;
                                   Navigator.pushNamed(context, RouteHelper.menu);},
-                                    child: Text(getTranslated('home', context), style: isHovered ?
+                                    child: Text(getTranslated('home', context)!, style: isHovered ?
                                     poppinsSemiBold.copyWith(color: Theme.of(context).primaryColor,
                                         fontSize: Dimensions.FONT_SIZE_LARGE) :
                                     poppinsMedium.copyWith(color: ColorResources.getTextColor(context),
@@ -261,12 +261,10 @@ class _WebAppBarState extends State<WebAppBar> {
                           TextHover(
                             builder: (isHovered) {
                               return MouseRegion(onHover: (details){
-                                if(Provider.of<CategoryProvider>(context, listen: false).categoryList != null){
-                                  _showPopupMenu(details.position, context,true);
-                                }
+                                _showPopupMenu(details.position, context,true);
 
                               },
-                                child: Text(getTranslated('categories', context),
+                                child: Text(getTranslated('categories', context)!,
                                     style: isHovered ? poppinsSemiBold.copyWith(color: Theme.of(context).primaryColor,
                                         fontSize: Dimensions.FONT_SIZE_LARGE) :
                                     poppinsMedium.copyWith(color: ColorResources.getTextColor(context),
@@ -284,7 +282,7 @@ class _WebAppBarState extends State<WebAppBar> {
                                       width: 120,
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_DEFAULT),
-                                        child: Text(getTranslated('favourite', context),maxLines: 1,overflow: TextOverflow.ellipsis,
+                                        child: Text(getTranslated('favourite', context)!,maxLines: 1,overflow: TextOverflow.ellipsis,
                                             style: isHovered ? poppinsSemiBold.copyWith(color: Theme.of(context).primaryColor,
                                                 fontSize: Dimensions.FONT_SIZE_LARGE) :
                                             poppinsMedium.copyWith(color: ColorResources.getTextColor(context),
@@ -311,7 +309,7 @@ class _WebAppBarState extends State<WebAppBar> {
                             child: Consumer<SearchProvider>(
                                 builder: (context,search,_) {
                                   return CustomTextField(
-                                    hintText: getTranslated('search_items_here', context),
+                                    hintText: getTranslated('search_items_here', context)!,
                                     isShowBorder: false,
                                     fillColor: Colors.transparent,
                                     isElevation: false,

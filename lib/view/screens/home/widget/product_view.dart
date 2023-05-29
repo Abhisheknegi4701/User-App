@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/product_model.dart';
 import 'package:flutter_grocery/helper/product_type.dart';
@@ -14,7 +16,7 @@ import 'package:flutter_grocery/view/base/web_product_shimmer.dart';
 import 'package:provider/provider.dart';
 
 class ProductView extends StatefulWidget {
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
   ProductView({this.scrollController});
 
   @override
@@ -23,7 +25,7 @@ class ProductView extends StatefulWidget {
 
 class _ProductViewState extends State<ProductView> {
 
-  int pageSize;
+  int? pageSize;
 
   @override
   void initState() {
@@ -36,10 +38,10 @@ class _ProductViewState extends State<ProductView> {
   Widget build(BuildContext context) {
 
     void seeMoreItems(){
-      pageSize = (Provider.of<ProductProvider>(context, listen: false).latestPageSize / 10).ceil();
+      pageSize = (Provider.of<ProductProvider>(context, listen: false).latestPageSize! / 10).ceil();
 
-      if (Provider.of<ProductProvider>(context, listen: false).offset < pageSize) {
-        Provider.of<ProductProvider>(context, listen: false).offset++;
+      if (Provider.of<ProductProvider>(context, listen: false).offset! < pageSize!) {
+        Provider.of<ProductProvider>(context, listen: false).offset! + 1;
         Provider.of<ProductProvider>(context, listen: false).showBottomLoader();
         Provider.of<ProductProvider>(context, listen: false).getLatestProductList(
           context, Provider.of<ProductProvider>(context, listen: false).offset.toString(), false,
@@ -50,18 +52,16 @@ class _ProductViewState extends State<ProductView> {
 
 
      if(!ResponsiveHelper.isDesktop(context)) {
-        if(widget.scrollController.hasClients) {
-          widget.scrollController?.addListener(() {
-            if (widget.scrollController.position.maxScrollExtent ==
-                widget.scrollController.position.pixels
-                && Provider.of<ProductProvider>(context, listen: false)
-                    .latestProductList != null
+        if(widget.scrollController!.hasClients) {
+          widget.scrollController!.addListener(() {
+            if (widget.scrollController!.position.maxScrollExtent ==
+                widget.scrollController!.position.pixels
                 && !Provider
                     .of<ProductProvider>(context, listen: false)
                     .isLoading) {
-              pageSize = (Provider.of<ProductProvider>(context, listen: false).latestPageSize / 10).ceil();
-              if (Provider.of<ProductProvider>(context, listen: false).offset < pageSize) {
-                Provider.of<ProductProvider>(context, listen: false).offset++;
+              pageSize = (Provider.of<ProductProvider>(context, listen: false).latestPageSize! / 10).ceil();
+              if (Provider.of<ProductProvider>(context, listen: false).offset! < pageSize!) {
+                Provider.of<ProductProvider>(context, listen: false).offset! + 1;
                 Provider.of<ProductProvider>(context, listen: false).showBottomLoader();
                 Provider.of<ProductProvider>(context, listen: false).getLatestProductList(
                   context,
@@ -76,11 +76,11 @@ class _ProductViewState extends State<ProductView> {
     return Consumer<ProductProvider>(
       builder: (context, prodProvider, child) {
         List<Product> productList;
-        productList = prodProvider.latestProductList;
+        productList = prodProvider.latestProductList!;
 
         return Column(children: [
 
-          productList != null
+          !productList.isNull
               ? productList.length > 0
               ? GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -110,8 +110,8 @@ class _ProductViewState extends State<ProductView> {
                 shrinkWrap: true,
                 itemBuilder: (BuildContext context, int index) {
                   return ResponsiveHelper.isDesktop(context)
-                      ?  WebProductShimmer(isEnabled: productList == null)
-                      : ProductShimmer(isEnabled: productList == null);
+                      ?  WebProductShimmer(isEnabled: productList.isNull)
+                      : ProductShimmer(isEnabled: productList.isNull);
                 },
             ),
 
@@ -126,13 +126,13 @@ class _ProductViewState extends State<ProductView> {
                 :(Provider.of<ProductProvider>(context, listen: false).offset == pageSize) ? SizedBox() : SizedBox(
                   width: 500,
                   child: ElevatedButton(
-                      style : ElevatedButton.styleFrom(primary: Theme.of(context).primaryColor, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+                      style : ElevatedButton.styleFrom(backgroundColor: Theme.of(context).primaryColor, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
                       onPressed: (){
                         seeMoreItems();
                       },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Text(getTranslated('see_more', context), style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_OVER_LARGE)),
+                      child: Text(getTranslated('see_more', context)!, style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_OVER_LARGE)),
                     ),
                   ),
 

@@ -5,7 +5,7 @@ import 'package:flutter_grocery/utill/styles.dart';
 
 class OnBoardingWidget extends StatelessWidget {
   final OnBoardingModel onBoardingModel;
-  OnBoardingWidget({@required this.onBoardingModel});
+  OnBoardingWidget({required this.onBoardingModel});
 
   @override
   Widget build(BuildContext context) {

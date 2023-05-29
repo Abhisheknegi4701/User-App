@@ -8,7 +8,7 @@ ThemeData dark = ThemeData(
   cardColor: Color(0xFF121212),
   hintColor: Color(0xFFE7F6F8),
   focusColor: Color(0xFFADC4C8),
-  textTheme: TextTheme(headline6: TextStyle(color: Color(0xFFE0E0E0).withOpacity(0.3))),
+  textTheme: TextTheme(titleLarge: TextStyle(color: Color(0xFFE0E0E0).withOpacity(0.3))),
   pageTransitionsTheme: PageTransitionsTheme(builders: {
     TargetPlatform.android: ZoomPageTransitionsBuilder(),
     TargetPlatform.iOS: ZoomPageTransitionsBuilder(),

@@ -5,7 +5,7 @@ import 'package:flutter_grocery/localization/language_constrants.dart';
 import 'package:flutter_grocery/view/base/custom_snackbar.dart';
 class CartProvider extends ChangeNotifier {
   final CartRepo cartRepo;
-  CartProvider({@required this.cartRepo});
+  CartProvider({required this.cartRepo});
 
   int _productSelect = 0;
   int get productSelect => _productSelect;
@@ -30,7 +30,7 @@ class CartProvider extends ChangeNotifier {
     _amount = 0.0;
     _cartList.addAll(cartRepo.getCartList());
     _cartList.forEach((cart) {
-      _amount = _amount + (cart.discountedPrice * cart.quantity);
+      _amount = _amount + (cart.discountedPrice! * cart.quantity!);
     });
 
   }
@@ -38,23 +38,23 @@ class CartProvider extends ChangeNotifier {
   void addToCart(CartModel cartModel) {
     _cartList.add(cartModel);
     cartRepo.addToCartList(_cartList);
-    _amount = _amount + (cartModel.discountedPrice * cartModel.quantity);
+    _amount = _amount + (cartModel.discountedPrice! * cartModel.quantity!);
     notifyListeners();
   }
 
-  void setQuantity(bool isIncrement, int index, {bool showMessage = false, BuildContext context}) {
+  void setQuantity(bool isIncrement, int index, {bool showMessage = false, BuildContext? context}) {
 
     if (isIncrement) {
-      _cartList[index].quantity = _cartList[index].quantity + 1;
-      _amount = _amount + _cartList[index].discountedPrice;
+      _cartList[index].quantity = _cartList[index].quantity! + 1;
+      _amount = _amount + _cartList[index].discountedPrice!;
       if(showMessage) {
-        showCustomSnackBar(getTranslated('quantity_increase_from_cart', context), context, isError: false);
+        showCustomSnackBar(getTranslated('quantity_increase_from_cart', context!)!, context, isError: false);
       }
     } else {
-      _cartList[index].quantity = _cartList[index].quantity - 1;
-      _amount = _amount - _cartList[index].discountedPrice;
+      _cartList[index].quantity = _cartList[index].quantity! - 1;
+      _amount = _amount - _cartList[index].discountedPrice!;
       if(showMessage) {
-        showCustomSnackBar(getTranslated('quantity_decreased_from_cart', context), context);
+        showCustomSnackBar(getTranslated('quantity_decreased_from_cart', context!)!, context);
       }
     }
     cartRepo.addToCartList(_cartList);
@@ -63,8 +63,8 @@ class CartProvider extends ChangeNotifier {
   }
 
   void removeFromCart(int index, BuildContext context) {
-    _amount = _amount - (cartList[index].discountedPrice * cartList[index].quantity);
-    showCustomSnackBar(getTranslated('remove_from_cart', context), context);
+    _amount = _amount - (cartList[index].discountedPrice! * cartList[index].quantity!);
+    showCustomSnackBar(getTranslated('remove_from_cart', context)!, context);
     _cartList.removeAt(index);
     cartRepo.addToCartList(_cartList);
     notifyListeners();
@@ -77,10 +77,10 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int isExistInCart(CartModel cartModel) {
+  int? isExistInCart(CartModel cartModel) {
     for(int index= 0; index<_cartList.length; index++) {
-      if(_cartList[index].id == cartModel.id && (_cartList[index].variation != null ? _cartList[index].variation.type
-          == cartModel.variation.type : true)) {
+      if(_cartList[index].id == cartModel.id && (_cartList[index].variation != null ? _cartList[index].variation!.type
+          == cartModel.variation!.type : true)) {
         return index;
       }
     }

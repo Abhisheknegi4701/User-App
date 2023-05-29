@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
 import 'package:flutter_grocery/localization/language_constrants.dart';
@@ -7,8 +9,8 @@ import 'package:flutter_grocery/utill/color_resources.dart';
 import 'package:flutter_grocery/utill/dimensions.dart';
 import 'package:flutter_grocery/view/base/custom_app_bar.dart';
 import 'package:flutter_grocery/view/base/custom_button.dart';
+import 'package:flutter_grocery/view/base/preferedsizewidgetdem.dart';
 import 'package:flutter_grocery/view/screens/address/widget/location_search_dialog.dart';
-import 'package:flutter_grocery/view/base/web_app_bar/web_app_bar.dart';
 import 'package:flutter_grocery/view/screens/address/widget/permission_dialog.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -16,34 +18,32 @@ import 'package:provider/provider.dart';
 
 class SelectLocationScreen extends StatefulWidget {
   final GoogleMapController googleMapController;
-  SelectLocationScreen({@required this.googleMapController});
+  SelectLocationScreen({required this.googleMapController});
 
   @override
   _SelectLocationScreenState createState() => _SelectLocationScreenState();
 }
 
 class _SelectLocationScreenState extends State<SelectLocationScreen> {
-  GoogleMapController _controller;
+  GoogleMapController? _controller;
   TextEditingController _locationController = TextEditingController();
-  CameraPosition _cameraPosition;
-  LatLng _initialPosition;
+  CameraPosition? _cameraPosition;
+  LatLng? _initialPosition;
 
   @override
   void initState() {
     super.initState();
     _initialPosition = LatLng(
-      double.parse(Provider.of<SplashProvider>(context, listen: false).configModel.branches[0].latitude ),
-      double.parse(Provider.of<SplashProvider>(context, listen: false).configModel.branches[0].longitude),
+      double.parse(Provider.of<SplashProvider>(context, listen: false).configModel!.branches![0].latitude! ),
+      double.parse(Provider.of<SplashProvider>(context, listen: false).configModel!.branches![0].longitude!),
     );
-    if(Provider.of<LocationProvider>(context, listen: false).position != null ) {
-      Provider.of<LocationProvider>(context, listen: false).setPickData();
-    }
+    Provider.of<LocationProvider>(context, listen: false).setPickData();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    _controller!.dispose();
   }
 
   void _openSearchDialog(BuildContext context, GoogleMapController mapController) async {
@@ -52,12 +52,10 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (Provider.of<LocationProvider>(context).address != null) {
-      _locationController.text = Provider.of<LocationProvider>(context).address ?? '';
-    }
+    _locationController.text = Provider.of<LocationProvider>(context).address;
 
     return Scaffold(
-      appBar: ResponsiveHelper.isDesktop(context)? PreferredSize(child: WebAppBar(), preferredSize: Size.fromHeight(120)): CustomAppBar(title: getTranslated('select_delivery_address', context), isCenter: true),
+      appBar: ResponsiveHelper.isDesktop(context)? preferredSizeWidgetDem(): CustomAppBar(title: getTranslated('select_delivery_address', context), isCenter: true),
       body: Center(
         child: Container(
           width: 1170,
@@ -69,7 +67,7 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
                   minMaxZoomPreference: MinMaxZoomPreference(0, 16),
                   mapType: MapType.normal,
                   initialCameraPosition: CameraPosition(
-                    target: _initialPosition,
+                    target: _initialPosition!,
                     zoom: 15,
                   ),
                   zoomControlsEnabled: false,
@@ -77,24 +75,24 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
                   indoorViewEnabled: true,
                   mapToolbarEnabled: true,
                   onCameraIdle: () {
-                    locationProvider.updatePosition(_cameraPosition, false, null, context,false);
+                    locationProvider.updatePosition(_cameraPosition!, false, '', context,false);
                   },
                   onCameraMove: ((_position) => _cameraPosition = _position),
                   // markers: Set<Marker>.of(locationProvider.markers),
                   onMapCreated: (GoogleMapController controller) {
                     Future.delayed(Duration(milliseconds: 600)).then((value) {
                       _controller = controller;
-                      _controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
-                          target:  locationProvider.pickPosition.longitude.toInt() == 0 &&  locationProvider.pickPosition.latitude.toInt() == 0 ? _initialPosition : LatLng(
+                      _controller!.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
+                          target:  locationProvider.pickPosition.longitude.toInt() == 0 &&  locationProvider.pickPosition.latitude.toInt() == 0 ? _initialPosition! : LatLng(
                         locationProvider.pickPosition.latitude, locationProvider.pickPosition.longitude,
                       ), zoom: 17)));
                     });
 
                   },
                 ),
-                locationProvider.pickAddress != null
+                !locationProvider.pickAddress.isNull
                     ? InkWell(
-                  onTap: () => _openSearchDialog(context, _controller),
+                  onTap: () => _openSearchDialog(context, _controller!),
                       child: Container(
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE, vertical: 18.0),
@@ -106,7 +104,7 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
 
                               return Row(children: [
                                 Expanded(child: Text(
-                                  locationProvider.pickAddress ?? '', maxLines: 1, overflow: TextOverflow.ellipsis,
+                                  locationProvider.pickAddress, maxLines: 1, overflow: TextOverflow.ellipsis,
                                 )),
 
                                 Icon(Icons.search, size: 20),
@@ -147,17 +145,15 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
                           child: CustomButton(
-                            buttonText: getTranslated('select_location', context),
-                            onPressed: locationProvider.loading ? null : () {
-                              if(widget.googleMapController != null) {
-                                widget.googleMapController.setMapStyle('[]');
-                                widget.googleMapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(
-                                  locationProvider.pickPosition.latitude, locationProvider.pickPosition.longitude,
-                                ), zoom: 16)));
+                            buttonText: getTranslated('select_location', context)!,
+                            onPressed: locationProvider.loading ? (){} : () {
+                              widget.googleMapController.setMapStyle('[]');
+                              widget.googleMapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(
+                                locationProvider.pickPosition.latitude, locationProvider.pickPosition.longitude,
+                              ), zoom: 16)));
 
-                                if(ResponsiveHelper.isWeb()) {
-                                  locationProvider.setAddAddressData(true);
-                                }
+                              if(ResponsiveHelper.isWeb()) {
+                                locationProvider.setAddAddressData(true);
                               }
                               Navigator.of(context).pop();
                             },

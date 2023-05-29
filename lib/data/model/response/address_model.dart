@@ -1,18 +1,18 @@
 class AddressModel {
-  int id;
-  String addressType;
-  String contactPersonNumber;
-  String address;
-  String latitude;
-  String longitude;
-  String createdAt;
-  String updatedAt;
-  int userId;
-  String method;
-  String contactPersonName;
-  String streetNumber;
-  String floorNumber;
-  String houseNumber;
+  int? id;
+  String? addressType;
+  String? contactPersonNumber;
+  String? address;
+  String? latitude;
+  String? longitude;
+  String? createdAt;
+  String? updatedAt;
+  int? userId;
+  String? method;
+  String? contactPersonName;
+  String? streetNumber;
+  String? floorNumber;
+  String? houseNumber;
 
   AddressModel(
       {this.id,

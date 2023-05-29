@@ -16,11 +16,11 @@ import '../../../../../utill/images.dart';
 class CategoryPageView extends StatelessWidget {
   final CategoryProvider categoryProvider;
   final PageController pageController;
-  const CategoryPageView({Key key, @required this.categoryProvider, @required this.pageController}) : super(key: key);
+  const CategoryPageView({Key? key, required this.categoryProvider, required this.pageController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    int _totalPage = (categoryProvider.categoryList.length / 7).ceil();
+    int _totalPage = (categoryProvider.categoryList!.length / 7).ceil();
 
     return Container(
       child: PageView.builder(
@@ -33,7 +33,7 @@ class CategoryPageView extends StatelessWidget {
           int _initialLength = 7;
           int currentIndex = 7 * index;
 
-          (index + 1 == _totalPage) ? _initialLength = categoryProvider.categoryList.length - (index * 7)  : 7;
+          (index + 1 == _totalPage) ? _initialLength = categoryProvider.categoryList!.length - (index * 7)  : 7;
           return Align(
             alignment: _initialLength < 7 ? Provider.of<LocalizationProvider>(context).isLtr ? Alignment.centerLeft : Alignment.centerRight  : Alignment.center,
             child: ListView.builder(
@@ -41,14 +41,14 @@ class CategoryPageView extends StatelessWidget {
                 itemBuilder: (context, item) {
                   int _currentIndex = item  + currentIndex;
                   String _name = '';
-                  categoryProvider.categoryList[_currentIndex].name.length > 20 ? _name = categoryProvider.categoryList[_currentIndex].name.substring(0, 20)+' ...' : _name = categoryProvider.categoryList[_currentIndex].name;
+                  categoryProvider.categoryList![_currentIndex].name!.length > 20 ? _name = categoryProvider.categoryList![_currentIndex].name!.substring(0, 20)+' ...' : _name = categoryProvider.categoryList![_currentIndex].name!;
                   return Container(
                             margin: EdgeInsets.only(top: 20,left: 20,right: 15),
                             child: InkWell(
                               hoverColor: Colors.transparent,
                               onTap: (){
                                 Navigator.of(context).pushNamed(
-                                  RouteHelper.getCategoryProductsRouteNew(categoryModel: categoryProvider.categoryList[_currentIndex]),
+                                  RouteHelper.getCategoryProductsRouteNew(categoryModel: categoryProvider.categoryList![_currentIndex]),
                                   // arguments: CategoryProductScreenNew(categoryModel: categoryProvider.categoryList[_currentIndex]),
                                 );
                                 },
@@ -76,7 +76,7 @@ class CategoryPageView extends StatelessWidget {
                                           child: FadeInImage.assetNetwork(
                                             placeholder: Images.placeholder(context), width: 125, height: 125, fit: BoxFit.cover,
                                             image: Provider.of<SplashProvider>(context, listen: false).baseUrls != null
-                                                ? '${Provider.of<SplashProvider>(context, listen: false).baseUrls.categoryImageUrl}/${categoryProvider.categoryList[_currentIndex].image}':'',
+                                                ? '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.categoryImageUrl}/${categoryProvider.categoryList![_currentIndex].image}':'',
                                             imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), width: 125, height: 125, fit: BoxFit.cover),
 
                                           ),

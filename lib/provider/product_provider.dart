@@ -10,36 +10,36 @@ class ProductProvider extends ChangeNotifier {
   final ProductRepo productRepo;
   final SearchRepo searchRepo;
 
-  ProductProvider({@required this.productRepo, this.searchRepo});
+  ProductProvider({required this.productRepo, required this.searchRepo});
 
   // Latest products
-  Product _product;
-  List<Product> _popularProductList;
-  List<Product> _dailyItemList;
-  List<Product> _latestProductList;
+  Product? _product;
+  List<Product>? _popularProductList;
+  List<Product>? _dailyItemList;
+  List<Product>? _latestProductList;
   bool _isLoading = false;
-  int _popularPageSize;
-  int _latestPageSize;
-  List<String> _offsetList = [];
-  List<String> _popularOffsetList = [];
-  int _quantity = 1;
-  List<int> _variationIndex;
-  int _imageSliderIndex;
-  int _cartIndex;
-  int offset = 1;
-  int popularOffset = 1;
+  int? _popularPageSize;
+  int? _latestPageSize;
+  List<String>? _offsetList = [];
+  List<String>? _popularOffsetList = [];
+  int? _quantity = 1;
+  List<int>? _variationIndex;
+  int? _imageSliderIndex;
+  int? _cartIndex;
+  int? offset = 1;
+  int? popularOffset = 1;
 
-  Product get product => _product;
-  int get cartIndex => _cartIndex;
-  List<Product> get popularProductList => _popularProductList;
-  List<Product> get dailyItemList => _dailyItemList;
-  List<Product> get latestProductList => _latestProductList;
+  Product? get product => _product;
+  int? get cartIndex => _cartIndex;
+  List<Product>? get popularProductList => _popularProductList;
+  List<Product>? get dailyItemList => _dailyItemList;
+  List<Product>? get latestProductList => _latestProductList;
   bool get isLoading => _isLoading;
-  int get popularPageSize => _popularPageSize;
-  int get latestPageSize => _latestPageSize;
-  int get quantity => _quantity;
-  List<int> get variationIndex => _variationIndex;
-  int get imageSliderIndex => _imageSliderIndex;
+  int? get popularPageSize => _popularPageSize;
+  int? get latestPageSize => _latestPageSize;
+  int? get quantity => _quantity;
+  List<int>? get variationIndex => _variationIndex;
+  int? get imageSliderIndex => _imageSliderIndex;
 
   Future<void> getPopularProductList(BuildContext context, String _popularOffset, bool reload,String languageCode) async {
     if(reload || _popularOffset == '1') {
@@ -47,15 +47,15 @@ class ProductProvider extends ChangeNotifier {
       _popularOffsetList = [];
     }
 
-    if (!_popularOffsetList.contains(_popularOffset)) {
-      _popularOffsetList.add(_popularOffset);
+    if (!_popularOffsetList!.contains(_popularOffset)) {
+      _popularOffsetList!.add(_popularOffset);
       _isLoading = true;
       ApiResponse apiResponse = await productRepo.getPopularProductList(_popularOffset,languageCode);
-      if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+      if (apiResponse.response.statusCode == 200) {
         if (reload || _popularOffset == '1' ) {
           _popularProductList = [];
         }
-        _popularProductList.addAll(ProductModel.fromJson(apiResponse.response.data).products);
+        _popularProductList!.addAll(ProductModel.fromJson(apiResponse.response.data).products!);
         _popularPageSize = ProductModel.fromJson(apiResponse.response.data).totalSize;
         _isLoading = false;
 
@@ -78,15 +78,15 @@ class ProductProvider extends ChangeNotifier {
       _popularOffsetList = [];
     }
 
-    if (!_popularOffsetList.contains(_offset)) {
-      _popularOffsetList.add(_offset);
+    if (!_popularOffsetList!.contains(_offset)) {
+      _popularOffsetList!.add(_offset);
       _isLoading = true;
       ApiResponse apiResponse = await productRepo.getDailyItemList(_offset,languageCode);
-      if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+      if (apiResponse.response.statusCode == 200) {
         if (reload || _offset == '1' ) {
           _dailyItemList = [];
         }
-        _dailyItemList.addAll(ProductModel.fromJson(apiResponse.response.data).products);
+        _dailyItemList!.addAll(ProductModel.fromJson(apiResponse.response.data).products!);
         _popularPageSize = ProductModel.fromJson(apiResponse.response.data).totalSize;
         _isLoading = false;
 
@@ -108,14 +108,14 @@ class ProductProvider extends ChangeNotifier {
       _offsetList = [];
     }
 
-    if (!_offsetList.contains(_offset)) {
-      _offsetList.add(_offset);
+    if (!_offsetList!.contains(_offset)) {
+      _offsetList!.add(_offset);
       ApiResponse apiResponse = await productRepo.getLatestProductList(_offset,languageCode);
-      if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+      if (apiResponse.response.statusCode == 200) {
         if (reload || _offset == '1' ) {
           _latestProductList = [];
         }
-        _latestProductList.addAll(ProductModel.fromJson(apiResponse.response.data).products);
+        _latestProductList!.addAll(ProductModel.fromJson(apiResponse.response.data).products!);
         _latestPageSize = ProductModel.fromJson(apiResponse.response.data).totalSize;
         _isLoading = false;
 
@@ -148,9 +148,9 @@ class ProductProvider extends ChangeNotifier {
   Future<void> getProductDetails(BuildContext context, Product product, String languageCode) async {
     _product = null;
     ApiResponse apiResponse = await productRepo.getProductDetails(product.id.toString(),languageCode);
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
       _product = Product.fromJson(apiResponse.response.data);
-      initData(_product);
+      initData(_product!);
     } else {
       ApiChecker.checkApi(context, apiResponse);
     }
@@ -172,21 +172,21 @@ class ProductProvider extends ChangeNotifier {
     _variationIndex = [];
     _cartIndex = null;
     _quantity = 1;
-    product.choiceOptions.forEach((element) => _variationIndex.add(0));
+    product.choiceOptions!.forEach((element) => _variationIndex!.add(0));
   }
 
 
   void setQuantity(bool isIncrement) {
     if (isIncrement) {
-      _quantity = _quantity + 1;
+      _quantity = _quantity! + 1;
     } else {
-      _quantity = _quantity - 1;
+      _quantity = _quantity! - 1;
     }
     notifyListeners();
   }
 
   void setCartVariationIndex(int index, int i) {
-    _variationIndex[index] = i;
+    _variationIndex![index] = i;
     _quantity = 1;
     notifyListeners();
   }
@@ -199,9 +199,9 @@ class ProductProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String _errorText;
+  String? _errorText;
 
-  String get errorText => _errorText;
+  String? get errorText => _errorText;
 
   void setErrorText(String error) {
     _errorText = error;
@@ -209,7 +209,7 @@ class ProductProvider extends ChangeNotifier {
   }
 
   void removeData() {
-    _errorText = null;
+    _errorText = '';
     _rating = 0;
     notifyListeners();
   }
@@ -222,7 +222,7 @@ class ProductProvider extends ChangeNotifier {
   // Brand and category products
   List<Product> _categoryProductList = [];
   List<Product> _categoryAllProductList = [];
-  bool _hasData;
+  bool? _hasData;
 
   double _maxValue = 0;
 
@@ -232,14 +232,14 @@ class ProductProvider extends ChangeNotifier {
 
   List<Product> get categoryAllProductList => _categoryAllProductList;
 
-  bool get hasData => _hasData;
+  bool? get hasData => _hasData;
 
   void initCategoryProductList(String id, BuildContext context, String languageCode) async {
     _categoryProductList = [];
     _categoryAllProductList = [];
     _hasData = true;
     ApiResponse apiResponse = await productRepo.getBrandOrCategoryProductList(id, languageCode);
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
       _categoryProductList = [];
       _categoryAllProductList = [];
       apiResponse.response.data.forEach((product) => _categoryProductList.add(Product.fromJson(product)));
@@ -261,16 +261,16 @@ class ProductProvider extends ChangeNotifier {
 
   void sortCategoryProduct(int filterIndex) {
     if(filterIndex == 0) {
-      _categoryProductList.sort((product1, product2) => product1.price.compareTo(product2.price));
+      _categoryProductList.sort((product1, product2) => product1.price!.compareTo(product2.price!));
     }else if(filterIndex == 1) {
-      _categoryProductList.sort((product1, product2) => product1.price.compareTo(product2.price));
-      Iterable iterable = _categoryProductList.reversed;
+      _categoryProductList.sort((product1, product2) => product1.price!.compareTo(product2.price!));
+      Iterable<Product> iterable = _categoryProductList.reversed;
       _categoryProductList = iterable.toList();
     }else if(filterIndex == 2) {
-      _categoryProductList.sort((product1, product2) => product1.name.toLowerCase().compareTo(product2.name.toLowerCase()));
+      _categoryProductList.sort((product1, product2) => product1.name!.toLowerCase().compareTo(product2.name!.toLowerCase()));
     }else if(filterIndex == 3) {
-      _categoryProductList.sort((product1, product2) => product1.name.toLowerCase().compareTo(product2.name.toLowerCase()));
-      Iterable iterable = _categoryProductList.reversed;
+      _categoryProductList.sort((product1, product2) => product1.name!.toLowerCase().compareTo(product2.name!.toLowerCase()));
+      Iterable<Product> iterable = _categoryProductList.reversed;
       _categoryProductList = iterable.toList();
     }
     notifyListeners();
@@ -284,7 +284,7 @@ class ProductProvider extends ChangeNotifier {
     } else {
       _categoryProductList = [];
       categoryAllProductList.forEach((product) async {
-        if (product.name.toLowerCase().contains(query.toLowerCase())) {
+        if (product.name!.toLowerCase().contains(query.toLowerCase())) {
           _categoryProductList.add(product);
         }
       });
@@ -342,7 +342,7 @@ class ProductProvider extends ChangeNotifier {
         double bPrice=double.parse(b.price.toString());
         return aPrice.compareTo(bPrice);
       });
-      Iterable iterable = _categoryProductList.reversed;
+      Iterable<Product> iterable = _categoryProductList.reversed;
       _categoryProductList = iterable.toList();
     }
     notifyListeners();

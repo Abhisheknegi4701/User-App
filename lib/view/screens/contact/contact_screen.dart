@@ -35,7 +35,7 @@ class ContactScreen extends StatelessWidget {
                       padding: _width > 700 ? EdgeInsets.all(Dimensions.PADDING_SIZE_DEFAULT) : null,
                       decoration: _width > 700 ? BoxDecoration(
                         color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(10),
-                        boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 5, spreadRadius: 1)],
+                        boxShadow: [BoxShadow(color: Colors.grey[300]!, blurRadius: 5, spreadRadius: 1)],
                       ) : null,
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
 
@@ -44,12 +44,12 @@ class ContactScreen extends StatelessWidget {
 
                         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                           Icon(Icons.location_on, color: Theme.of(context).primaryColor, size: 25),
-                          Text(getTranslated('store_address', context), style: poppinsMedium),
+                          Text(getTranslated('store_address', context)!, style: poppinsMedium),
                         ]),
                         SizedBox(height: 10),
 
                         Text(
-                          Provider.of<SplashProvider>(context, listen: false).configModel.ecommerceAddress ?? 'no address',
+                          Provider.of<SplashProvider>(context, listen: false).configModel!.ecommerceAddress ?? 'no address',
                           style: poppinsRegular, textAlign: TextAlign.center,
                         ),
                         Divider(thickness: 2),
@@ -64,9 +64,9 @@ class ContactScreen extends StatelessWidget {
                                 minimumSize: Size(1, 50),
                               ),
                               onPressed: () {
-                                launchUrlString('tel:${Provider.of<SplashProvider>(context, listen: false).configModel.ecommercePhone}');
+                                launchUrlString('tel:${Provider.of<SplashProvider>(context, listen: false).configModel!.ecommercePhone}');
                               },
-                              child: Text(getTranslated('call_now', context), style: Theme.of(context).textTheme.headline3.copyWith(
+                              child: Text(getTranslated('call_now', context)!, style: Theme.of(context).textTheme.displaySmall!.copyWith(
                                 color: Theme.of(context).primaryColor,
                                 fontSize: Dimensions.FONT_SIZE_LARGE,
                               )),
@@ -75,7 +75,7 @@ class ContactScreen extends StatelessWidget {
                             Expanded(child: SizedBox(
                               height: 50,
                               child: CustomButton(
-                                buttonText: getTranslated('send_a_message', context),
+                                buttonText: getTranslated('send_a_message', context)!,
                                 onPressed: () async {
                                   Navigator.pushNamed(context, RouteHelper.getChatRoute(orderModel: null));
                                 },

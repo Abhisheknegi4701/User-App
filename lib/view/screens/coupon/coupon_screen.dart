@@ -14,7 +14,7 @@ import 'package:flutter_grocery/view/base/app_bar_base.dart';
 import 'package:flutter_grocery/view/base/custom_snackbar.dart';
 import 'package:flutter_grocery/view/base/no_data_screen.dart';
 import 'package:flutter_grocery/view/base/not_login_screen.dart';
-import 'package:flutter_grocery/view/base/web_app_bar/web_app_bar.dart';
+import 'package:flutter_grocery/view/base/preferedsizewidgetdem.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utill/color_resources.dart';
@@ -30,10 +30,10 @@ class CouponScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      appBar: ResponsiveHelper.isMobilePhone()? null: ResponsiveHelper.isDesktop(context)? PreferredSize(child: WebAppBar(), preferredSize: Size.fromHeight(120)): AppBarBase(),
+      appBar: ResponsiveHelper.isMobilePhone()? null: ResponsiveHelper.isDesktop(context)? preferredSizeWidgetDem(): AppBarBase(),
       body: _isLoggedIn ? Consumer<CouponProvider>(
         builder: (context, coupon, child) {
-          return coupon.couponList != null ? coupon.couponList.length > 0 ? RefreshIndicator(
+          return coupon.couponList != null ? coupon.couponList!.length > 0 ? RefreshIndicator(
             onRefresh: () async {
               await Provider.of<CouponProvider>(context, listen: false).getCouponList(context);
             },
@@ -58,7 +58,7 @@ class CouponScreen extends StatelessWidget {
                                   )
                                 ]) : BoxDecoration(),
                             child: ListView.builder(
-                              itemCount: coupon.couponList.length,
+                              itemCount: coupon.couponList!.length,
                               shrinkWrap: true,
                               padding: EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
                               itemBuilder: (context, index) {
@@ -66,9 +66,9 @@ class CouponScreen extends StatelessWidget {
                                   padding: EdgeInsets.only(bottom: Dimensions.PADDING_SIZE_LARGE),
                                   child: InkWell(
                                     onTap: () {
-                                      Clipboard.setData(ClipboardData(text: coupon.couponList[index].code));
+                                      Clipboard.setData(ClipboardData(text: coupon.couponList![index].code!));
 
-                                      showCustomSnackBar(getTranslated('coupon_code_copied', context), context,isError: false);
+                                      showCustomSnackBar(getTranslated('coupon_code_copied', context)!, context,isError: false);
                                     },
                                     child: Stack(children: [
 
@@ -93,19 +93,19 @@ class CouponScreen extends StatelessWidget {
                                           Expanded(
                                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
                                               SelectableText(
-                                                coupon.couponList[index].code,
+                                                coupon.couponList![index].code!,
                                                 style: poppinsMedium.copyWith(color: Colors.white),
                                               ),
                                               SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                                               Text(
-                                                coupon.couponList[index].discountType == 'percent' ? '${coupon.couponList[index].discount} %'
-                                                    : '${PriceConverter.convertPrice(context, coupon.couponList[index].discount)} off',
+                                                coupon.couponList![index].discountType == 'percent' ? '${coupon.couponList![index].discount} %'
+                                                    : '${PriceConverter.convertPrice(context, coupon.couponList![index].discount!)} off',
                                                 style: poppinsSemiBold.copyWith(
                                                     color: Colors.white, fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE),
                                               ),
                                               SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                                               Text(
-                                                '${getTranslated('valid_until', context)} ${DateConverter.isoStringToLocalDateOnly(coupon.couponList[index].expireDate)}',
+                                                '${getTranslated('valid_until', context)} ${DateConverter.isoStringToLocalDateOnly(coupon.couponList![index].expireDate!)}',
                                                 style: poppinsLight.copyWith(
                                                     color: Colors.white, fontSize: Dimensions.FONT_SIZE_SMALL),
                                               ),

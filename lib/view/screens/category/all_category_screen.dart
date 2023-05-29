@@ -1,4 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/category_model.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_grocery/utill/styles.dart';
 import 'package:flutter_grocery/view/base/app_bar_base.dart';
 import 'package:flutter_grocery/view/base/main_app_bar.dart';
 import 'package:flutter_grocery/view/base/no_data_screen.dart';
+import 'package:flutter_grocery/view/base/preferedsizewidgetdem.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 
@@ -29,8 +31,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
   @override
   void initState() {
     super.initState();
-    if(Provider.of<CategoryProvider>(context, listen: false).categoryList != null
-        && Provider.of<CategoryProvider>(context, listen: false).categoryList.length > 0
+    if(Provider.of<CategoryProvider>(context, listen: false).categoryList!.length > 0
     ) {
       _load();
     }else{
@@ -48,8 +49,8 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
   _load() async {
     final _categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
     _categoryProvider.changeIndex(0, notify: false);
-    if(_categoryProvider.categoryList.length > 0) {
-      _categoryProvider.getSubCategoryList(context, _categoryProvider.categoryList[0].id.toString(),
+    if(_categoryProvider.categoryList!.length > 0) {
+      _categoryProvider.getSubCategoryList(context, _categoryProvider.categoryList![0].id.toString(),
         Provider.of<LocalizationProvider>(context, listen: false).locale.languageCode,);
     }
 
@@ -59,13 +60,13 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: ResponsiveHelper.isMobilePhone()? null: ResponsiveHelper.isDesktop(context)? MainAppBar(): AppBarBase(),
+      appBar: ResponsiveHelper.isMobilePhone()? preferredSizeWidgetDem(): ResponsiveHelper.isDesktop(context)? MainAppBar(): AppBarBase(),
       body: Center(
         child: Container(
           width: 1170,
           child: Consumer<CategoryProvider>(
             builder: (context, categoryProvider, child) {
-              return categoryProvider.categoryList != null && categoryProvider.categoryList.length > 0
+              return categoryProvider.categoryList!.length > 0
                   ? Row(
                   children: [
                       Container(
@@ -74,15 +75,15 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
                         height: double.infinity,
                         decoration: BoxDecoration(
                           boxShadow: [
-                            BoxShadow(color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 900 : 200], spreadRadius: 3, blurRadius: 10),
+                            BoxShadow(color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 900 : 200]!, spreadRadius: 3, blurRadius: 10),
                           ],
                         ),
                         child: ListView.builder(
                           physics: BouncingScrollPhysics(),
-                          itemCount: categoryProvider.categoryList.length,
+                          itemCount: categoryProvider.categoryList!.length,
                           padding: EdgeInsets.all(0),
                           itemBuilder: (context, index) {
-                            CategoryModel _category = categoryProvider.categoryList[index];
+                            CategoryModel _category = categoryProvider.categoryList![index];
                             return InkWell(
                               onTap: () {
                                 categoryProvider.changeIndex(index);
@@ -90,15 +91,15 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
                                   Provider.of<LocalizationProvider>(context, listen: false).locale.languageCode);
                               },
                               child: CategoryItem(
-                                title: _category.name,
-                                icon: _category.image,
+                                title: _category.name!,
+                                icon: _category.image!,
                                 isSelected: categoryProvider.categoryIndex == index,
                               ),
                             );
                           },
                         ),
                       ),
-                      categoryProvider.subCategoryList != null
+                      !categoryProvider.subCategoryList.isNull
                           ? Expanded(
                               child: ListView.builder(
                                 padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
@@ -110,15 +111,15 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
                                       onTap: () {
                                         categoryProvider.changeSelectedIndex(-1);
                                         Provider.of<ProductProvider>(context, listen: false).initCategoryProductList(
-                                          categoryProvider.categoryList[categoryProvider.categoryIndex].id.toString(), context, Provider.of<LocalizationProvider>(context, listen: false).locale.languageCode,
+                                          categoryProvider.categoryList![categoryProvider.categoryIndex].id.toString(), context, Provider.of<LocalizationProvider>(context, listen: false).locale.languageCode,
                                         );
                                         Navigator.of(context).pushNamed(
                                           RouteHelper.getCategoryProductsRouteNew(
-                                           categoryModel:  categoryProvider.categoryList[categoryProvider.categoryIndex],
+                                           categoryModel:  categoryProvider.categoryList![categoryProvider.categoryIndex],
                                           ),
                                         );
                                       },
-                                      title: Text(getTranslated('all', context)),
+                                      title: Text(getTranslated('all', context)!),
                                       trailing: Icon(Icons.keyboard_arrow_right),
                                     );
                                   }
@@ -135,12 +136,12 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
 
                                       Navigator.of(context).pushNamed(
                                         RouteHelper.getCategoryProductsRouteNew(
-                                          categoryModel: categoryProvider.categoryList[categoryProvider.categoryIndex],
+                                          categoryModel: categoryProvider.categoryList![categoryProvider.categoryIndex],
                                           subCategory: categoryProvider.subCategoryList[index-1].name,
                                         ),
                                       );
                                     },
-                                    title: Text(categoryProvider.subCategoryList[index-1].name,
+                                    title: Text(categoryProvider.subCategoryList[index-1].name!,
                                       style: poppinsMedium.copyWith(fontSize: 13, color: ColorResources.getTextColor(context)),
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -152,7 +153,7 @@ class _AllCategoryScreenState extends State<AllCategoryScreen> {
                           : Expanded(child: SubCategoryShimmer()),
                     ],
               )
-                  : categoryProvider.categoryList != null && categoryProvider.categoryList.length == 0
+                  : categoryProvider.categoryList!.length == 0
                   ? NoDataScreen(isNothing: true,) : Center(child: CircularProgressIndicator());
             },
           ),
@@ -167,7 +168,7 @@ class CategoryItem extends StatelessWidget {
   final String icon;
   final bool isSelected;
 
-  CategoryItem({@required this.title, @required this.icon, @required this.isSelected});
+  CategoryItem({required this.title, required this.icon, required this.isSelected});
 
   Widget build(BuildContext context) {
     return Container(
@@ -195,7 +196,7 @@ class CategoryItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(50),
               child: FadeInImage.assetNetwork(
                 placeholder: Images.placeholder(context),
-                image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.categoryImageUrl}/$icon',
+                image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.categoryImageUrl}/$icon',
                 fit: BoxFit.cover, width: 100, height: 100,
                 imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 100, width: 100, fit: BoxFit.cover),
               ),
@@ -226,7 +227,7 @@ class SubCategoryShimmer extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return Shimmer(
           duration: Duration(seconds: 2),
-          enabled: Provider.of<CategoryProvider>(context).subCategoryList == null,
+          enabled: Provider.of<CategoryProvider>(context).subCategoryList.isNull,
           child: Container(
             height: 40,
             margin: EdgeInsets.only(left: 15, right: 15, top: 15),

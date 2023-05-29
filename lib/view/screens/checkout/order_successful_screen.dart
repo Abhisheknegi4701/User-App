@@ -14,9 +14,9 @@ import 'package:flutter_grocery/view/screens/order/track_order_screen.dart';
 
 class OrderSuccessfulScreen extends StatelessWidget {
   final String orderID;
-  final int status;
+  final int? status;
 
-  OrderSuccessfulScreen({@required this.orderID, this.status,});
+  OrderSuccessfulScreen({required this.orderID, this.status,});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class OrderSuccessfulScreen extends StatelessWidget {
                               : status == 1
                                   ? 'payment_failed'
                                   : 'payment_cancelled',
-                          context),
+                          context)!,
                       style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE, color: Theme.of(context).primaryColor),
                     ),
                     SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
@@ -57,7 +57,7 @@ class OrderSuccessfulScreen extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
                         child: CustomButton(
-                            buttonText: getTranslated(status == 0 ? 'track_order' : 'back_home', context),
+                            buttonText: getTranslated(status == 0 ? 'track_order' : 'back_home', context)!,
                             onPressed: () {
                               if (status == 0) {
                                 Navigator.pushReplacementNamed(context, RouteHelper.getOrderTrackingRoute(int.parse(orderID)), arguments: TrackOrderScreen(orderID: orderID, isBackButton: true));

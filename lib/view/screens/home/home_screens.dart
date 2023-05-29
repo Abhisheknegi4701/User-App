@@ -19,7 +19,6 @@ import 'package:flutter_grocery/view/screens/home/widget/home_item_view.dart';
 import 'package:flutter_grocery/view/screens/home/widget/product_view.dart';
 import 'package:provider/provider.dart';
 
-import '../../../provider/wallet_provider.dart';
 import '../../../utill/images.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -108,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
 
                         Consumer<BannerProvider>(builder: (context, banner, child) {
-                          return banner.bannerList == null ? BannersView() : banner.bannerList.length == 0 ? Container(
+                          return banner.bannerList == null ? BannersView() : banner.bannerList!.length == 0 ? Container(
                               width: MediaQuery.of(context).size.width,
                               height: ResponsiveHelper.isDesktop(context) ? 400 : MediaQuery.of(context).size.width * 0.4,
                               padding: EdgeInsets.only(top: Dimensions.PADDING_SIZE_LARGE, bottom: Dimensions.PADDING_SIZE_SMALL),
@@ -155,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                               ],
                             ),
-                                ) : Center(child: Text(getTranslated('no_banner_available', context)))
+                                ) : Center(child: Text(getTranslated('no_banner_available', context)!))
                               ],
                             ),
                           ) : BannersView();
@@ -163,32 +162,32 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         // Category
                         Consumer<CategoryProvider>(builder: (context, category, child) {
-                          return category.categoryList == null ? CategoryView() : category.categoryList.length == 0 ? SizedBox() : CategoryView();
+                          return category.categoryList == null ? CategoryView() : category.categoryList!.length == 0 ? SizedBox() : CategoryView();
                         }),
 
                        // Category
                         SizedBox(height: ResponsiveHelper.isDesktop(context) ? Dimensions.PADDING_SIZE_LARGE : 0),
 
-                        TitleWidget(title: getTranslated('daily_needs', context) ,onTap: () {
+                        TitleWidget(title: getTranslated('daily_needs', context)! ,onTap: () {
                           Navigator.pushNamed(context, RouteHelper.getHomeItemRoute('daily_needs'));
                         }),
                         Consumer<ProductProvider>(builder: (context, product, child) {
-                          return product.dailyItemList == null ? HomeItemView(isDailyItem: true) : product.dailyItemList.length == 0
+                          return product.dailyItemList == null ? HomeItemView(isDailyItem: true) : product.dailyItemList!.length == 0
                               ? SizedBox() : HomeItemView(isDailyItem: true);
                         }),
 
-                        TitleWidget(title: getTranslated('popular_item', context) ,onTap: () {
+                        TitleWidget(title: getTranslated('popular_item', context)! ,onTap: () {
                           Navigator.pushNamed(context, RouteHelper.getHomeItemRoute('popular_item'));
                         }),
 
                         Consumer<ProductProvider>(builder: (context, product, child) {
-                          return product.latestProductList == null ? HomeItemView(isDailyItem: false) : product.latestProductList.length == 0
+                          return product.latestProductList == null ? HomeItemView(isDailyItem: false) : product.latestProductList!.length == 0
                               ? SizedBox() : HomeItemView(isDailyItem: false);
                         }),
 
 
                         ResponsiveHelper.isMobilePhone() ? SizedBox(height: 10) : SizedBox.shrink(),
-                        TitleWidget(title: getTranslated('latest_items', context)),
+                        TitleWidget(title: getTranslated('latest_items', context)!),
                         ProductView(scrollController: _scrollController),
 
                       ]),

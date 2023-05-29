@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/datasource/remote/dio/dio_client.dart';
 import 'package:flutter_grocery/data/datasource/remote/exception/api_error_handler.dart';
 import 'package:flutter_grocery/data/model/response/base/api_response.dart';
@@ -8,7 +7,7 @@ import 'package:flutter_grocery/utill/app_constants.dart';
 class ProductRepo {
   final DioClient dioClient;
 
-  ProductRepo({@required this.dioClient});
+  ProductRepo({required this.dioClient});
 
   Future<ApiResponse> getPopularProductList(String offset, String languageCode) async {
     try {

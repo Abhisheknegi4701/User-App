@@ -8,7 +8,7 @@ class CustomCheckBox extends StatelessWidget {
   final String title;
   final int index;
 
-  CustomCheckBox({@required this.title, @required this.index});
+  CustomCheckBox({required this.title, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +20,12 @@ class CustomCheckBox extends StatelessWidget {
             Checkbox(
               value: order.paymentMethodIndex == index,
               activeColor: Theme.of(context).primaryColor,
-              onChanged: (bool isChecked) => order.setPaymentMethod(index),
+              onChanged: (bool? isChecked) => order.setPaymentMethod(index),
             ),
             Expanded(
               child: Text(title,
                   style: poppinsRegular.copyWith(
-                    color: order.paymentMethodIndex == index ? Theme.of(context).textTheme.bodyText1.color : ColorResources.getHintColor(context),
+                    color: order.paymentMethodIndex == index ? Theme.of(context).textTheme.bodyLarge!.color : ColorResources.getHintColor(context),
                   )),
             ),
           ]),

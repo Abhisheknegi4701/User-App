@@ -1,67 +1,67 @@
 
 class ConfigModel {
-  String _ecommerceName;
-  String _ecommerceLogo;
-  String _ecommerceAddress;
-  String _ecommercePhone;
-  String _ecommerceEmail;
-  EcommerceLocationCoverage _ecommerceLocationCoverage;
-  double _minimumOrderValue;
-  int _selfPickup;
-  BaseUrls _baseUrls;
-  String _currencySymbol;
-  double _deliveryCharge;
-  String _cashOnDelivery;
-  String _digitalPayment;
-  List<Branches> _branches;
-  String _termsAndConditions;
-  String _privacyPolicy;
-  String _aboutUs;
-  bool _emailVerification;
-  bool _phoneVerification;
-  String _currencySymbolPosition;
-  bool _maintenanceMode;
-  String _country;
-  DeliveryManagement _deliveryManagement;
-  PlayStoreConfig _playStoreConfig;
-  AppStoreConfig _appStoreConfig;
-  List<SocialMediaLink> _socialMediaLink;
-  String _footerCopyright;
-  int _decimalPointSettings;
-  String _timeFormat;
-  String _faq;
-  SocialStatus _SocialLoginStatus;
+  String? _ecommerceName;
+  String? _ecommerceLogo;
+  String? _ecommerceAddress;
+  String? _ecommercePhone;
+  String? _ecommerceEmail;
+  EcommerceLocationCoverage? _ecommerceLocationCoverage;
+  double? _minimumOrderValue;
+  int? _selfPickup;
+  BaseUrls? _baseUrls;
+  String? _currencySymbol;
+  double? _deliveryCharge;
+  String? _cashOnDelivery;
+  String? _digitalPayment;
+  List<Branches>? _branches;
+  String? _termsAndConditions;
+  String? _privacyPolicy;
+  String? _aboutUs;
+  bool? _emailVerification;
+  bool? _phoneVerification;
+  String? _currencySymbolPosition;
+  bool? _maintenanceMode;
+  String? _country;
+  DeliveryManagement? _deliveryManagement;
+  PlayStoreConfig? _playStoreConfig;
+  AppStoreConfig? _appStoreConfig;
+  List<SocialMediaLink>? _socialMediaLink;
+  String? _footerCopyright;
+  int? _decimalPointSettings;
+  String? _timeFormat;
+  String? _faq;
+  SocialStatus? _SocialLoginStatus;
 
   ConfigModel(
-      {String ecommerceName,
-        String ecommerceLogo,
-        String ecommerceAddress,
-        String ecommercePhone,
-        String ecommerceEmail,
-        EcommerceLocationCoverage ecommerceLocationCoverage,
-        double minimumOrderValue,
-        int selfPickup,
-        BaseUrls baseUrls,
-        String currencySymbol,
-        double deliveryCharge,
-        String cashOnDelivery,
-        String digitalPayment,
-        List<Branches> branches,
-        String termsAndConditions,
-        bool emailVerification,
-        bool phoneVerification,
-        String currencySymbolPosition,
-        bool maintenanceMode,
-        String country,
-        DeliveryManagement deliveryManagement,
-        PlayStoreConfig playStoreConfig,
-        AppStoreConfig appStoreConfig,
-        List<SocialMediaLink> socialMediaLink,
-        String footerCopyright,
-        int decimalPointSettings,
-        String timeFormat,
-        String faq,
-        SocialStatus SocialLoginStatus,
+      {required String ecommerceName,
+        required String ecommerceLogo,
+        required String ecommerceAddress,
+        required String ecommercePhone,
+        required String ecommerceEmail,
+        required EcommerceLocationCoverage ecommerceLocationCoverage,
+        required double minimumOrderValue,
+        required int selfPickup,
+        required BaseUrls baseUrls,
+        required String currencySymbol,
+        required double deliveryCharge,
+        required String cashOnDelivery,
+        required String digitalPayment,
+        required List<Branches> branches,
+        required String termsAndConditions,
+        required bool emailVerification,
+        required bool phoneVerification,
+        required String currencySymbolPosition,
+        required bool maintenanceMode,
+        required String country,
+        required DeliveryManagement deliveryManagement,
+        required PlayStoreConfig playStoreConfig,
+        required AppStoreConfig appStoreConfig,
+        required List<SocialMediaLink> socialMediaLink,
+        required String footerCopyright,
+        required int decimalPointSettings,
+        required String timeFormat,
+        required String faq,
+        required SocialStatus SocialLoginStatus,
       }) {
     this._ecommerceName = ecommerceName;
     this._ecommerceLogo = ecommerceLogo;
@@ -96,37 +96,37 @@ class ConfigModel {
     this._SocialLoginStatus = SocialLoginStatus;
   }
 
-  String get ecommerceName => _ecommerceName;
-  String get ecommerceLogo => _ecommerceLogo;
-  String get ecommerceAddress => _ecommerceAddress;
-  String get ecommercePhone => _ecommercePhone;
-  String get ecommerceEmail => _ecommerceEmail;
-  EcommerceLocationCoverage get ecommerceLocationCoverage => _ecommerceLocationCoverage;
-  double get minimumOrderValue => _minimumOrderValue;
-  int get selfPickup => _selfPickup;
-  BaseUrls get baseUrls => _baseUrls;
-  String get currencySymbol => _currencySymbol;
-  double get deliveryCharge => _deliveryCharge;
-  String get cashOnDelivery => _cashOnDelivery;
-  String get digitalPayment => _digitalPayment;
-  List<Branches> get branches => _branches;
-  String get termsAndConditions => _termsAndConditions;
-  String get aboutUs=> _aboutUs;
-  String get privacyPolicy=> _privacyPolicy;
-  bool get emailVerification => _emailVerification;
-  bool get phoneVerification => _phoneVerification;
-  String get currencySymbolPosition => _currencySymbolPosition;
-  bool get maintenanceMode => _maintenanceMode;
-  String get country => _country;
-  DeliveryManagement get deliveryManagement => _deliveryManagement;
-  PlayStoreConfig get playStoreConfig => _playStoreConfig;
-  AppStoreConfig get appStoreConfig => _appStoreConfig;
-  List<SocialMediaLink> get socialMediaLink => _socialMediaLink;
-  String get footerCopyright => _footerCopyright;
-  int get decimalPointSettings => _decimalPointSettings;
-  String get timeFormat => _timeFormat;
-  String get faq => _faq;
-  SocialStatus get socialLoginStatus => _SocialLoginStatus;
+  String? get ecommerceName => _ecommerceName;
+  String? get ecommerceLogo => _ecommerceLogo;
+  String? get ecommerceAddress => _ecommerceAddress;
+  String? get ecommercePhone => _ecommercePhone;
+  String? get ecommerceEmail => _ecommerceEmail;
+  EcommerceLocationCoverage? get ecommerceLocationCoverage => _ecommerceLocationCoverage;
+  double? get minimumOrderValue => _minimumOrderValue;
+  int? get selfPickup => _selfPickup;
+  BaseUrls? get baseUrls => _baseUrls;
+  String? get currencySymbol => _currencySymbol;
+  double? get deliveryCharge => _deliveryCharge;
+  String? get cashOnDelivery => _cashOnDelivery;
+  String? get digitalPayment => _digitalPayment;
+  List<Branches>? get branches => _branches;
+  String? get termsAndConditions => _termsAndConditions;
+  String? get aboutUs=> _aboutUs;
+  String? get privacyPolicy=> _privacyPolicy;
+  bool? get emailVerification => _emailVerification;
+  bool? get phoneVerification => _phoneVerification;
+  String? get currencySymbolPosition => _currencySymbolPosition;
+  bool? get maintenanceMode => _maintenanceMode;
+  String? get country => _country;
+  DeliveryManagement? get deliveryManagement => _deliveryManagement;
+  PlayStoreConfig? get playStoreConfig => _playStoreConfig;
+  AppStoreConfig? get appStoreConfig => _appStoreConfig;
+  List<SocialMediaLink>? get socialMediaLink => _socialMediaLink;
+  String? get footerCopyright => _footerCopyright;
+  int? get decimalPointSettings => _decimalPointSettings;
+  String? get timeFormat => _timeFormat;
+  String? get faq => _faq;
+  SocialStatus? get socialLoginStatus => _SocialLoginStatus;
 
   ConfigModel.fromJson(Map<String, dynamic> json) {
     _ecommerceName = json['ecommerce_name'];
@@ -150,7 +150,7 @@ class ConfigModel {
     if (json['branches'] != null) {
       _branches = [];
       json['branches'].forEach((v) {
-        _branches.add(new Branches.fromJson(v));
+        _branches!.add(new Branches.fromJson(v));
       });
     }
     _termsAndConditions = json['terms_and_conditions'];
@@ -173,14 +173,14 @@ class ConfigModel {
     if (json['social_media_link'] != null) {
       _socialMediaLink = [];
       json['social_media_link'].forEach((v) {
-        _socialMediaLink.add(new SocialMediaLink.fromJson(v));
+        _socialMediaLink!.add(new SocialMediaLink.fromJson(v));
       });
     }
     if(json['footer_text']!=null){
       _footerCopyright = json['footer_text'];
     }
     try{
-      _decimalPointSettings = int.parse(json['decimal_point_settings'].toString()) ?? 1;
+      _decimalPointSettings = int.parse(json['decimal_point_settings'].toString());
       _timeFormat =  json['time_format'] ?? 12;
     }catch(e){
       _decimalPointSettings = 1;
@@ -198,22 +198,16 @@ class ConfigModel {
     data['ecommerce_address'] = this._ecommerceAddress;
     data['ecommerce_phone'] = this._ecommercePhone;
     data['ecommerce_email'] = this._ecommerceEmail;
-    if (this._ecommerceLocationCoverage != null) {
-      data['ecommerce_location_coverage'] =
-          this._ecommerceLocationCoverage.toJson();
-    }
+    data['ecommerce_location_coverage'] =
+        this._ecommerceLocationCoverage!.toJson();
     data['minimum_order_value'] = this._minimumOrderValue;
     data['self_pickup'] = this._selfPickup;
-    if (this._baseUrls != null) {
-      data['base_urls'] = this._baseUrls.toJson();
-    }
+    data['base_urls'] = this._baseUrls!.toJson();
     data['currency_symbol'] = this._currencySymbol;
     data['delivery_charge'] = this._deliveryCharge;
     data['cash_on_delivery'] = this._cashOnDelivery;
     data['digital_payment'] = this._digitalPayment;
-    if (this._branches != null) {
-      data['branches'] = this._branches.map((v) => v.toJson()).toList();
-    }
+    data['branches'] = this._branches!.map((v) => v.toJson()).toList();
     data['terms_and_conditions'] = this._termsAndConditions;
     data['privacy_policy'] = this._privacyPolicy;
     data['about_us'] = this._aboutUs;
@@ -222,15 +216,9 @@ class ConfigModel {
     data['currency_symbol_position'] = this._currencySymbolPosition;
     data['maintenance_mode'] = this._maintenanceMode;
     data['country'] = this._country;
-    if (this._deliveryManagement != null) {
-      data['delivery_management'] = this._deliveryManagement.toJson();
-    }
-    if (this._playStoreConfig != null) {
-      data['play_store_config'] = this._playStoreConfig.toJson();
-    }
-    if (this._appStoreConfig != null) {
-      data['play_store_config'] = this._appStoreConfig.toJson();
-    }
+    data['delivery_management'] = this._deliveryManagement!.toJson();
+    data['play_store_config'] = this._playStoreConfig!.toJson();
+    data['play_store_config'] = this._appStoreConfig!.toJson();
     data['footer_text'] = this._footerCopyright;
     data['faq'] = this._faq;
     data['social_login'] = this._SocialLoginStatus;
@@ -239,19 +227,19 @@ class ConfigModel {
 }
 
 class EcommerceLocationCoverage {
-  String _longitude;
-  String _latitude;
-  double _coverage;
+  String? _longitude;
+  String? _latitude;
+  double? _coverage;
 
-  EcommerceLocationCoverage({String longitude, String latitude, double coverage}) {
+  EcommerceLocationCoverage({required String longitude, required String latitude, required double coverage}) {
     this._longitude = longitude;
     this._latitude = latitude;
     this._coverage = coverage;
   }
 
-  String get longitude => _longitude;
-  String get latitude => _latitude;
-  double get coverage => _coverage;
+  String? get longitude => _longitude;
+  String? get latitude => _latitude;
+  double? get coverage => _coverage;
 
   EcommerceLocationCoverage.fromJson(Map<String, dynamic> json) {
     _longitude = json['longitude'];
@@ -269,18 +257,18 @@ class EcommerceLocationCoverage {
 }
 
 class PlayStoreConfig{
-  bool _status;
-  String _link;
-  double _minVersion;
+  bool? _status;
+  String? _link;
+  double? _minVersion;
 
-  PlayStoreConfig({bool status, String link, double minVersion}){
+  PlayStoreConfig({required bool status, required String link, required double minVersion}){
     this._status = status;
     this._link = link;
     this._minVersion = minVersion;
   }
-  bool get status => _status;
-  String get link => _link;
-  double get minVersion =>_minVersion;
+  bool? get status => _status;
+  String? get link => _link;
+  double? get minVersion =>_minVersion;
 
   PlayStoreConfig.fromJson(Map<String, dynamic> json) {
     _status = json['status'];
@@ -304,19 +292,19 @@ class PlayStoreConfig{
 }
 
 class AppStoreConfig{
-  bool _status;
-  String _link;
-  double _minVersion;
+  bool? _status;
+  String? _link;
+  double? _minVersion;
 
-  AppStoreConfig({bool status, String link, double minVersion}){
+  AppStoreConfig({required bool status, required String link, required double minVersion}){
     this._status = status;
     this._link = link;
     this._minVersion = minVersion;
   }
 
-  bool get status => _status;
-  String get link => _link;
-  double get minVersion =>_minVersion;
+  bool? get status => _status;
+  String? get link => _link;
+  double? get minVersion =>_minVersion;
 
 
   AppStoreConfig.fromJson(Map<String, dynamic> json) {
@@ -342,28 +330,28 @@ class AppStoreConfig{
 }
 
 class BaseUrls {
-  String _productImageUrl;
-  String _customerImageUrl;
-  String _bannerImageUrl;
-  String _categoryImageUrl;
-  String _reviewImageUrl;
-  String _notificationImageUrl;
-  String _ecommerceImageUrl;
-  String _deliveryManImageUrl;
-  String _chatImageUrl;
-  String _categoryBanner;
+  String? _productImageUrl;
+  String? _customerImageUrl;
+  String? _bannerImageUrl;
+  String? _categoryImageUrl;
+  String? _reviewImageUrl;
+  String? _notificationImageUrl;
+  String? _ecommerceImageUrl;
+  String? _deliveryManImageUrl;
+  String? _chatImageUrl;
+  String? _categoryBanner;
 
   BaseUrls(
-      {String productImageUrl,
-        String customerImageUrl,
-        String bannerImageUrl,
-        String categoryImageUrl,
-        String reviewImageUrl,
-        String notificationImageUrl,
-        String ecommerceImageUrl,
-        String deliveryManImageUrl,
-        String chatImageUrl,
-        String categoryBanner,
+      {required String productImageUrl,
+        required String customerImageUrl,
+        required String bannerImageUrl,
+        required String categoryImageUrl,
+        required String reviewImageUrl,
+        required String notificationImageUrl,
+        required String ecommerceImageUrl,
+        required String deliveryManImageUrl,
+        required String chatImageUrl,
+        required String categoryBanner,
       }) {
     this._productImageUrl = productImageUrl;
     this._customerImageUrl = customerImageUrl;
@@ -377,16 +365,16 @@ class BaseUrls {
     this._categoryBanner = categoryBanner;
   }
 
-  String get productImageUrl => _productImageUrl;
-  String get customerImageUrl => _customerImageUrl;
-  String get bannerImageUrl => _bannerImageUrl;
-  String get categoryImageUrl => _categoryImageUrl;
-  String get reviewImageUrl => _reviewImageUrl;
-  String get notificationImageUrl => _notificationImageUrl;
-  String get ecommerceImageUrl => _ecommerceImageUrl;
-  String get deliveryManImageUrl => _deliveryManImageUrl;
-  String get chatImageUrl => _chatImageUrl;
-  String get categoryBanner => _categoryBanner;
+  String? get productImageUrl => _productImageUrl;
+  String? get customerImageUrl => _customerImageUrl;
+  String? get bannerImageUrl => _bannerImageUrl;
+  String? get categoryImageUrl => _categoryImageUrl;
+  String? get reviewImageUrl => _reviewImageUrl;
+  String? get notificationImageUrl => _notificationImageUrl;
+  String? get ecommerceImageUrl => _ecommerceImageUrl;
+  String? get deliveryManImageUrl => _deliveryManImageUrl;
+  String? get chatImageUrl => _chatImageUrl;
+  String? get categoryBanner => _categoryBanner;
 
   BaseUrls.fromJson(Map<String, dynamic> json) {
     _productImageUrl = json['product_image_url'];
@@ -417,14 +405,14 @@ class BaseUrls {
   }
 }
 class SocialMediaLink{
-  int _id;
-  String _name;
-  String _link;
-  int _status;
-  String _createdAt;
-  String _updatedAt;
+  int? _id;
+  String? _name;
+  String? _link;
+  int? _status;
+  String? _createdAt;
+  String? _updatedAt;
 
-  SocialMediaLink({int id, String name, String link, int status, String createdAt, String updatedAt}){
+  SocialMediaLink({required int id, required String name, required String link, required int status, required String createdAt, required String updatedAt}){
     this._id = id;
     this._name = name;
     this._link = link;
@@ -432,12 +420,12 @@ class SocialMediaLink{
     this._createdAt = createdAt;
     this._updatedAt = updatedAt;
   }
-  int get id => _id;
-  String get name => _name;
-  String get link => _link;
-  int get status => _status;
-  String get createdAt => _createdAt;
-  String get updatedAt => _updatedAt;
+  int? get id => _id;
+  String? get name => _name;
+  String? get link => _link;
+  int? get status => _status;
+  String? get createdAt => _createdAt;
+  String? get updatedAt => _updatedAt;
 
   SocialMediaLink.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
@@ -462,22 +450,22 @@ class SocialMediaLink{
 }
 
 class Branches {
-  int _id;
-  String _name;
-  String _email;
-  String _longitude;
-  String _latitude;
-  String _address;
-  double _coverage;
+  int? _id;
+  String? _name;
+  String? _email;
+  String? _longitude;
+  String? _latitude;
+  String? _address;
+  double? _coverage;
 
   Branches(
-      {int id,
-        String name,
-        String email,
-        String longitude,
-        String latitude,
-        String address,
-        double coverage}) {
+      {required int id,
+        required String name,
+        required String email,
+        required String longitude,
+        required String latitude,
+        required String address,
+        required double coverage}) {
     this._id = id;
     this._name = name;
     this._email = email;
@@ -487,13 +475,13 @@ class Branches {
     this._coverage = coverage;
   }
 
-  int get id => _id;
-  String get name => _name;
-  String get email => _email;
-  String get longitude => _longitude;
-  String get latitude => _latitude;
-  String get address => _address;
-  double get coverage => _coverage;
+  int? get id => _id;
+  String? get name => _name;
+  String? get email => _email;
+  String? get longitude => _longitude;
+  String? get latitude => _latitude;
+  String? get address => _address;
+  double? get coverage => _coverage;
 
   Branches.fromJson(Map<String, dynamic> json) {
     _id = json['id'];
@@ -519,20 +507,20 @@ class Branches {
 }
 
 class DeliveryManagement {
-  int _status;
-  double _minShippingCharge;
-  double _shippingPerKm;
+  int? _status;
+  double? _minShippingCharge;
+  double? _shippingPerKm;
 
   DeliveryManagement(
-      {int status, double minShippingCharge, double shippingPerKm}) {
+      {required int status, required double minShippingCharge, required double shippingPerKm}) {
     this._status = status;
     this._minShippingCharge = minShippingCharge;
     this._shippingPerKm = shippingPerKm;
   }
 
-  int get status => _status;
-  double get minShippingCharge => _minShippingCharge;
-  double get shippingPerKm => _shippingPerKm;
+  int? get status => _status;
+  double? get minShippingCharge => _minShippingCharge;
+  double? get shippingPerKm => _shippingPerKm;
 
   DeliveryManagement.fromJson(Map<String, dynamic> json) {
     _status = json['status'];
@@ -550,8 +538,8 @@ class DeliveryManagement {
 }
 
 class SocialStatus{
-  bool isGoogle;
-  bool isFacebook;
+  bool? isGoogle;
+  bool? isFacebook;
 
   SocialStatus(this.isGoogle, this.isFacebook);
 

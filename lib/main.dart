@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
@@ -33,7 +34,6 @@ import 'package:flutter_grocery/theme/light_theme.dart';
 import 'package:flutter_grocery/utill/app_constants.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:new_version/new_version.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -46,7 +46,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-AndroidNotificationChannel channel;
+AndroidNotificationChannel? channel;
 Future<void> main() async {
   await SentryFlutter.init(
     (options) {
@@ -58,6 +58,7 @@ Future<void> main() async {
     },
     appRunner: () => myMainApp(),
   );
+  //myMainApp();
 }
 
 Future<void> myMainApp() async {
@@ -71,12 +72,12 @@ Future<void> myMainApp() async {
   } else {
     await Firebase.initializeApp(
         options: FirebaseOptions(
-            apiKey: "AIzaSyCMfhYxqssAQF3QiNzw0Gb-V9M51EM4ODY",
+            apiKey: "AIzaSyAhUVJFBJQeya6yYp7q3Y4fFnFtNv-vi3s",
             authDomain: "thefreshmartapp.firebaseapp.com",
-            projectId: "thefreshmartapp",
-            storageBucket: "thefreshmartapp.appspot.com",
-            messagingSenderId: "130300226077",
-            appId: "1:130300226077:web:b141a44a969f74957f34f4",
+            projectId: "thefreshmartapps",
+            storageBucket: "thefreshmartapps.appspot.com",
+            messagingSenderId: "683048467505",
+            appId: "1:683048467505:ios:436779ab794aea61046910",
             measurementId: "G-B6388W4VYB"));
 
     await FacebookAuth.instance.webAndDesktopInitialize(
@@ -87,7 +88,7 @@ Future<void> myMainApp() async {
     );
   }
   await di.init();
-  int _orderID;
+  int? _orderID;
   try {
     if (!kIsWeb) {
       channel = const AndroidNotificationChannel(
@@ -96,11 +97,11 @@ Future<void> myMainApp() async {
         importance: Importance.high,
       );
     }
-    final RemoteMessage remoteMessage =
+    final RemoteMessage? remoteMessage =
         await FirebaseMessaging.instance.getInitialMessage();
     if (remoteMessage != null) {
-      _orderID = remoteMessage.notification.titleLocKey != null
-          ? int.parse(remoteMessage.notification.titleLocKey)
+      _orderID = remoteMessage.notification!.titleLocKey != null
+          ? int.parse(remoteMessage.notification!.titleLocKey!)
           : null;
     }
     await NotificationHelper.initialize(flutterLocalNotificationsPlugin);
@@ -131,14 +132,14 @@ Future<void> myMainApp() async {
       ChangeNotifierProvider(create: (context) => di.sl<NewsLetterProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<WishListProvider>()),
     ],
-    child: MyApp(orderID: _orderID, isWeb: !kIsWeb),
+    child: MyApp(orderID: _orderID, isWeb: kIsWeb,),
   ));
 }
 
 class MyApp extends StatefulWidget {
-  final int orderID;
+  final int? orderID;
   final bool isWeb;
-  MyApp({@required this.orderID, @required this.isWeb});
+  MyApp({required this.orderID, required this.isWeb});
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -180,31 +181,28 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     List<Locale> _locals = [];
     AppConstants.languages.forEach((language) {
-      _locals.add(Locale(language.languageCode, language.countryCode));
+      _locals.add(Locale(language.languageCode!, language.countryCode));
     });
     return Consumer<SplashProvider>(
       builder: (context, splashProvider, child) {
-        return (kIsWeb && splashProvider.configModel == null)
-            ? SizedBox()
+        return (kIsWeb && splashProvider.configModel != null)
+            ? const SizedBox()
             : MaterialApp(
-                title: splashProvider.configModel != null
-                    ? splashProvider.configModel.ecommerceName ?? ''
+                title: splashProvider.configModel!.ecommerceName != ""
+                    ? splashProvider.configModel!.ecommerceName ?? ''
                     : AppConstants.APP_NAME,
                 initialRoute: ResponsiveHelper.isMobilePhone()
                     ? widget.orderID == null
                         ? RouteHelper.splash
-                        : RouteHelper.getOrderDetailsRoute(widget.orderID)
+                        : RouteHelper.getOrderDetailsRoute(widget.orderID!)
                     : Provider.of<SplashProvider>(context, listen: false)
-                            .configModel
-                            .maintenanceMode
-                        ? RouteHelper.getMaintenanceRoute()
+                            .configModel!
+                            .maintenanceMode!? RouteHelper.getMaintenanceRoute()
                         : RouteHelper.menu,
                 onGenerateRoute: RouteHelper.router.generator,
                 debugShowCheckedModeBanner: false,
                 navigatorKey: navigatorKey,
-                theme: Provider.of<ThemeProvider>(context).darkTheme
-                    ? dark
-                    : light,
+                theme: Provider.of<ThemeProvider>(context).darkTheme ? dark : light,
                 locale: Provider.of<LocalizationProvider>(context).locale,
                 localizationsDelegates: [
                   AppLocalization.delegate,
@@ -227,7 +225,7 @@ class _MyAppState extends State<MyApp> {
 
 class MyHttpOverrides extends HttpOverrides {
   @override
-  HttpClient createHttpClient(SecurityContext context) {
+  HttpClient createHttpClient(SecurityContext? context) {
     return super.createHttpClient(context)
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
@@ -235,6 +233,6 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 class Get {
-  static BuildContext get context => navigatorKey.currentContext;
-  static NavigatorState get navigator => navigatorKey.currentState;
+  static BuildContext? get context => navigatorKey.currentContext;
+  static NavigatorState? get navigator => navigatorKey.currentState;
 }

@@ -67,7 +67,7 @@ class DateConverter {
   }
 
   static String _timeFormatter(BuildContext context) {
-    return Provider.of<SplashProvider>(context, listen: false).configModel.timeFormat == '24' ? 'HH:mm' : 'hh:mm a';
+    return Provider.of<SplashProvider>(context, listen: false).configModel!.timeFormat == '24' ? 'HH:mm' : 'hh:mm a';
   }
 
 }

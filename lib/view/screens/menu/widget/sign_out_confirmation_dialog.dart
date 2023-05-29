@@ -28,7 +28,7 @@ class SignOutConfirmationDialog extends StatelessWidget {
 
             Padding(
               padding: EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
-              child: Text(getTranslated('want_to_sign_out', context), style: poppinsBold, textAlign: TextAlign.center),
+              child: Text(getTranslated('want_to_sign_out', context)!, style: poppinsBold, textAlign: TextAlign.center),
             ),
 
             Divider(height: 0, color: ColorResources.getHintColor(context)),
@@ -50,7 +50,7 @@ class SignOutConfirmationDialog extends StatelessWidget {
                   padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10))),
-                  child: Text(getTranslated('yes', context), style: poppinsBold.copyWith(color: Theme.of(context).primaryColor)),
+                  child: Text(getTranslated('yes', context)!, style: poppinsBold.copyWith(color: Theme.of(context).primaryColor)),
                 ),
               )),
 
@@ -60,7 +60,7 @@ class SignOutConfirmationDialog extends StatelessWidget {
                   padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.only(bottomRight: Radius.circular(10))),
-                  child: Text(getTranslated('no', context), style: poppinsBold.copyWith(color: Colors.white)),
+                  child: Text(getTranslated('no', context)!, style: poppinsBold.copyWith(color: Colors.white)),
                 ),
               )),
 

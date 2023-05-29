@@ -8,8 +8,9 @@ import 'package:flutter_grocery/view/base/footer_view.dart';
 import 'package:flutter_grocery/view/base/no_data_screen.dart';
 import 'package:flutter_grocery/view/base/not_login_screen.dart';
 import 'package:flutter_grocery/view/base/product_widget.dart';
-import 'package:flutter_grocery/view/base/web_app_bar/web_app_bar.dart';
 import 'package:provider/provider.dart';
+
+import '../../base/preferedsizewidgetdem.dart';
 
 class WishListScreen extends StatefulWidget {
   @override
@@ -28,13 +29,13 @@ class _WishListScreenState extends State<WishListScreen> {
     final _height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: ResponsiveHelper.isMobilePhone()? null: ResponsiveHelper.isDesktop(context)? PreferredSize(child: WebAppBar(), preferredSize: Size.fromHeight(120)) : AppBarBase(),
+      appBar: ResponsiveHelper.isMobilePhone() ? Container(): ResponsiveHelper.isDesktop(context)? preferredSizeWidgetDem() : AppBarBase(),
       body: _isLoggedIn ? Consumer<WishListProvider>(
         builder: (context, wishlistProvider, child) {
           if(wishlistProvider.isLoading) {
            return Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)));
           }
-          return wishlistProvider.wishList != null ? wishlistProvider.wishList.length > 0 ? RefreshIndicator(
+          return wishlistProvider.wishList!.isNotEmpty? RefreshIndicator(
             onRefresh: () async {
               await Provider.of<WishListProvider>(context, listen: false).getWishList(context);
             },
@@ -55,15 +56,15 @@ class _WishListScreenState extends State<WishListScreen> {
                               SliverGridDelegateWithFixedCrossAxisCount(crossAxisSpacing: 5,
                                   mainAxisSpacing: 5, childAspectRatio: 4,
                                   crossAxisCount: ResponsiveHelper.isTab(context) ? 2 : 1),
-                              itemCount: wishlistProvider.wishList.length,
+                              itemCount: wishlistProvider.wishList!.length,
                               padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_SMALL),
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
                               itemBuilder: (BuildContext context, int index) {
                                 return ResponsiveHelper.isDesktop(context) ? Padding(
                                   padding: const EdgeInsets.all(5.0),
-                                  child: ProductWidget(product: wishlistProvider.wishList[index]),
-                                ) : ProductWidget(product: wishlistProvider.wishList[index]);
+                                  child: ProductWidget(product: wishlistProvider.wishList![index]),
+                                ) : ProductWidget(product: wishlistProvider.wishList![index]);
                               },
                             )
                           ),
@@ -75,8 +76,7 @@ class _WishListScreenState extends State<WishListScreen> {
                 ),
               ),
             ),
-          ): NoDataScreen()
-            : Center(child: CircularProgressIndicator(valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)));
+          ): NoDataScreen();
         },
       ) : NotLoggedInScreen(),
     );

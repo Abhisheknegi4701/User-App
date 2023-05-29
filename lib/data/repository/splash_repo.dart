@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/datasource/remote/dio/dio_client.dart';
 import 'package:flutter_grocery/data/datasource/remote/exception/api_error_handler.dart';
 import 'package:flutter_grocery/data/model/response/base/api_response.dart';
@@ -8,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SplashRepo {
   final DioClient dioClient;
   final SharedPreferences sharedPreferences;
-  SplashRepo({@required this.sharedPreferences, @required this.dioClient});
+  SplashRepo({required this.sharedPreferences, required this.dioClient});
 
   Future<ApiResponse> getConfig() async {
     try {

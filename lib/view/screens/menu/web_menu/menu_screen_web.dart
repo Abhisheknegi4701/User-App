@@ -21,7 +21,7 @@ import 'menu_item_web.dart';
 
 class MenuScreenWeb extends StatelessWidget {
   final bool isLoggedIn;
-  const MenuScreenWeb({Key key, @required this.isLoggedIn}) : super(key: key);
+  const MenuScreenWeb({Key? key, required this.isLoggedIn}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +49,15 @@ class MenuScreenWeb extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       isLoggedIn ? profileProvider.userInfoModel != null ? Text(
-                                        '${profileProvider.userInfoModel.fName ?? ''} ${profileProvider.userInfoModel.lName ?? ''}',
+                                        '${profileProvider.userInfoModel!.fName ?? ''} ${profileProvider.userInfoModel!.lName ?? ''}',
                                         style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE, color: ColorResources.getTextColor(context)),
                                       ) : SizedBox(height: Dimensions.PADDING_SIZE_DEFAULT, width: 150) : Text(
-                                        getTranslated('guest', context),
+                                        getTranslated('guest', context)!,
                                         style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE, color: ColorResources.getTextColor(context)),
                                       ),
                                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                                       isLoggedIn ? profileProvider.userInfoModel != null ? Text(
-                                        '${profileProvider.userInfoModel.email ?? ''}',
+                                        '${profileProvider.userInfoModel!.email ?? ''}',
                                         style: poppinsRegular.copyWith(color: ColorResources.getTextColor(context)),
                                       ) : SizedBox(height: 15, width: 100) : Text(
                                         'demo@demo.com',
@@ -75,30 +75,30 @@ class MenuScreenWeb extends StatelessWidget {
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
-                                        MenuItemWeb(image: Images.order_list, title: getTranslated('my_order', context), onTap: () => Navigator.pushNamed(context, RouteHelper.myOrder)),
-                                        MenuItemWeb(image: Images.profile, title: getTranslated('profile', context),
+                                        MenuItemWeb(image: Images.order_list, title: getTranslated('my_order', context)!, onTap: () => Navigator.pushNamed(context, RouteHelper.myOrder)),
+                                        MenuItemWeb(image: Images.profile, title: getTranslated('profile', context)!,
                                           onTap: (){
                                             isLoggedIn? Navigator.pushNamed(context,
-                                            RouteHelper.getProfileEditRoute(profileProvider.userInfoModel),
+                                            RouteHelper.getProfileEditRoute(profileProvider.userInfoModel!),
                                           ) : Navigator.pushNamed(context, RouteHelper.getLoginRoute());
                                         },),
-                                        MenuItemWeb(image: Images.location, title: getTranslated('address', context), onTap: () => Navigator.pushNamed(context, RouteHelper.address)),
-                                        MenuItemWeb(image: Images.chat, title: getTranslated('live_chat', context), onTap: () => Navigator.pushNamed(context, RouteHelper.getChatRoute(orderModel: null))),
-                                        MenuItemWeb(image: Images.coupon, title: getTranslated('coupon', context), onTap: () => Navigator.pushNamed(context, RouteHelper.coupon)),
-                                        MenuItemWeb(image: Images.notification, title: getTranslated('notifications', context), onTap: () => Navigator.pushNamed(context, RouteHelper.notification, arguments: NotificationScreen())),
+                                        MenuItemWeb(image: Images.location, title: getTranslated('address', context)!, onTap: () => Navigator.pushNamed(context, RouteHelper.address)),
+                                        MenuItemWeb(image: Images.chat, title: getTranslated('live_chat', context)!, onTap: () => Navigator.pushNamed(context, RouteHelper.getChatRoute(orderModel: null))),
+                                        MenuItemWeb(image: Images.coupon, title: getTranslated('coupon', context)!, onTap: () => Navigator.pushNamed(context, RouteHelper.coupon)),
+                                        MenuItemWeb(image: Images.notification, title: getTranslated('notifications', context)!, onTap: () => Navigator.pushNamed(context, RouteHelper.notification, arguments: NotificationScreen())),
                                       ],
                                     ),
                                     SizedBox(height: 40),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
-                                        MenuItemWeb(image: Images.language, title: getTranslated('contact_us', context),  onTap: () => Navigator.pushNamed(context, RouteHelper.getContactRoute())),
-                                        MenuItemWeb(image: Images.order_bag, title: getTranslated('shopping_bag', context), onTap: () => Navigator.pushNamed(context, RouteHelper.cart)),
-                                        MenuItemWeb(image: Images.privacy_policy, title: getTranslated('privacy_policy', context), onTap: () => Navigator.pushNamed(context, RouteHelper.getPolicyRoute())),
-                                        MenuItemWeb(image: Images.terms_and_conditions, title: getTranslated('terms_and_condition', context), onTap: () => Navigator.pushNamed(context, RouteHelper.getTermsRoute())),
-                                        MenuItemWeb(image: Images.about_us, title: getTranslated('about_us', context), onTap: () => Navigator.pushNamed(context, RouteHelper.getAboutUsRoute())),
+                                        MenuItemWeb(image: Images.language, title: getTranslated('contact_us', context)!,  onTap: () => Navigator.pushNamed(context, RouteHelper.getContactRoute())),
+                                        MenuItemWeb(image: Images.order_bag, title: getTranslated('shopping_bag', context)!, onTap: () => Navigator.pushNamed(context, RouteHelper.cart)),
+                                        MenuItemWeb(image: Images.privacy_policy, title: getTranslated('privacy_policy', context)!, onTap: () => Navigator.pushNamed(context, RouteHelper.getPolicyRoute())),
+                                        MenuItemWeb(image: Images.terms_and_conditions, title: getTranslated('terms_and_condition', context)!, onTap: () => Navigator.pushNamed(context, RouteHelper.getTermsRoute())),
+                                        MenuItemWeb(image: Images.about_us, title: getTranslated('about_us', context)!, onTap: () => Navigator.pushNamed(context, RouteHelper.getAboutUsRoute())),
 
-                                        MenuItemWeb(image: Images.login, title: getTranslated(isLoggedIn ? 'log_out' : 'login', context),
+                                        MenuItemWeb(image: Images.login, title: getTranslated(isLoggedIn ? 'log_out' : 'login', context)!,
                                          onTap: (){
                                            if(isLoggedIn) {
                                              showDialog(context: context, barrierDismissible: false, builder: (context) => SignOutConfirmationDialog());
@@ -127,8 +127,8 @@ class MenuScreenWeb extends StatelessWidget {
                                 child: ClipOval(
                                   child: isLoggedIn ? FadeInImage.assetNetwork(
                                     placeholder: Images.placeholder(context), height: 170, width: 170, fit: BoxFit.cover,
-                                    image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.customerImageUrl}/'
-                                        '${profileProvider.userInfoModel != null ? profileProvider.userInfoModel.image : ''}',
+                                    image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.customerImageUrl}/'
+                                        '${profileProvider.userInfoModel != null ? profileProvider.userInfoModel!.image : ''}',
                                     imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 170, width: 170, fit: BoxFit.cover),
                                   ) : Image.asset(Images.placeholder(context), height: 170, width: 170, fit: BoxFit.cover),
                                 ),
@@ -145,8 +145,8 @@ class MenuScreenWeb extends StatelessWidget {
                                   showAnimatedDialog(context,
                                       AccountDeleteDialog(
                                         icon: Icons.question_mark_sharp,
-                                        title: getTranslated('are_you_sure_to_delete_account', context),
-                                        description: getTranslated('it_will_remove_your_all_information', context),
+                                        title: getTranslated('are_you_sure_to_delete_account', context)!,
+                                        description: getTranslated('it_will_remove_your_all_information', context)!,
                                         onTapFalseText:getTranslated('no', context),
                                         onTapTrueText: getTranslated('yes', context),
                                         isFailed: true,
@@ -162,7 +162,7 @@ class MenuScreenWeb extends StatelessWidget {
                                   ),
 
                                   Padding(padding: const EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_EXTRA_SMALL),
-                                    child: Text(getTranslated('delete_account', context)),
+                                    child: Text(getTranslated('delete_account', context)!),
                                   ),
 
                                 ],),

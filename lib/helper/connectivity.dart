@@ -21,7 +21,7 @@ class NetworkInfo {
         Provider.of<SplashProvider>(context, listen: false).setFirstTimeConnectionCheck(false);
       } else {
         bool isNotConnected = result == ConnectivityResult.none;
-        isNotConnected ? SizedBox() : showCustomSnackBar(isNotConnected ? getTranslated('no_connection', context) : getTranslated('connected', context), context,isError: isNotConnected);
+        isNotConnected ? SizedBox() : showCustomSnackBar(isNotConnected ? getTranslated('no_connection', context)! : getTranslated('connected', context)!, context,isError: isNotConnected);
 
         /*ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:js_interop';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_grocery/data/model/response/order_model.dart';
 import 'package:flutter_grocery/helper/notification_helper.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
-import 'package:flutter_grocery/helper/route_helper.dart';
 import 'package:flutter_grocery/provider/auth_provider.dart';
 import 'package:flutter_grocery/provider/chat_provider.dart';
 import 'package:flutter_grocery/provider/profile_provider.dart';
@@ -24,17 +24,17 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
-  final OrderModel orderModel;
+  final OrderModel? orderModel;
   final bool isAppBar;
-  const ChatScreen({Key key,@required this.orderModel, this.isAppBar = false}) : super(key: key);
+  const ChatScreen({Key? key,this.orderModel, this.isAppBar = false}) : super(key: key);
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _inputMessageController = TextEditingController();
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  bool _isLoggedIn;
+  FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
+  bool? _isLoggedIn;
   bool _isFirst = true;
 
   var androidInitialize = const AndroidInitializationSettings('notification_icon');
@@ -47,29 +47,29 @@ class _ChatScreenState extends State<ChatScreen> {
 
     var initializationsSettings = InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin.initialize(initializationsSettings);
+    flutterLocalNotificationsPlugin!.initialize(initializationsSettings);
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if(!kIsWeb){
-        NotificationHelper.showNotification(message, flutterLocalNotificationsPlugin, false);
+        NotificationHelper.showNotification(message, flutterLocalNotificationsPlugin!, false);
       }
 
-      Provider.of<ChatProvider>(context, listen: false).getMessages(context, 1, widget.orderModel, false);
+      Provider.of<ChatProvider>(context, listen: false).getMessages(context, 1, widget.orderModel!, false);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      Provider.of<ChatProvider>(context, listen: false).getMessages(context, 1, widget.orderModel, false);
+      Provider.of<ChatProvider>(context, listen: false).getMessages(context, 1, widget.orderModel!, false);
     });
 
     _isLoggedIn = Provider.of<AuthProvider>(context, listen: false).isLoggedIn();
 
 
-    if(_isLoggedIn){
+    if(_isLoggedIn!){
       if(_isFirst) {
 
-        Provider.of<ChatProvider>(context, listen: false).getMessages(context, 1, widget.orderModel, true);
+        Provider.of<ChatProvider>(context, listen: false).getMessages(context, 1, widget.orderModel!, true);
       }else {
-        Provider.of<ChatProvider>(context, listen: false).getMessages(context, 1, widget.orderModel, false);
+        Provider.of<ChatProvider>(context, listen: false).getMessages(context, 1, widget.orderModel!, false);
         _isFirst = false;
       }
       Provider.of<ProfileProvider>(context, listen: false).getUserInfo(context);
@@ -79,7 +79,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
-    flutterLocalNotificationsPlugin.cancelAll();
+    flutterLocalNotificationsPlugin!.cancelAll();
 
     super.dispose();
   }
@@ -91,8 +91,8 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: ResponsiveHelper.isDesktop(context)
           ? PreferredSize(child: WebAppBar(), preferredSize: Size.fromHeight(120))
-          : ResponsiveHelper.isMobilePhone() && _isAdmin && !widget.isAppBar ? null : AppBar(title: _isAdmin ? Text('${Provider.of<SplashProvider>(context,listen: false).configModel.ecommerceName}')
-          : Text(widget.orderModel.deliveryMan.fName+' '+widget.orderModel.deliveryMan.lName),backgroundColor: Theme.of(context).primaryColor,
+          : ResponsiveHelper.isMobilePhone() && _isAdmin && !widget.isAppBar ? null : AppBar(title: _isAdmin ? Text('${Provider.of<SplashProvider>(context,listen: false).configModel!.ecommerceName}')
+          : Text(widget.orderModel!.deliveryMan!.fName!+' '+widget.orderModel!.deliveryMan!.lName!),backgroundColor: Theme.of(context).primaryColor,
           actions: <Widget>[
             Padding(
             padding: const EdgeInsets.all(8.0),
@@ -106,7 +106,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: FadeInImage.assetNetwork(
                   fit: BoxFit.cover,
                   placeholder: _isAdmin ? Images.app_logo : Images.profile_placeholder,
-                  image: _isAdmin ? '' : '${Provider.of<SplashProvider>(context, listen: false).baseUrls.deliveryManImageUrl}/${widget.orderModel.deliveryMan.image}',
+                  image: _isAdmin ? '' : '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.deliveryManImageUrl}/${widget.orderModel!.deliveryMan!.image}',
                   imageErrorBuilder: (c,t,o) => Image.asset(_isAdmin ? Images.app_logo : Images.profile_placeholder,fit: BoxFit.cover,),
                 ),
               ),
@@ -114,7 +114,7 @@ class _ChatScreenState extends State<ChatScreen> {
           )
           ])  ,
 
-      body: _isLoggedIn? Center(
+      body: _isLoggedIn!? Center(
         child: Container(
           width: ResponsiveHelper.isDesktop(context) ?1170:MediaQuery.of(context).size.width,
           child: Column(
@@ -123,7 +123,7 @@ class _ChatScreenState extends State<ChatScreen> {
               Consumer<ChatProvider>(
                   builder: (context, chatProvider,child) {
                     return  Expanded(
-                      child: chatProvider.messageList != null ? chatProvider.messageList.length > 0 ? ListView.builder(
+                      child: !chatProvider.messageList.isNull ? chatProvider.messageList.length > 0 ? ListView.builder(
                           reverse: true,
                           physics: AlwaysScrollableScrollPhysics(),
                           itemCount: chatProvider.messageList.length,
@@ -241,7 +241,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       InkWell(
                         onTap: () async {
                           if(Provider.of<ChatProvider>(context, listen: false).isSendButtonActive){
-                              Provider.of<ChatProvider>(context, listen: false).sendMessage(_inputMessageController.text, context, Provider.of<AuthProvider>(context, listen: false).getUserToken(), widget.orderModel);
+                              Provider.of<ChatProvider>(context, listen: false).sendMessage(_inputMessageController.text, context, Provider.of<AuthProvider>(context, listen: false).getUserToken(), widget.orderModel!);
                               _inputMessageController.clear();
                             Provider.of<ChatProvider>(context, listen: false).toggleSendButtonActivity();
 

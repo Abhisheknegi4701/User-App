@@ -7,7 +7,7 @@ import 'package:flutter_grocery/provider/order_provider.dart';
 import 'package:flutter_grocery/utill/dimensions.dart';
 import 'package:flutter_grocery/view/base/app_bar_base.dart';
 import 'package:flutter_grocery/view/base/not_login_screen.dart';
-import 'package:flutter_grocery/view/base/web_app_bar/web_app_bar.dart';
+import 'package:flutter_grocery/view/base/preferedsizewidgetdem.dart';
 import 'package:flutter_grocery/view/screens/order/widget/order_button.dart';
 import 'package:flutter_grocery/view/screens/order/widget/order_view.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +24,7 @@ class MyOrderScreen extends StatelessWidget {
     return Scaffold(
       appBar: ResponsiveHelper.isMobilePhone()
           ? null: ResponsiveHelper.isDesktop(context)
-          ? PreferredSize(child: WebAppBar(), preferredSize: Size.fromHeight(120))
+          ? preferredSizeWidgetDem()
           : AppBarBase(),
 
       body: SafeArea(
@@ -42,15 +42,15 @@ class MyOrderScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          OrderButton(title: getTranslated('active', context), isActive: true),
+                          OrderButton(title: getTranslated('active', context)!, isActive: true),
                           SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
-                          OrderButton(title: getTranslated('past_order', context), isActive: false),
+                          OrderButton(title: getTranslated('past_order', context)!, isActive: false),
                         ],
                       ),
                     ),
                   ),
 
-                  Expanded(child: OrderView(isRunning: orderProvider.isActiveOrder ? true : false))
+                  Expanded(child: OrderView(isRunning: orderProvider.isActiveOrder! ? true : false))
                 ],
               ) : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor))),
             ),

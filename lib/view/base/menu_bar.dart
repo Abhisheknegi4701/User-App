@@ -83,9 +83,9 @@ class MenuBar1X extends StatelessWidget {
         backgroundColor: Theme.of(context).cardColor,
         gradient: false,
         goBackButtonText: 'Back',
-        textStyle: TextStyle(color: Theme.of(context).textTheme.bodyText1.color),
-        moreIconColor: Theme.of(context).textTheme.bodyText1.color,
-        menuIconColor: Theme.of(context).textTheme.bodyText1.color,
+        textStyle: TextStyle(color: Theme.of(context).textTheme.bodyLarge!.color),
+        moreIconColor: Theme.of(context).textTheme.bodyLarge!.color!,
+        menuIconColor: Theme.of(context).textTheme.bodyLarge!.color!,
         menus: getMenus(context),
 
       ),

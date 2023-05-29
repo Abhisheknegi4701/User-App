@@ -11,7 +11,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class DeliveryManWidget extends StatelessWidget {
   final DeliveryMan deliveryMan;
-  DeliveryManWidget({@required this.deliveryMan});
+  DeliveryManWidget({required this.deliveryMan});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class DeliveryManWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: ColorResources.getCardBgColor(context),
         boxShadow: [
-          BoxShadow(color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 200], spreadRadius: 0.5, blurRadius: 0.5)
+          BoxShadow(color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 200]!, spreadRadius: 0.5, blurRadius: 0.5)
         ],
       ),
       child: Row(
@@ -28,7 +28,7 @@ class DeliveryManWidget extends StatelessWidget {
           ClipOval(
             child: FadeInImage.assetNetwork(
               placeholder: Images.placeholder(context),
-              image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.deliveryManImageUrl}/${deliveryMan.image}',
+              image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.deliveryManImageUrl}/${deliveryMan.image}',
               height: 40, width: 40, fit: BoxFit.cover,
               imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 40, width:40, fit: BoxFit.cover),
             ),
@@ -43,7 +43,7 @@ class DeliveryManWidget extends StatelessWidget {
                   style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),
                 ),
                 Text(
-                  deliveryMan.email,
+                  deliveryMan.email!,
                   style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL),
                 ),
               ],

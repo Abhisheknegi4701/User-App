@@ -9,28 +9,26 @@ import 'package:flutter_grocery/utill/styles.dart';
 import 'package:flutter_grocery/view/base/custom_app_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'dart:typed_data';
 import 'dart:ui';
 
-import '../../../../utill/images.dart';
 
 class MapWidget extends StatefulWidget {
   final DeliveryAddress address;
-  MapWidget({@required this.address});
+  MapWidget({required this.address});
 
   @override
   _MapWidgetState createState() => _MapWidgetState();
 }
 
 class _MapWidgetState extends State<MapWidget> {
-  LatLng _latLng;
+  LatLng? _latLng;
   Set<Marker> _markers = Set.of([]);
 
   @override
   void initState() {
     super.initState();
 
-    _latLng = LatLng(double.parse(widget.address.latitude), double.parse(widget.address.longitude));
+    _latLng = LatLng(double.parse(widget.address.latitude!), double.parse(widget.address.longitude!));
     _setMarker();
   }
 
@@ -41,7 +39,7 @@ class _MapWidgetState extends State<MapWidget> {
       body: Stack(children: [
         GoogleMap(
           minMaxZoomPreference: MinMaxZoomPreference(0, 16),
-          initialCameraPosition: CameraPosition(target: _latLng, zoom: 17),
+          initialCameraPosition: CameraPosition(target: _latLng!, zoom: 17),
           zoomGesturesEnabled: true,
           myLocationButtonEnabled: false,
           zoomControlsEnabled: false,
@@ -55,7 +53,7 @@ class _MapWidgetState extends State<MapWidget> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
               color: Theme.of(context).cardColor,
-              boxShadow: [BoxShadow(color: Colors.grey[300], spreadRadius: 3, blurRadius: 10)],
+              boxShadow: [BoxShadow(color: Colors.grey[300]!, spreadRadius: 3, blurRadius: 10)],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,11 +71,11 @@ class _MapWidgetState extends State<MapWidget> {
                   Expanded(
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
 
-                      Text(widget.address.addressType, style: poppinsRegular.copyWith(
+                      Text(widget.address.addressType!, style: poppinsRegular.copyWith(
                         fontSize: Dimensions.FONT_SIZE_SMALL, color: ColorResources.getGreyColor(context),
                       )),
 
-                      Text(widget.address.address, style: poppinsRegular),
+                      Text(widget.address.address!, style: poppinsRegular),
 
                     ]),
                   ),
@@ -104,7 +102,7 @@ class _MapWidgetState extends State<MapWidget> {
     _markers = Set.of([]);
     _markers.add(Marker(
       markerId: MarkerId('marker'),
-      position: _latLng,
+      position: _latLng!,
       icon: BitmapDescriptor.fromBytes(destinationImageData),
     ));
 
@@ -115,7 +113,7 @@ class _MapWidgetState extends State<MapWidget> {
     ByteData data = await rootBundle.load(imagePath);
     Codec codec = await instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
     FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ImageByteFormat.png)).buffer.asUint8List();
+    return (await fi.image.toByteData(format: ImageByteFormat.png))!.buffer.asUint8List();
   }
 
 }

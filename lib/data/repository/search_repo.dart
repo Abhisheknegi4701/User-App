@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SearchRepo {
   final DioClient dioClient;
   final SharedPreferences sharedPreferences;
-  SearchRepo({@required this.dioClient, @required this.sharedPreferences});
+  SearchRepo({required this.dioClient, required this.sharedPreferences});
 
   Future<ApiResponse> getSearchProductList(String query, String languageCode) async {
     try {
@@ -27,10 +27,10 @@ class SearchRepo {
 
   List<String> getAllSortByList(BuildContext context){
     List<String> _sortByList=[
-      getTranslated('low_to_high', context),
-      getTranslated('high_to_low', context),
-      getTranslated('ascending', context),
-      getTranslated('descending', context),
+      getTranslated('low_to_high', context)!,
+      getTranslated('high_to_low', context)!,
+      getTranslated('ascending', context)!,
+      getTranslated('descending', context)!,
     ];
     return _sortByList;
   }

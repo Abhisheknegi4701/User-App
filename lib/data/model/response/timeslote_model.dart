@@ -1,11 +1,11 @@
 class TimeSlotModel {
-  int id;
-  String startTime;
-  String endTime;
-  String date;
-  int status;
-  String createdAt;
-  String updatedAt;
+  int? id;
+  String? startTime;
+  String? endTime;
+  String? date;
+  int? status;
+  String? createdAt;
+  String? updatedAt;
 
   TimeSlotModel(
       {this.id,

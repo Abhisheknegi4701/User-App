@@ -1,7 +1,8 @@
 
+import 'dart:js_interop';
+
 import 'package:flutter_grocery/data/model/response/base/api_response.dart';
 import 'package:flutter_grocery/data/model/response/chat_model.dart';
-import 'package:flutter_grocery/data/model/response/order_model.dart';
 import 'package:flutter_grocery/data/repository/chat_repo.dart';
 import 'package:flutter_grocery/helper/api_checker.dart';
 import 'package:http/http.dart' as http;
@@ -9,15 +10,16 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../data/model/response/order_model.dart';
 import '../data/repository/notification_repo.dart';
 
 class ChatProvider extends ChangeNotifier {
   final ChatRepo chatRepo;
   final NotificationRepo notificationRepo;
-  ChatProvider({@required this.chatRepo, @required this.notificationRepo});
+  ChatProvider({required this.chatRepo, required this.notificationRepo});
 
-  List<bool> _showDate;
-  List<XFile> _imageFiles;
+  List<bool>? _showDate;
+  List<XFile>? _imageFiles;
   // XFile _imageFile;
   bool _isSendButtonActive = false;
   bool _isSeen = false;
@@ -26,8 +28,8 @@ class ChatProvider extends ChangeNotifier {
   bool _isLoading= false;
   bool get isLoading => _isLoading;
 
-  List<bool> get showDate => _showDate;
-  List<XFile> get imageFiles => _imageFiles;
+  List<bool>? get showDate => _showDate;
+  List<XFile>? get imageFiles => _imageFiles;
   // XFile get imageFile => _imageFile;
   bool get isSendButtonActive => _isSendButtonActive;
   bool get isSeen => _isSeen;
@@ -45,8 +47,8 @@ class ChatProvider extends ChangeNotifier {
   Future<void> getDeliveryManMessages (BuildContext context, int orderId) async {
     ApiResponse apiResponse = await chatRepo.getDeliveryManMessage(orderId,1);
     // _deliveryManMessages = [];
-    if (apiResponse.response != null&& apiResponse.response.data['messages']!= {} && apiResponse.response.statusCode == 200) {
-      _messageList.addAll(ChatModel.fromJson(apiResponse.response.data).messages);
+    if (apiResponse.response.data['messages']!= {} && apiResponse.response.statusCode == 200) {
+      _messageList.addAll(ChatModel.fromJson(apiResponse.response.data).messages!);
     } else {
       ApiChecker.checkApi(context, apiResponse);
     }
@@ -58,15 +60,15 @@ class ChatProvider extends ChangeNotifier {
     if(isFirst) {
       _messageList = [];
     }
-    //
-    if(orderModel == null) {
+
+    if(orderModel.isNull) {
       _apiResponse = await chatRepo.getAdminMessage(1);
     }else {
-     _apiResponse = await chatRepo.getDeliveryManMessage(orderModel.id, 1);;
+     _apiResponse = await chatRepo.getDeliveryManMessage(orderModel.id!, 1);;
     }
-    if (_apiResponse.response != null&& _apiResponse.response.data['messages'] != {} && _apiResponse.response.statusCode == 200) {
+    if (_apiResponse.response.data['messages'] != {} && _apiResponse.response.statusCode == 200) {
       _messageList = [];
-      _messageList.addAll(ChatModel.fromJson(_apiResponse.response.data).messages);
+      _messageList.addAll(ChatModel.fromJson(_apiResponse.response.data).messages!);
     } else {
       ApiChecker.checkApi(context, _apiResponse);
     }
@@ -80,10 +82,8 @@ class ChatProvider extends ChangeNotifier {
       _chatImage = [];
     }else {
       _imageFiles = await ImagePicker().pickMultiImage(imageQuality: 40);
-      if (_imageFiles != null) {
-        _chatImage = imageFiles;
-        _isSendButtonActive = true;
-      }
+      _chatImage = imageFiles!;
+      _isSendButtonActive = true;
     }
     notifyListeners();
   }
@@ -117,10 +117,10 @@ class ChatProvider extends ChangeNotifier {
     http.StreamedResponse _response;
     _isLoading = true;
     // notifyListeners();
-    if(order == null) {
+    if(order.isNull) {
       _response = await chatRepo.sendMessageToAdmin(message, _chatImage, token);
     }else {
-      _response = await chatRepo.sendMessageToDeliveryMan(message, _chatImage, order.id, token);
+      _response = await chatRepo.sendMessageToDeliveryMan(message, _chatImage, order.id!, token);
     }
     if (_response.statusCode == 200) {
       // _imageFiles = [];

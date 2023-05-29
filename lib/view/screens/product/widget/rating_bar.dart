@@ -5,7 +5,7 @@ import 'package:flutter_grocery/utill/dimensions.dart';
 import 'package:flutter_grocery/utill/styles.dart';
 import 'package:provider/provider.dart';
 class RatingLine extends StatelessWidget {
-  const RatingLine({Key key}) : super(key: key);
+  const RatingLine({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +18,14 @@ class RatingLine extends StatelessWidget {
         int _twoStar = 0;
         int _oneStar = 0;
 
-        productProvider.product.activeReviews.forEach((review) {
-          if(review.rating >= 4.5){
+        productProvider.product!.activeReviews!.forEach((review) {
+          if(review.rating! >= 4.5){
             _fiveStar++;
-          }else if(review.rating >= 3.5 && review.rating < 4.5) {
+          }else if(review.rating! >= 3.5 && review.rating! < 4.5) {
             _fourStar++;
-          }else if(review.rating >= 2.5 && review.rating < 3.5) {
+          }else if(review.rating! >= 2.5 && review.rating! < 3.5) {
             _threeStar++;
-          }else if(review.rating >= 1.5 && review.rating < 12.5){
+          }else if(review.rating! >= 1.5 && review.rating! < 12.5){
             _twoStar++;
           }else{
             _oneStar++;

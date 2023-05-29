@@ -7,16 +7,16 @@ import 'package:flutter_grocery/view/base/custom_snackbar.dart';
 
 class SplashProvider extends ChangeNotifier {
   final SplashRepo splashRepo;
-  SplashProvider({@required this.splashRepo});
+  SplashProvider({required this.splashRepo});
 
-  ConfigModel _configModel;
-  BaseUrls _baseUrls;
+  ConfigModel? _configModel;
+  BaseUrls? _baseUrls;
   int _pageIndex = 0;
   bool _fromSetting = false;
   bool _firstTimeConnectionCheck = true;
 
-  ConfigModel get configModel => _configModel;
-  BaseUrls get baseUrls => _baseUrls;
+  ConfigModel? get configModel => _configModel;
+  BaseUrls? get baseUrls => _baseUrls;
   int get pageIndex => _pageIndex;
   bool get fromSetting => _fromSetting;
   bool get firstTimeConnectionCheck => _firstTimeConnectionCheck;
@@ -24,7 +24,7 @@ class SplashProvider extends ChangeNotifier {
   Future<bool> initConfig(BuildContext context) async {
     ApiResponse apiResponse = await splashRepo.getConfig();
     bool isSuccess;
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
       _configModel = ConfigModel.fromJson(apiResponse.response.data);
       _baseUrls = ConfigModel.fromJson(apiResponse.response.data).baseUrls;
       isSuccess = true;
@@ -59,7 +59,7 @@ class SplashProvider extends ChangeNotifier {
     _fromSetting = isSetting;
   }
   String getLanguageCode(){
-    return splashRepo.sharedPreferences.getString(AppConstants.LANGUAGE_CODE);
+    return splashRepo.sharedPreferences.getString(AppConstants.LANGUAGE_CODE)!;
   }
 
   bool showIntro() {

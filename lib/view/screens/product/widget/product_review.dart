@@ -1,6 +1,7 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/product_model.dart';
-import 'package:flutter_grocery/data/model/response/review_model.dart';
 import 'package:flutter_grocery/localization/language_constrants.dart';
 import 'package:flutter_grocery/provider/splash_provider.dart';
 import 'package:flutter_grocery/utill/color_resources.dart';
@@ -13,15 +14,13 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 
 class ReviewWidget extends StatelessWidget {
   final ActiveReview reviewModel;
-  ReviewWidget({@required this.reviewModel});
+  ReviewWidget({required this.reviewModel});
 
   @override
   Widget build(BuildContext context) {
-    String _customerName = getTranslated('user_not_available', context);
+    String _customerName = getTranslated('user_not_available', context)!;
 
-    if(reviewModel.customer != null) {
-      _customerName = '${reviewModel.customer.fName ?? ''} ${reviewModel.customer.lName ?? ''}';
-    }
+    _customerName = '${reviewModel.customer!.fName} ${reviewModel.customer!.lName}';
 
 
 
@@ -38,8 +37,8 @@ class ReviewWidget extends StatelessWidget {
           ClipOval(
 
             child: FadeInImage.assetNetwork(
-              image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.customerImageUrl}/${
-                  reviewModel.customer != null ? reviewModel.customer.image ?? '' : ''}',
+              image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.customerImageUrl}/${
+                  !reviewModel.customer.isNull ? reviewModel.customer!.image : ''}',
               placeholder: Images.placeholder(context),
               width: 30, height: 30, fit: BoxFit.cover,
               imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 30, width: 30, fit: BoxFit.cover),
@@ -57,7 +56,7 @@ class ReviewWidget extends StatelessWidget {
 
         ]),
         SizedBox(height: 5),
-        Text(reviewModel.comment, style: poppinsRegular),
+        Text(reviewModel.comment!, style: poppinsRegular),
       ]),
     );
   }

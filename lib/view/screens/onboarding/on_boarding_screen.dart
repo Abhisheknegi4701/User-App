@@ -34,7 +34,7 @@ class OnBoardingScreen extends StatelessWidget {
                               Navigator.of(context).pushReplacementNamed(RouteHelper.login, arguments: LoginScreen());
                             },
                             child: Text(
-                              onBoarding.selectedIndex != onBoarding.onBoardingList.length - 1 ? getTranslated('skip', context) : '',
+                              onBoarding.selectedIndex != onBoarding.onBoardingList.length - 1 ? getTranslated('skip', context)! : '',
                               style: poppinsSemiBold.copyWith(color: ColorResources.getHintColor(context)),
                             ),
                           ),

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery/helper/responsive_helper.dart';
 import 'package:flutter_grocery/localization/language_constrants.dart';
 import 'package:flutter_grocery/provider/splash_provider.dart';
 import 'package:flutter_grocery/provider/theme_provider.dart';
 import 'package:flutter_grocery/utill/dimensions.dart';
 import 'package:flutter_grocery/utill/styles.dart';
-import 'package:flutter_grocery/view/base/app_bar_base.dart';
 import 'package:flutter_grocery/view/base/custom_dialog.dart';
-import 'package:flutter_grocery/view/base/main_app_bar.dart';
 import 'package:flutter_grocery/view/screens/settings/widget/currency_dialog.dart';
 import 'package:provider/provider.dart';
 
+import '../../../helper/responsive_helper.dart';
 import '../../../provider/auth_provider.dart';
+import '../../base/app_bar_base.dart';
 import '../menu/widget/acount_delete_dialog.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -21,9 +20,7 @@ class SettingsScreen extends StatelessWidget {
     final _authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     return Scaffold(
-      appBar: ResponsiveHelper.isMobilePhone()
-          ? null : ResponsiveHelper.isDesktop(context)
-          ? MainAppBar(): AppBarBase(),
+      appBar: ResponsiveHelper.isMobilePhone() ? null : ResponsiveHelper.isDesktop(context) ? null: AppBarBase(),
 
       body: Center(
         child: Container(
@@ -35,12 +32,12 @@ class SettingsScreen extends StatelessWidget {
               SwitchListTile(
                 value: Provider.of<ThemeProvider>(context).darkTheme,
                 onChanged: (bool isActive) =>Provider.of<ThemeProvider>(context, listen: false).toggleTheme(),
-                title: Text(getTranslated('dark_theme', context), style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
+                title: Text(getTranslated('dark_theme', context)!, style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
               ),
 
               TitleButton(
                 icon: Icons.language,
-                title: getTranslated('choose_language', context),
+                title: getTranslated('choose_language', context)!,
                 onTap: () => showAnimatedDialog(context, CurrencyDialog()),
               ),
 
@@ -49,10 +46,10 @@ class SettingsScreen extends StatelessWidget {
                   showAnimatedDialog(context,
                       AccountDeleteDialog(
                         icon: Icons.question_mark_sharp,
-                        title: getTranslated('are_you_sure_to_delete_account', context),
-                        description: getTranslated('it_will_remove_your_all_information', context),
-                        onTapFalseText:getTranslated('no', context),
-                        onTapTrueText: getTranslated('yes', context),
+                        title: getTranslated('are_you_sure_to_delete_account', context)!,
+                        description: getTranslated('it_will_remove_your_all_information', context)!,
+                        onTapFalseText:getTranslated('no', context)!,
+                        onTapTrueText: getTranslated('yes', context)!,
                         isFailed: true,
                         onTapFalse: () => Navigator.of(context).pop(),
                         onTapTrue: () => _authProvider.deleteUser(context),
@@ -60,9 +57,9 @@ class SettingsScreen extends StatelessWidget {
                       dismissible: false,
                       isFlip: true);
                 },
-                leading: Icon(Icons.delete, size: 25, color: Theme.of(context).errorColor),
+                leading: Icon(Icons.delete, size: 25, color: Theme.of(context).colorScheme.error),
                 title: Text(
-                  getTranslated('delete_account', context),
+                  getTranslated('delete_account', context)!,
                   style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE,
                   ),
                 ),
@@ -79,8 +76,8 @@ class SettingsScreen extends StatelessWidget {
 class TitleButton extends StatelessWidget {
   final IconData icon;
   final String title;
-  final Function onTap;
-  TitleButton({@required this.icon, @required this.title, @required this.onTap});
+  final VoidCallback onTap;
+  TitleButton({required this.icon, required this.title, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

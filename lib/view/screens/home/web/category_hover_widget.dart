@@ -7,7 +7,7 @@ import 'package:flutter_grocery/view/base/text_hover.dart';
 
 class CategoryHoverWidget extends StatelessWidget {
   final List<CategoryModel> categoryList;
-  const CategoryHoverWidget({Key key, @required this.categoryList}) : super(key: key);
+  const CategoryHoverWidget({Key? key, required this.categoryList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class CategoryHoverWidget extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(width: 200,child: Text(category.name, overflow: TextOverflow.ellipsis,maxLines: 1,)),
+                        Container(width: 200,child: Text(category.name!, overflow: TextOverflow.ellipsis,maxLines: 1,)),
                         Icon(Icons.chevron_right, size: Dimensions.PADDING_SIZE_DEFAULT),
                       ],
                     ),

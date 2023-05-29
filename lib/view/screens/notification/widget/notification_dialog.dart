@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class NotificationDialog extends StatelessWidget {
   final NotificationModel notificationModel;
-  NotificationDialog({@required this.notificationModel});
+  NotificationDialog({required this.notificationModel});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class NotificationDialog extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 child: FadeInImage.assetNetwork(
                   placeholder: Images.placeholder(context),
-                  image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.notificationImageUrl}/${notificationModel.image}',
+                  image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.notificationImageUrl}/${notificationModel.image}',
                   height: 150, width: MediaQuery.of(context).size.width, fit: BoxFit.cover,
                   imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 150, width: MediaQuery.of(context).size.width, fit: BoxFit.cover),
                 ),
@@ -48,7 +48,7 @@ class NotificationDialog extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE),
               child: Text(
-                notificationModel.title,
+                notificationModel.title!,
                 textAlign: TextAlign.center,
                 style: poppinsRegular.copyWith(
                   color: Theme.of(context).primaryColor,
@@ -60,7 +60,7 @@ class NotificationDialog extends StatelessWidget {
             Padding(
               padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
               child: Text(
-                notificationModel.description,
+                notificationModel.description!,
                 textAlign: TextAlign.center,
                 style: poppinsRegular.copyWith(
                   color: ColorResources.getHintColor(context).withOpacity(.75),

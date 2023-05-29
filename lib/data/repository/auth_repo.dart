@@ -15,14 +15,14 @@ class AuthRepo {
   final DioClient dioClient;
   final SharedPreferences sharedPreferences;
 
-  AuthRepo({@required this.dioClient, @required this.sharedPreferences});
+  AuthRepo({required this.dioClient, required this.sharedPreferences});
 
   Future<ApiResponse> registration(SignUpModel signUpModel) async {
     try {
       print(signUpModel.toJson());
       Response response = await dioClient.post(
         AppConstants.REGISTER_URI,
-        data: signUpModel.toJson(),
+        data: signUpModel.toJson(), queryParameters: {},
       );
       return ApiResponse.withSuccess(response);
     } catch (e) {
@@ -30,7 +30,7 @@ class AuthRepo {
     }
   }
 
-  Future<ApiResponse> login({String email, String password}) async {
+  Future<ApiResponse> login({String? email, String? password}) async {
     try {
       print({"email": email, "email_or_phone": email, "password": password});
       Response response = await dioClient.post(
@@ -130,7 +130,7 @@ class AuthRepo {
   // for  user token
   Future<void> saveUserToken(String token) async {
     dioClient.token = token;
-    dioClient.dio.options.headers = {'Content-Type': 'application/json; charset=UTF-8', 'Authorization': 'Bearer $token'};
+    dioClient.dio!.options.headers = {'Content-Type': 'application/json; charset=UTF-8', 'Authorization': 'Bearer $token'};
 
     try {
       await sharedPreferences.setString(AppConstants.TOKEN, token);
@@ -160,16 +160,14 @@ class AuthRepo {
   }
 
   Future<String> _saveDeviceToken() async {
-    String _deviceToken = '@';
+    String? _deviceToken = '@';
     try{
       _deviceToken = await FirebaseMessaging.instance.getToken();
 
     }catch(error){
       print('error is: $error');
     }
-    if (_deviceToken != null) {
-      print('--------Device Token---------- '+_deviceToken);
-    }
+    print('--------Device Token---------- '+_deviceToken!);
 
     return _deviceToken;
   }

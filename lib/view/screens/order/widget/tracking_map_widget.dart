@@ -1,5 +1,5 @@
 import 'dart:collection';
-import 'dart:typed_data';
+import 'dart:js_interop';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -22,42 +22,42 @@ class TrackingMapWidget extends StatefulWidget {
   final String orderID;
   final int branchID;
   final DeliveryAddress addressModel;
-  TrackingMapWidget({@required this.deliveryManModel, @required this.orderID, @required this.addressModel, @required this.branchID});
+  TrackingMapWidget({required this.deliveryManModel, required this.orderID, required this.addressModel, required this.branchID});
 
   @override
   _TrackingMapWidgetState createState() => _TrackingMapWidgetState();
 }
 
 class _TrackingMapWidgetState extends State<TrackingMapWidget> {
-  GoogleMapController _controller;
+  late GoogleMapController _controller;
   bool _isLoading = true;
   Set<Marker> _markers = HashSet<Marker>();
-  LatLng _deliveryBoyLatLng;
-  LatLng _addressLatLng;
-  LatLng _restaurantLatLng;
+  late LatLng _deliveryBoyLatLng;
+  late LatLng _addressLatLng;
+  late LatLng _restaurantLatLng;
 
   @override
   void initState() {
     super.initState();
 
-    LatLng _branch;
-    for(Branches branch in Provider.of<SplashProvider>(context, listen: false).configModel.branches) {
+    LatLng? _branch;
+    for(Branches branch in Provider.of<SplashProvider>(context, listen: false).configModel!.branches!) {
       if(branch.id == widget.branchID) {
-        _branch = LatLng(double.parse(branch.latitude), double.parse(branch.longitude));
+        _branch = LatLng(double.parse(branch.latitude!), double.parse(branch.longitude!));
         break;
       }
     }
-    _deliveryBoyLatLng = widget.deliveryManModel != null
+    _deliveryBoyLatLng = widget.deliveryManModel.isNull
         ? LatLng(double.parse(widget.deliveryManModel.latitude ?? '0'), double.parse(widget.deliveryManModel.longitude ?? '0')) : LatLng(0, 0);
-    _addressLatLng = widget.addressModel != null ? LatLng(double.parse(widget.addressModel.latitude), double.parse(widget.addressModel.longitude)) : LatLng(0,0);
-    _restaurantLatLng = _branch;
+    _addressLatLng = widget.addressModel.isNull ? LatLng(double.parse(widget.addressModel.latitude!), double.parse(widget.addressModel.longitude!)) : LatLng(0,0);
+    _restaurantLatLng = _branch!;
   }
 
   @override
   void dispose() {
     super.dispose();
 
-    _controller?.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -99,7 +99,7 @@ class _TrackingMapWidgetState extends State<TrackingMapWidget> {
 
           _isLoading ? Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor))) : SizedBox(),
         ],
-      ) : Text(getTranslated('no_delivery_man_data_found', context)),
+      ) : Text(getTranslated('no_delivery_man_data_found', context)!),
     );
   }
 
@@ -111,14 +111,12 @@ class _TrackingMapWidgetState extends State<TrackingMapWidget> {
     // Animate to coordinate
     LatLngBounds bounds;
     double _rotation = 0;
-    if(_controller != null) {
-      if (_addressLatLng.latitude < _restaurantLatLng.latitude) {
-        bounds = LatLngBounds(southwest: _addressLatLng, northeast: _restaurantLatLng);
-        _rotation = 0;
-      }else {
-        bounds = LatLngBounds(southwest: _restaurantLatLng, northeast: _addressLatLng);
-        _rotation = 180;
-      }
+    if (_addressLatLng.latitude < _restaurantLatLng.latitude) {
+      bounds = LatLngBounds(southwest: _addressLatLng, northeast: _restaurantLatLng);
+      _rotation = 0;
+    }else {
+      bounds = LatLngBounds(southwest: _restaurantLatLng, northeast: _addressLatLng);
+      _rotation = 180;
     }
     LatLng centerBounds = LatLng(
         (bounds.northeast.latitude + bounds.southwest.latitude)/2,
@@ -204,6 +202,6 @@ class _TrackingMapWidgetState extends State<TrackingMapWidget> {
     ByteData data = await rootBundle.load(imagePath);
     Codec codec = await instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
     FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ImageByteFormat.png)).buffer.asUint8List();
+    return (await fi.image.toByteData(format: ImageByteFormat.png))!.buffer.asUint8List();
   }
 }

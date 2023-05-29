@@ -5,8 +5,8 @@ import 'package:flutter_grocery/utill/styles.dart';
 class MenuItemWeb extends StatelessWidget {
   final String image;
   final String title;
-  final Function onTap;
-  const MenuItemWeb({Key key, @required this.image, @required this.title, @required this.onTap}) : super(key: key);
+  final VoidCallback onTap;
+  const MenuItemWeb({Key? key, required this.image, required this.title, required this.onTap}) : super(key: key);
 
 
   @override
@@ -21,7 +21,7 @@ class MenuItemWeb extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(image, width: 50, height: 50, color: Theme.of(context).textTheme.bodyText1.color),
+            Image.asset(image, width: 50, height: 50, color: Theme.of(context).textTheme.bodyLarge!.color),
             SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
             Text(title, style: poppinsRegular),
           ],

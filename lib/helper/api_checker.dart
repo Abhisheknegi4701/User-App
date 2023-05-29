@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/base/api_response.dart';
 import 'package:flutter_grocery/data/model/response/base/error_response.dart';
 import 'package:flutter_grocery/helper/route_helper.dart';
-import 'package:flutter_grocery/main.dart';
 import 'package:flutter_grocery/provider/splash_provider.dart';
 import 'package:flutter_grocery/view/base/custom_snackbar.dart';
 import 'package:flutter_grocery/view/screens/auth/login_screen.dart';
@@ -10,9 +9,9 @@ import 'package:provider/provider.dart';
 
 class ApiChecker {
   static void checkApi(BuildContext context, ApiResponse apiResponse) {
-    String _message = ErrorResponse.fromJson(apiResponse.error).errors[0].message;
+    String _message = ErrorResponse.fromJson(apiResponse.error).errors![0].message!;
     if(_message == 'Unauthorized.' ||  _message == 'Unauthenticated.'
-        && ModalRoute.of(context).settings.name != RouteHelper.getLoginRoute()) {
+        && ModalRoute.of(context)!.settings.name != RouteHelper.getLoginRoute()) {
       Provider.of<SplashProvider>(context, listen: false).removeSharedData();
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => LoginScreen()), (route) => false);
     }

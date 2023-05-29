@@ -1,9 +1,10 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/body/review_body.dart';
 import 'package:flutter_grocery/data/model/response/order_model.dart';
 import 'package:flutter_grocery/localization/language_constrants.dart';
 import 'package:flutter_grocery/provider/order_provider.dart';
-import 'package:flutter_grocery/provider/theme_provider.dart';
 import 'package:flutter_grocery/utill/color_resources.dart';
 import 'package:flutter_grocery/utill/dimensions.dart';
 import 'package:flutter_grocery/utill/styles.dart';
@@ -19,7 +20,7 @@ import '../../../base/footer_view.dart';
 class DeliveryManReviewWidget extends StatefulWidget {
   final DeliveryMan deliveryMan;
   final String orderID;
-  DeliveryManReviewWidget({@required this.deliveryMan, @required this.orderID});
+  DeliveryManReviewWidget({required this.deliveryMan, required this.orderID});
 
   @override
   _DeliveryManReviewWidgetState createState() => _DeliveryManReviewWidgetState();
@@ -45,7 +46,7 @@ class _DeliveryManReviewWidgetState extends State<DeliveryManReviewWidget> {
                     width: 1170,
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start,children: [
 
-                      widget.deliveryMan != null ? DeliveryManWidget(deliveryMan: widget.deliveryMan) : SizedBox(),
+                      !widget.deliveryMan.isNull ? DeliveryManWidget(deliveryMan: widget.deliveryMan) : SizedBox(),
                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
                       Container(
@@ -54,13 +55,13 @@ class _DeliveryManReviewWidgetState extends State<DeliveryManReviewWidget> {
                           color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [BoxShadow(
-                            color: Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 300],
+                            color: Colors.grey,
                             blurRadius: 5, spreadRadius: 1,
                           )],
                         ),
                         child: Column(children: [
                           Text(
-                            getTranslated('rate_his_service', context),
+                            getTranslated('rate_his_service', context)!,
                             style: poppinsMedium.copyWith(color: ColorResources.getTextColor(context)), overflow: TextOverflow.ellipsis,
                           ),
                           SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
@@ -89,7 +90,7 @@ class _DeliveryManReviewWidgetState extends State<DeliveryManReviewWidget> {
                           SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
 
                           Text(
-                            getTranslated('share_your_opinion', context),
+                            getTranslated('share_your_opinion', context)!,
                             style: poppinsMedium.copyWith(color: ColorResources.getTextColor(context)), overflow: TextOverflow.ellipsis,
                           ),
                           SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
@@ -97,7 +98,7 @@ class _DeliveryManReviewWidgetState extends State<DeliveryManReviewWidget> {
                             maxLines: 5,
                             capitalization: TextCapitalization.sentences,
                             controller: _controller,
-                            hintText: getTranslated('write_your_review_here', context),
+                            hintText: getTranslated('write_your_review_here', context)!,
                             fillColor: ColorResources.getCardBgColor(context),
                           ),
                           SizedBox(height: 40),
@@ -107,13 +108,13 @@ class _DeliveryManReviewWidgetState extends State<DeliveryManReviewWidget> {
                             padding: EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE),
                             child: Column(
                               children: [
-                                !orderProvider.isLoading ? CustomButton(
-                                  buttonText: getTranslated('submit', context),
+                                !orderProvider.isLoading! ? CustomButton(
+                                  buttonText: getTranslated('submit', context)!,
                                   onPressed: () {
                                     if (orderProvider.deliveryManRating == 0) {
-                                      showCustomSnackBar(getTranslated('give_a_rating', context), context);
+                                      showCustomSnackBar(getTranslated('give_a_rating', context)!, context);
                                     } else if (_controller.text.isEmpty) {
-                                      showCustomSnackBar(getTranslated('write_a_review', context), context);
+                                      showCustomSnackBar(getTranslated('write_a_review', context)!, context);
                                     } else {
                                       FocusScopeNode currentFocus = FocusScope.of(context);
                                       if (!currentFocus.hasPrimaryFocus) {
@@ -123,7 +124,7 @@ class _DeliveryManReviewWidgetState extends State<DeliveryManReviewWidget> {
                                         deliveryManId: widget.deliveryMan.id.toString(),
                                         rating: orderProvider.deliveryManRating.toString(),
                                         comment: _controller.text,
-                                        orderId: widget.orderID,
+                                        orderId: widget.orderID, productId: widget.orderID, fileUpload: [],
                                       );
                                       orderProvider.submitDeliveryManReview(reviewBody).then((value) {
                                         if (value.isSuccess) {

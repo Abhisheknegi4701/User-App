@@ -9,14 +9,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocationRepo {
-  final DioClient dioClient;
-  final SharedPreferences sharedPreferences;
+  final DioClient? dioClient;
+  final SharedPreferences? sharedPreferences;
 
   LocationRepo({this.dioClient, this.sharedPreferences});
 
   Future<ApiResponse> getAllAddress() async {
     try {
-      final response = await dioClient.get(AppConstants.ADDRESS_LIST_URI);
+      final response = await dioClient!.get(AppConstants.ADDRESS_LIST_URI);
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -25,7 +25,7 @@ class LocationRepo {
 
   Future<ApiResponse> removeAddressByID(int id) async {
     try {
-      final response = await dioClient.post('${AppConstants.REMOVE_ADDRESS_URI}$id', data: {"_method": "delete"});
+      final response = await dioClient!.post('${AppConstants.REMOVE_ADDRESS_URI}$id', data: {"_method": "delete"});
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -34,7 +34,7 @@ class LocationRepo {
 
   Future<ApiResponse> addAddress(AddressModel addressModel) async {
     try {
-      Response response = await dioClient.post(
+      Response response = await dioClient!.post(
         AppConstants.ADD_ADDRESS_URI,
         data: addressModel.toJson(),
       );
@@ -46,7 +46,7 @@ class LocationRepo {
 
   Future<ApiResponse> updateAddress(AddressModel addressModel, int addressId) async {
     try {
-      Response response = await dioClient.post(
+      Response response = await dioClient!.post(
         '${AppConstants.UPDATE_ADDRESS_URI}$addressId',
         data: addressModel.toJson(),
       );
@@ -56,7 +56,7 @@ class LocationRepo {
     }
   }
 
-  List<String> getAllAddressType({BuildContext context}) {
+  List<String> getAllAddressType({BuildContext? context}) {
     return [
       'Home',
       'Workplace',
@@ -66,7 +66,7 @@ class LocationRepo {
 
   Future<ApiResponse> getAddressFromGeocode(LatLng latLng) async {
     try {
-      Response response = await dioClient.get('${AppConstants.GEOCODE_URI}?lat=${latLng.latitude}&lng=${latLng.longitude}');
+      Response response = await dioClient!.get('${AppConstants.GEOCODE_URI}?lat=${latLng.latitude}&lng=${latLng.longitude}');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -75,7 +75,7 @@ class LocationRepo {
 
   Future<ApiResponse> searchLocation(String text) async {
     try {
-      Response response = await dioClient.get('${AppConstants.SEARCH_LOCATION_URI}?search_text=$text');
+      Response response = await dioClient!.get('${AppConstants.SEARCH_LOCATION_URI}?search_text=$text');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -84,7 +84,7 @@ class LocationRepo {
 
   Future<ApiResponse> getPlaceDetails(String placeID) async {
     try {
-      Response response = await dioClient.get('${AppConstants.PLACE_DETAILS_URI}?placeid=$placeID');
+      Response response = await dioClient!.get('${AppConstants.PLACE_DETAILS_URI}?placeid=$placeID');
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
@@ -93,7 +93,7 @@ class LocationRepo {
 
   Future<ApiResponse> getDistanceInMeter(LatLng originLatLng, LatLng destinationLatLng) async {
     try {
-      Response response = await dioClient.get('${AppConstants.DISTANCE_MATRIX_URI}'
+      Response response = await dioClient!.get('${AppConstants.DISTANCE_MATRIX_URI}'
           '?origin_lat=${originLatLng.latitude}&origin_lng=${originLatLng.longitude}'
           '&destination_lat=${destinationLatLng.latitude}&destination_lng=${destinationLatLng.longitude}');
       return ApiResponse.withSuccess(response);

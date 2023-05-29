@@ -12,14 +12,14 @@ import 'package:flutter_grocery/view/base/custom_button.dart';
 import 'package:flutter_grocery/view/base/custom_snackbar.dart';
 import 'package:flutter_grocery/view/base/custom_text_field.dart';
 import 'package:flutter_grocery/view/base/footer_view.dart';
-import 'package:flutter_grocery/view/base/web_app_bar/web_app_bar.dart';
+import 'package:flutter_grocery/view/base/preferedsizewidgetdem.dart';
 import 'package:provider/provider.dart';
 
 class CreateNewPasswordScreen extends StatelessWidget {
   final String resetToken;
   final String email;
 
-  CreateNewPasswordScreen({@required this.resetToken, @required this.email});
+  CreateNewPasswordScreen({required this.resetToken, required this.email});
 
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
@@ -32,7 +32,7 @@ class CreateNewPasswordScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: ColorResources.getCardBgColor(context),
-      appBar: ResponsiveHelper.isDesktop(context)? PreferredSize(child: WebAppBar(), preferredSize: Size.fromHeight(120)): CustomAppBar(title: getTranslated('create_new_password', context)),
+      appBar: ResponsiveHelper.isDesktop(context)? preferredSizeWidgetDem(): CustomAppBar(title: getTranslated('create_new_password', context)),
       body: Center(
         child: SingleChildScrollView(
           physics: ResponsiveHelper.isDesktop(context) ? AlwaysScrollableScrollPhysics() : BouncingScrollPhysics(),
@@ -53,7 +53,7 @@ class CreateNewPasswordScreen extends StatelessWidget {
                             margin: _width > 700 ? EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_LARGE) : null,
                             decoration: _width > 700 ? BoxDecoration(
                               color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(10),
-                              boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 5, spreadRadius: 1)],
+                              boxShadow: [BoxShadow(color: Colors.grey[300]!, blurRadius: 5, spreadRadius: 1)],
                             ) : null,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +64,7 @@ class CreateNewPasswordScreen extends StatelessWidget {
                                 SizedBox(height: 30),
                                 Center(
                                     child: Text(
-                                  getTranslated('enter_password_to_create', context),
+                                  getTranslated('enter_password_to_create', context)!,
                                   textAlign: TextAlign.center,
                                   style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
                                 )),
@@ -77,12 +77,12 @@ class CreateNewPasswordScreen extends StatelessWidget {
 
                                       SizedBox(height: 30),
                                       Text(
-                                        getTranslated('new_password', context),
+                                        getTranslated('new_password', context)!,
                                         style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
                                       ),
                                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                                       CustomTextField(
-                                        hintText: getTranslated('password_hint', context),
+                                        hintText: getTranslated('password_hint', context)!,
                                         isShowBorder: true,
                                         isPassword: true,
                                         focusNode: _passwordFocus,
@@ -94,12 +94,12 @@ class CreateNewPasswordScreen extends StatelessWidget {
                                       SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                                       // for confirm password section
                                       Text(
-                                        getTranslated('confirm_password', context),
+                                        getTranslated('confirm_password', context)!,
                                         style: poppinsRegular.copyWith(color: ColorResources.getHintColor(context)),
                                       ),
                                       SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                                       CustomTextField(
-                                        hintText: getTranslated('password_hint', context),
+                                        hintText: getTranslated('password_hint', context)!,
                                         isShowBorder: true,
                                         isPassword: true,
                                         isShowSuffixIcon: true,
@@ -113,18 +113,18 @@ class CreateNewPasswordScreen extends StatelessWidget {
                                           ? SizedBox(
                                               width: double.infinity,
                                               child: CustomButton(
-                                                buttonText: getTranslated('save', context),
+                                                buttonText: getTranslated('save', context)!,
                                                 onPressed: () {
                                                   String _password = _passwordController.text.trim();
                                                   String _confirmPassword = _confirmPasswordController.text.trim();
                                                   if (_password.isEmpty) {
-                                                    showCustomSnackBar(getTranslated('enter_new_password', context), context);
+                                                    showCustomSnackBar(getTranslated('enter_new_password', context)!, context);
                                                   } else if(_password.length < 6) {
-                                                    showCustomSnackBar(getTranslated('password_should_be', context), context);
+                                                    showCustomSnackBar(getTranslated('password_should_be', context)!, context);
                                                   } else if (_confirmPassword.isEmpty) {
-                                                    showCustomSnackBar(getTranslated('confirm_new_password', context), context);
+                                                    showCustomSnackBar(getTranslated('confirm_new_password', context)!, context);
                                                   } else if (_password != _confirmPassword) {
-                                                    showCustomSnackBar(getTranslated('password_did_not_match', context), context);
+                                                    showCustomSnackBar(getTranslated('password_did_not_match', context)!, context);
                                                   } else {
                                                     auth.resetPassword(email, resetToken, _password, _confirmPassword).then((value) {
                                                       if (value.isSuccess) {

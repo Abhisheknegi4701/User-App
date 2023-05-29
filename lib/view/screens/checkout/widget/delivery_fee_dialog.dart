@@ -13,14 +13,14 @@ import 'package:provider/provider.dart';
 class DeliveryFeeDialog extends StatelessWidget {
   final double amount;
   final double distance;
-  DeliveryFeeDialog({@required this.amount, @required this.distance});
+  DeliveryFeeDialog({required this.amount, required this.distance});
 
   @override
   Widget build(BuildContext context) {
     double _deliveryCharge = distance
-        * Provider.of<SplashProvider>(context, listen: false).configModel.deliveryManagement.shippingPerKm;
-    if(_deliveryCharge < Provider.of<SplashProvider>(context, listen: false).configModel.deliveryManagement.minShippingCharge) {
-      _deliveryCharge = Provider.of<SplashProvider>(context, listen: false).configModel.deliveryManagement.minShippingCharge;
+        * Provider.of<SplashProvider>(context, listen: false).configModel!.deliveryManagement!.shippingPerKm!;
+    if(_deliveryCharge < Provider.of<SplashProvider>(context, listen: false).configModel!.deliveryManagement!.minShippingCharge!) {
+      _deliveryCharge = Provider.of<SplashProvider>(context, listen: false).configModel!.deliveryManagement!.minShippingCharge!;
     }
 
     return Consumer<OrderProvider>(builder: (context, order, child) {
@@ -46,7 +46,7 @@ class DeliveryFeeDialog extends StatelessWidget {
 
             Column(children: [
               Text(
-                getTranslated('delivery_fee_from_your_selected_address_to_branch', context)+':',
+                getTranslated('delivery_fee_from_your_selected_address_to_branch', context)! +':',
                 style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE), textAlign: TextAlign.center,
               ),
               SizedBox(height: 10),
@@ -59,14 +59,14 @@ class DeliveryFeeDialog extends StatelessWidget {
               SizedBox(height: 20),
 
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text(getTranslated('subtotal', context), style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
+                Text(getTranslated('subtotal', context)!, style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
                 Text(PriceConverter.convertPrice(context, amount), style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE)),
               ]),
               SizedBox(height: 10),
 
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Text(
-                  getTranslated('delivery_fee', context),
+                  getTranslated('delivery_fee', context)!,
                   style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),
                 ),
                 Text(
@@ -81,7 +81,7 @@ class DeliveryFeeDialog extends StatelessWidget {
               ),
 
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Text(getTranslated('total_amount', context), style: poppinsMedium.copyWith(
+                Text(getTranslated('total_amount', context)!, style: poppinsMedium.copyWith(
                   fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE, color: Theme.of(context).primaryColor,
                 )),
                 Text(
@@ -92,7 +92,7 @@ class DeliveryFeeDialog extends StatelessWidget {
             ]),
             SizedBox(height: 30),
 
-            CustomButton(buttonText: getTranslated('ok', context), onPressed: () {
+            CustomButton(buttonText: getTranslated('ok', context)!, onPressed: () {
               Navigator.pop(context);
             }),
 

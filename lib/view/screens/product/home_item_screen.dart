@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/product_model.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
@@ -8,8 +10,8 @@ import 'package:flutter_grocery/utill/dimensions.dart';
 import 'package:flutter_grocery/view/base/custom_app_bar.dart';
 import 'package:flutter_grocery/view/base/footer_view.dart';
 import 'package:flutter_grocery/view/base/no_data_screen.dart';
+import 'package:flutter_grocery/view/base/preferedsizewidgetdem.dart';
 import 'package:flutter_grocery/view/base/product_widget.dart';
-import 'package:flutter_grocery/view/base/web_app_bar/web_app_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../base/title_widget.dart';
@@ -17,14 +19,14 @@ import '../../base/title_widget.dart';
 class HomeItemScreen extends StatefulWidget {
   final bool dailyItem;
 
-   HomeItemScreen({Key key, this.dailyItem}) : super(key: key);
+   HomeItemScreen({Key? key, required this.dailyItem}) : super(key: key);
 
   @override
   State<HomeItemScreen> createState() => _HomeItemScreenState();
 }
 
 class _HomeItemScreenState extends State<HomeItemScreen> {
-  int pageSize;
+  late int pageSize;
   final ScrollController scrollController = ScrollController();
 
 
@@ -43,13 +45,13 @@ class _HomeItemScreenState extends State<HomeItemScreen> {
     }
 
     final _productProvider = Provider.of<ProductProvider>(context, listen: false);
-    scrollController?.addListener(() {
+    scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent == scrollController.position.pixels &&
-          (_productProvider.popularProductList != null || _productProvider.dailyItemList != null) && !_productProvider.isLoading
+          (!_productProvider.popularProductList.isNull || !_productProvider.dailyItemList.isNull) && !_productProvider.isLoading
       ) {
-        pageSize = (_productProvider.popularPageSize / 10).ceil();
-        if (_productProvider.popularOffset < pageSize) {
-          _productProvider.popularOffset++;
+        pageSize = (_productProvider.popularPageSize! / 10).ceil();
+        if (_productProvider.popularOffset! < pageSize) {
+          _productProvider.popularOffset! + 1;
           _productProvider.showBottomLoader();
           if(widget.dailyItem) {
             _productProvider.getDailyNeeds(
@@ -82,8 +84,7 @@ class _HomeItemScreenState extends State<HomeItemScreen> {
 
 
     return Scaffold(
-      appBar: ResponsiveHelper.isDesktop(context) ? PreferredSize(
-          child: WebAppBar(), preferredSize: Size.fromHeight(120))
+      appBar: ResponsiveHelper.isDesktop(context) ? preferredSizeWidgetDem()
           : CustomAppBar(title: widget.dailyItem ? getTranslated('daily_needs', context) : getTranslated('popular_item', context),
       ),
       body: Scrollbar(controller: scrollController, child: SingleChildScrollView(
@@ -97,7 +98,7 @@ class _HomeItemScreenState extends State<HomeItemScreen> {
                       ResponsiveHelper.isDesktop(context) ? SizedBox(height: 20) : SizedBox.shrink(),
 
                       SizedBox(width: 1170,child: TitleWidget(
-                        title: widget.dailyItem ?  getTranslated('daily_needs', context) : getTranslated('popular_item', context),
+                        title: widget.dailyItem ?  getTranslated('daily_needs', context)! : getTranslated('popular_item', context)!,
                       )),
 
                       SizedBox(
@@ -106,12 +107,12 @@ class _HomeItemScreenState extends State<HomeItemScreen> {
                           builder: (context, productProvider, child) {
                             List<Product> productList;
                             if(widget.dailyItem) {
-                              productList = productProvider.dailyItemList;
+                              productList = productProvider.dailyItemList!;
                             }else{
-                              productList = productProvider.popularProductList;
+                              productList = productProvider.popularProductList!;
                             }
 
-                          return productList != null ? productList.length > 0 ?
+                          return !productList.isNull ? productList.length > 0 ?
                           Column(children: [
                             GridView.builder(
                               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

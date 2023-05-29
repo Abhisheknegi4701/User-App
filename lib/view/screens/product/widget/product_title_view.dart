@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/product_model.dart';
 import 'package:flutter_grocery/helper/price_converter.dart';
@@ -16,24 +18,24 @@ class ProductTitleView extends StatelessWidget {
   final Product product;
   final int stock;
   final int cartIndex;
-  ProductTitleView({@required this.product, @required this.stock,@required this.cartIndex});
+  ProductTitleView({required this.product, required this.stock,required this.cartIndex});
 
   @override
   Widget build(BuildContext context) {
     print('==========${cartIndex}');
 
     double _startingPrice;
-    double _endingPrice;
-    if(product.variations.length != 0) {
+    double? _endingPrice;
+    if(product.variations!.length != 0) {
       List<double> _priceList = [];
-      product.variations.forEach((variation) => _priceList.add(variation.price));
+      product.variations!.forEach((variation) => _priceList.add(variation.price!));
       _priceList.sort((a, b) => a.compareTo(b));
       _startingPrice = _priceList[0];
       if(_priceList[0] < _priceList[_priceList.length-1]) {
         _endingPrice = _priceList[_priceList.length-1];
       }
     }else {
-      _startingPrice = product.price;
+      _startingPrice = product.price!;
     }
 
     return Container(
@@ -60,7 +62,7 @@ class ProductTitleView extends StatelessWidget {
                 children: [
                   Flexible(
                     child: Text(
-                      product.name ?? '',
+                      product.name!,
                       style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE, color: ColorResources.getTextColor(context)),
                       maxLines: 1, overflow: TextOverflow.ellipsis,
                     ),
@@ -72,10 +74,10 @@ class ProductTitleView extends StatelessWidget {
               ),
             ),
 
-            product.rating != null ? Padding(
+            !product.rating.isNull ? Padding(
               padding: const EdgeInsets.symmetric(vertical: Dimensions.PADDING_SIZE_EXTRA_SMALL),
               child: RatingBar(
-                rating: product.rating.length > 0 ? double.parse(product.rating[0].average) : 0.0, size: Dimensions.PADDING_SIZE_DEFAULT,
+                rating: product.rating!.length > 0 ? double.parse(product.rating![0].average!) : 0.0, size: Dimensions.PADDING_SIZE_DEFAULT,
               ),
             ) : SizedBox(),
 
@@ -85,11 +87,11 @@ class ProductTitleView extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      '${PriceConverter.convertPrice(context, _startingPrice, discount: product.discount, discountType: product.discountType)}'
-                          '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(context, _endingPrice, discount: product.discount, discountType: product.discountType)}' : ''}',
+                      '${PriceConverter.convertPrice(context, _startingPrice, discount: product.discount!, discountType: product.discountType!)}'
+                          '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(context, _endingPrice, discount: product.discount!, discountType: product.discountType!)}' : ''}',
                       style: poppinsBold.copyWith(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_LARGE),
                     ),
-                    product.discount > 0 ? Text(
+                    product.discount! > 0 ? Text(
                       '${PriceConverter.convertPrice(context, _startingPrice)}'
                           '${_endingPrice!= null ? ' - ${PriceConverter.convertPrice(context, _endingPrice)}' : ''}',
                       style: poppinsBold.copyWith(color: ColorResources.getHintColor(context), fontSize: Dimensions.FONT_SIZE_SMALL, decoration: TextDecoration.lineThrough),
@@ -97,9 +99,9 @@ class ProductTitleView extends StatelessWidget {
                   ],
                 ),
                 SizedBox(width: 10,),
-                product.discount > 0 ? Text(
-                  '(You Saved  \u{20B9}${product.discountType == 'amount'? _startingPrice -(_startingPrice - product.discount) : _startingPrice - (_startingPrice - ((product.discount / 100) * _startingPrice))}'
-                      '${_endingPrice!= null ? ' - \u{20B9}${product.discountType == 'amount'? _endingPrice -(_endingPrice - product.discount) : _endingPrice - (_endingPrice - ((product.discount / 100) * _endingPrice))}' : ''})',
+                product.discount! > 0 ? Text(
+                  '(You Saved  \u{20B9}${product.discountType == 'amount'? _startingPrice -(_startingPrice - product.discount!) : _startingPrice - (_startingPrice - ((product.discount! / 100) * _startingPrice))}'
+                      '${_endingPrice!= null ? ' - \u{20B9}${product.discountType == 'amount'? _endingPrice -(_endingPrice - product.discount!) : _endingPrice - (_endingPrice - ((product.discount! / 100) * _endingPrice))}' : ''})',
                   style: poppinsBold.copyWith(color: Colors.red, fontSize: Dimensions.FONT_SIZE_LARGE),
                 ): SizedBox(),
               ],
@@ -117,13 +119,13 @@ class ProductTitleView extends StatelessWidget {
               Builder(
                 builder: (context) {
                   return Row(children: [
-                    QuantityButton(isIncrement: false, quantity: productProvider.quantity, stock: stock,cartIndex: cartIndex),
+                    QuantityButton(isIncrement: false, quantity: productProvider.quantity!, stock: stock,cartIndex: cartIndex),
                     SizedBox(width: 15),
                     Consumer<CartProvider>(builder: (context, cart, child) {
-                      return Text(cartIndex != null ? cart.cartList[cartIndex].quantity.toString() : productProvider.quantity.toString(), style: poppinsSemiBold);
+                      return Text(!cartIndex.isNull ? cart.cartList[cartIndex].quantity.toString() : productProvider.quantity.toString(), style: poppinsSemiBold);
                     }),
                     SizedBox(width: 15),
-                    QuantityButton(isIncrement: true, quantity: productProvider.quantity, stock: stock, cartIndex: cartIndex),
+                    QuantityButton(isIncrement: true, quantity: productProvider.quantity!, stock: stock, cartIndex: cartIndex),
                   ]);
                 }
               ),
@@ -143,29 +145,29 @@ class QuantityButton extends StatelessWidget {
   final int cartIndex;
 
   QuantityButton({
-    @required this.isIncrement,
-    @required this.quantity,
-    @required this.stock,
+    required this.isIncrement,
+    required this.quantity,
+    required this.stock,
     this.isCartWidget = false,
-    @required this.cartIndex,
+    required this.cartIndex,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if(cartIndex != null) {
+        if(!cartIndex.isNull) {
           if(isIncrement) {
-            if (Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].quantity < Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].stock) {
+            if (Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].quantity! < Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].stock!) {
               Provider.of<CartProvider>(context, listen: false).setQuantity(true, cartIndex, showMessage: true, context: context);
             } else {
-              showCustomSnackBar(getTranslated('out_of_stock', context), context);
+              showCustomSnackBar(getTranslated('out_of_stock', context)!, context);
             }
           }else {
-            if (Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].quantity > 1) {
+            if (Provider.of<CartProvider>(context, listen: false).cartList[cartIndex].quantity! > 1) {
               Provider.of<CartProvider>(context, listen: false).setQuantity(false, cartIndex, showMessage: true, context: context);
             } else {
-              Provider.of<ProductProvider>(context, listen: false).setExistData(null);
+              Provider.of<ProductProvider>(context, listen: false).setExistData(cartIndex);
               Provider.of<CartProvider>(context, listen: false).removeFromCart(cartIndex, context);
             }
           }
@@ -176,7 +178,7 @@ class QuantityButton extends StatelessWidget {
             if(quantity < stock) {
               Provider.of<ProductProvider>(context, listen: false).setQuantity(true);
             }else {
-              showCustomSnackBar(getTranslated('out_of_stock', context), context);
+              showCustomSnackBar(getTranslated('out_of_stock', context)!, context);
             }
           }
         }

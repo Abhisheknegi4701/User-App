@@ -11,11 +11,11 @@ class AccountDeleteDialog extends StatelessWidget {
   final IconData icon;
   final String title;
   final String description;
-  final Function onTapTrue;
-  final String onTapTrueText;
-  final Function onTapFalse;
-  final String onTapFalseText;
-  AccountDeleteDialog({this.isFailed = false, this.rotateAngle = 0, @required this.icon, @required this.title, @required this.description,@required this.onTapFalse,@required this.onTapTrue, this.onTapTrueText, this.onTapFalseText});
+  final VoidCallback onTapTrue;
+  final String? onTapTrueText;
+  final VoidCallback onTapFalse;
+  final String? onTapFalseText;
+  AccountDeleteDialog({this.isFailed = false, this.rotateAngle = 0, required this.icon, required this.title, required this.description,required this.onTapFalse,required this.onTapTrue, this.onTapTrueText, this.onTapFalseText});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class AccountDeleteDialog extends StatelessWidget {
                   height: 80,
                   width: 80,
                   alignment: Alignment.center,
-                  decoration: BoxDecoration(color: isFailed ? Theme.of(context).errorColor : Theme.of(context).primaryColor, shape: BoxShape.circle),
+                  decoration: BoxDecoration(color: isFailed ? Theme.of(context).colorScheme.error : Theme.of(context).primaryColor, shape: BoxShape.circle),
                   child: Transform.rotate(angle: rotateAngle, child: Icon(icon, size: 40, color: Colors.white)),
                 ),
               ),
@@ -51,10 +51,10 @@ class AccountDeleteDialog extends StatelessWidget {
                     child: Row(
                       children: [
 
-                        Expanded(child: CustomButton(buttonText: onTapFalseText, onPressed: onTapFalse)),
+                        Expanded(child: CustomButton(buttonText: onTapFalseText!, onPressed: onTapFalse)),
                         SizedBox(width: 10,),
 
-                        Expanded(child: authProvider.isLoading ? Center(child: CircularProgressIndicator()) :  CustomButton(buttonText: onTapTrueText, onPressed: onTapTrue)),
+                        Expanded(child: authProvider.isLoading ? Center(child: CircularProgressIndicator()) :  CustomButton(buttonText: onTapTrueText!, onPressed: onTapTrue)),
                       ],
                     ),
                   ),

@@ -10,15 +10,14 @@ import 'package:flutter_grocery/utill/styles.dart';
 import 'package:flutter_grocery/view/screens/menu/widget/custom_drawer.dart';
 import 'package:provider/provider.dart';
 
-import 'sign_out_confirmation_dialog.dart';
 
 class MenuButton extends StatelessWidget {
   final CustomDrawerController drawerController;
   final int index;
   final String icon;
   final String title;
-  final IconData iconData;
-  MenuButton({@required this.drawerController, @required this.index, @required this.icon, @required this.title, this.iconData = null});
+  final IconData? iconData;
+  MenuButton({required this.drawerController, required this.index, required this.icon, required this.title, this.iconData = null});
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +57,7 @@ class MenuButton extends StatelessWidget {
 
              Provider.of<AuthProvider>(context, listen: false).deleteUser(context);
            }
-            drawerController.toggle();
+            drawerController.toggle!();
           },
           selected: splash.pageIndex == index,
           selectedTileColor: Colors.black.withAlpha(30),

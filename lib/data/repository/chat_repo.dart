@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'package:path/path.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/datasource/remote/dio/dio_client.dart';
 import 'package:flutter_grocery/data/datasource/remote/exception/api_error_handler.dart';
 import 'package:flutter_grocery/data/model/response/base/api_response.dart';
@@ -12,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ChatRepo {
   final DioClient dioClient;
   final SharedPreferences sharedPreferences;
-  ChatRepo({@required this.dioClient, @required this.sharedPreferences});
+  ChatRepo({required this.dioClient, required this.sharedPreferences});
 
 
   Future<ApiResponse> getDeliveryManMessage(int orderId,int offset) async {
@@ -38,11 +37,9 @@ class ChatRepo {
     http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse('${AppConstants.BASE_URL}${AppConstants.SEND_MESSAGE_TO_DELIVERY_MAN_URL}'));
     request.headers.addAll(<String,String>{'Authorization': 'Bearer $token'});
     for(int i=0; i<file.length;i++){
-      if(file != null) {
-        Uint8List _list = await file[i].readAsBytes();
-        var part = http.MultipartFile('image[]', file[i].readAsBytes().asStream(), _list.length, filename: basename(file[i].path));
-        request.files.add(part);
-      }
+      Uint8List _list = await file[i].readAsBytes();
+      var part = http.MultipartFile('image[]', file[i].readAsBytes().asStream(), _list.length, filename: basename(file[i].path));
+      request.files.add(part);
     }
     Map<String, String> _fields = Map();
     _fields.addAll(<String, String>{
@@ -59,11 +56,9 @@ class ChatRepo {
     request.headers.addAll(<String,String>{'Authorization': 'Bearer $token'});
 
     for(int i=0; i<file.length;i++){
-      if(file != null) {
-        Uint8List _list = await file[i].readAsBytes();
-        var part = http.MultipartFile('image[]', file[i].readAsBytes().asStream(), _list.length, filename: basename(file[i].path));
-        request.files.add(part);
-      }
+      Uint8List _list = await file[i].readAsBytes();
+      var part = http.MultipartFile('image[]', file[i].readAsBytes().asStream(), _list.length, filename: basename(file[i].path));
+      request.files.add(part);
     }
     Map<String, String> _fields = Map();
     _fields.addAll(<String, String>{

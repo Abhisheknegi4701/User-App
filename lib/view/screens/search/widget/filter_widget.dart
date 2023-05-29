@@ -12,7 +12,7 @@ class FilterWidget extends StatelessWidget {
   final double maxValue;
   final int index;
 
-  FilterWidget({@required this.maxValue, this.index});
+  FilterWidget({required this.maxValue, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class FilterWidget extends StatelessWidget {
                   Align(
                     alignment: Alignment.center,
                     child: Text(
-                      getTranslated('filter', context),
+                      getTranslated('filter', context)!,
                       textAlign: TextAlign.center,
                       style: poppinsMedium.copyWith(
                         fontSize: Dimensions.FONT_SIZE_LARGE,
@@ -51,7 +51,7 @@ class FilterWidget extends StatelessWidget {
                       searchProvider.setFilterIndex(0);
                     },
                     child: Text(
-                      getTranslated('reset', context),
+                      getTranslated('reset', context)!,
                       style: poppinsRegular.copyWith(color: Colors.red),
                     ),
                   )
@@ -59,7 +59,7 @@ class FilterWidget extends StatelessWidget {
               ),
               SizedBox(height: 15),
               Text(
-                getTranslated('price', context),
+                getTranslated('price', context)!,
                 style: poppinsMedium.copyWith(color: ColorResources.getTextColor(context)),
               ),
 
@@ -77,7 +77,7 @@ class FilterWidget extends StatelessWidget {
 
               SizedBox(height: 15),
               Text(
-                getTranslated('sort_by', context),
+                getTranslated('sort_by', context)!,
                 style: poppinsMedium.copyWith(color: ColorResources.getTextColor(context)),
               ),
               SizedBox(height: 13),
@@ -127,7 +127,7 @@ class FilterWidget extends StatelessWidget {
               Container(
                 width: MediaQuery.of(context).size.width,
                 child: CustomButton(
-                  buttonText: getTranslated('apply', context),
+                  buttonText: getTranslated('apply', context)!,
                   onPressed: () {
                     Provider.of<SearchProvider>(context, listen: false).sortSearchList();
                     Navigator.pop(context);

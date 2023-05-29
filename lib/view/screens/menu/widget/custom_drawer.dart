@@ -4,18 +4,18 @@ import 'package:flutter_grocery/provider/localization_provider.dart';
 import 'package:provider/provider.dart';
 
 class CustomDrawerController {
-  Function open;
-  Function close;
-  Function toggle;
-  Function isOpen;
-  ValueNotifier<DrawerState> stateNotifier;
+  Function? open;
+  Function? close;
+  Function? toggle;
+  Function? isOpen;
+  ValueNotifier<DrawerState>? stateNotifier;
 }
 
 class CustomDrawer extends StatefulWidget {
   CustomDrawer({
     this.controller,
-    @required this.menuScreen,
-    @required this.mainScreen,
+    required this.menuScreen,
+    required this.mainScreen,
     this.slideWidth = 275.0,
     this.borderRadius = 16.0,
     this.angle = -12.0,
@@ -25,22 +25,22 @@ class CustomDrawer extends StatefulWidget {
     this.closeCurve,
   }) : assert(angle <= 0.0 && angle >= -30.0);
 
-  final CustomDrawerController controller;
-  final Widget menuScreen;
+  final CustomDrawerController? controller;
+  final Widget? menuScreen;
   final Widget mainScreen;
   final double slideWidth;
   final double borderRadius;
   final double angle;
   final Color backgroundColor;
   final bool showShadow;
-  final Curve openCurve;
-  final Curve closeCurve;
+  final Curve? openCurve;
+  final Curve? closeCurve;
 
   @override
   _CustomDrawerState createState() => new _CustomDrawerState();
 
   /// static function to provide the drawer state
-  static _CustomDrawerState of(BuildContext context) {
+  static State<CustomDrawer>? of(BuildContext context) {
     return context.findAncestorStateOfType<State<CustomDrawer>>();
   }
 
@@ -61,7 +61,7 @@ class _CustomDrawerState extends State<CustomDrawer>
   /// check the slide direction
 
 
-  AnimationController _animationController;
+  late AnimationController _animationController;
   DrawerState _state = DrawerState.closed;
 
   double get _percentOpen => _animationController.value;
@@ -86,7 +86,7 @@ class _CustomDrawerState extends State<CustomDrawer>
       _state == DrawerState.open  /*|| _state == DrawerState.opening*/;
 
   /// Drawer state
-  ValueNotifier<DrawerState> stateNotifier;
+  late ValueNotifier<DrawerState> stateNotifier;
 
   @override
   void initState() {
@@ -118,13 +118,11 @@ class _CustomDrawerState extends State<CustomDrawer>
       });
 
     /// assign controller function to the widget methods
-    if (widget.controller != null) {
-      widget.controller.open = open;
-      widget.controller.close = close;
-      widget.controller.toggle = toggle;
-      widget.controller.isOpen = isOpen;
-      widget.controller.stateNotifier = stateNotifier;
-    }
+    widget.controller!.open = open;
+    widget.controller!.close = close;
+    widget.controller!.toggle = toggle;
+    widget.controller!.isOpen = isOpen;
+    widget.controller!.stateNotifier = stateNotifier;
   }
 
   _updateStatusNotifier() {
@@ -138,7 +136,7 @@ class _CustomDrawerState extends State<CustomDrawer>
   }
 
   Widget _zoomAndSlideContent(Widget container,BuildContext context,
-      {double angle, double scale, double slide = 0}) {
+      {double? angle, double? scale, double slide = 0}) {
     var slidePercent, scalePercent;
 
     /// determine current slide percent based on the MenuStatus
@@ -205,7 +203,7 @@ class _CustomDrawerState extends State<CustomDrawer>
           /// Displaying the first shadow
           AnimatedBuilder(
             animation: _animationController,
-            builder: (_, w) => _zoomAndSlideContent(w,context,
+            builder: (_, w) => _zoomAndSlideContent(w!,context,
                 angle: (widget.angle == 0.0) ? 0.0 : widget.angle - 8,
                 scale: .9,
                 slide: slidePercent * 2),
@@ -217,7 +215,7 @@ class _CustomDrawerState extends State<CustomDrawer>
           /// Displaying the second shadow
           AnimatedBuilder(
             animation: _animationController,
-            builder: (_, w) => _zoomAndSlideContent(w,context,
+            builder: (_, w) => _zoomAndSlideContent(w!,context,
                 angle: (widget.angle == 0.0) ? 0.0 : widget.angle - 4.0,
                 scale: .95,
                 slide: slidePercent),
@@ -230,7 +228,7 @@ class _CustomDrawerState extends State<CustomDrawer>
         /// Displaying the main screen
         AnimatedBuilder(
           animation: _animationController,
-          builder: (_, w) => _zoomAndSlideContent(w, context),
+          builder: (_, w) => _zoomAndSlideContent(w!, context),
           child: widget.mainScreen,
         ),
       ],

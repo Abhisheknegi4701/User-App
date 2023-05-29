@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:typed_data';
+import 'dart:js_interop';
 import 'package:path/path.dart';
 
 import 'package:dio/dio.dart';
@@ -16,7 +16,7 @@ import 'package:http/http.dart' as http;
 class ProfileRepo{
   final DioClient dioClient;
   final SharedPreferences sharedPreferences;
-  ProfileRepo({@required this.dioClient, @required this.sharedPreferences});
+  ProfileRepo({required this.dioClient, required this.sharedPreferences});
 
   Future<ApiResponse> getAddressTypeList() async {
     try {
@@ -45,16 +45,16 @@ class ProfileRepo{
   Future<http.StreamedResponse> updateProfile(UserInfoModel userInfoModel, String pass, File file, PickedFile data, String token) async {
     http.MultipartRequest request = http.MultipartRequest('POST', Uri.parse('${AppConstants.BASE_URL}${AppConstants.UPDATE_PROFILE_URI}'));
     request.headers.addAll(<String,String>{'Authorization': 'Bearer $token'});
-    if(file != null) {
+    if(!file.isNull) {
       request.files.add(http.MultipartFile('image', file.readAsBytes().asStream(), file.lengthSync(), filename: file.path.split('/').last));
-    }else if(data != null) {
-      Uint8List _list = await data.readAsBytes();
-      http.MultipartFile part = http.MultipartFile('image', data.readAsBytes().asStream(), _list.length, filename: basename(data.path));
-      request.files.add(part);
+    }else {   Uint8List _list = await data.readAsBytes();
+    http.MultipartFile part = http.MultipartFile('image', data.readAsBytes().asStream(), _list.length, filename: basename(data.path));
+    request.files.add(part);
     }
+
     Map<String, String> _fields = Map();
     _fields.addAll(<String, String>{
-      '_method': 'put', 'f_name': userInfoModel.fName, 'l_name': userInfoModel.lName, 'phone': userInfoModel.phone, 'password': pass
+      '_method': 'put', 'f_name': userInfoModel.fName!, 'l_name': userInfoModel.lName!, 'phone': userInfoModel.phone!, 'password': pass
     });
     request.fields.addAll(_fields);
     http.StreamedResponse response = await request.send();

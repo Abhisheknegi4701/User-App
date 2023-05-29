@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 
 class OrderRepo {
   final DioClient dioClient;
-  OrderRepo({@required this.dioClient});
+  OrderRepo({required this.dioClient});
 
   Future<ApiResponse> getOrderList() async {
     try {

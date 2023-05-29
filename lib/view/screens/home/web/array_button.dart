@@ -5,9 +5,9 @@ import 'package:flutter_grocery/utill/dimensions.dart';
 class ArrayButton extends StatelessWidget {
   final bool isLeft;
   final bool isLarge;
-  final Function onTop;
+  final VoidCallback onTop;
   final bool isVisible;
-  const ArrayButton({Key key, @required this.isLeft, @required this.isLarge, @required this.onTop, @required this.isVisible}) : super(key: key);
+  const ArrayButton({Key? key, required this.isLeft, required this.isLarge, required this.onTop, required this.isVisible}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +27,9 @@ class ArrayButton extends StatelessWidget {
         child: Padding(
           padding: isLarge ?  const EdgeInsets.all(8.0) : const EdgeInsets.all(4.0),
           child: isLeft ? Icon(Icons.chevron_left_rounded, color: isVisible ? ColorResources.getBlackColor(context)
-              : ColorResources.getWhiteColor(context), size: isLarge == null || isLarge ?  30
+              : ColorResources.getWhiteColor(context), size: isLarge ?  30
               : Dimensions.PADDING_SIZE_LARGE) : Icon(Icons.chevron_right_rounded, color: isVisible 
-              ? ColorResources.getBlackColor(context)  :  ColorResources.getWhiteColor(context), size: isLarge == null || isLarge ?  30
+              ? ColorResources.getBlackColor(context)  :  ColorResources.getWhiteColor(context), size: isLarge ?  30
               : Dimensions.PADDING_SIZE_LARGE),
         ),
       ),

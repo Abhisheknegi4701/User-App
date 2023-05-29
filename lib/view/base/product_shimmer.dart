@@ -5,7 +5,7 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 
 class ProductShimmer extends StatelessWidget {
   final bool isEnabled;
-  ProductShimmer({@required this.isEnabled});
+  ProductShimmer({required this.isEnabled});
 
   @override
   Widget build(BuildContext context) {

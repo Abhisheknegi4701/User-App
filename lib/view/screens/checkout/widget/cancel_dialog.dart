@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/helper/route_helper.dart';
 import 'package:flutter_grocery/localization/language_constrants.dart';
@@ -7,7 +9,7 @@ import 'package:flutter_grocery/view/base/custom_button.dart';
 
 class CancelDialog extends StatelessWidget {
   final int orderID;
-  CancelDialog({@required this.orderID});
+  CancelDialog({required this.orderID});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class CancelDialog extends StatelessWidget {
           // ) : SizedBox(),
           // SizedBox(height: fromCheckout ? Dimensions.PADDING_SIZE_SMALL : 0),
 
-          orderID != null || orderID != 'null' ?   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          !orderID.isNull || orderID != 'null' ?   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text('${getTranslated('order_id', context)}:', style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL)),
             SizedBox(width: Dimensions.PADDING_SIZE_EXTRA_SMALL),
             Text(orderID.toString(), style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL)),
@@ -46,14 +48,14 @@ class CancelDialog extends StatelessWidget {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Icon(Icons.info, color: Theme.of(context).primaryColor),
             Text(
-              getTranslated('payment_failed', context),
+              getTranslated('payment_failed', context)!,
               style: poppinsMedium.copyWith(color: Theme.of(context).primaryColor),
             ),
           ]),
           SizedBox(height: 10),
 
           Text(
-            getTranslated('payment_process_is_interrupted', context),
+            getTranslated('payment_process_is_interrupted', context)!,
             style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL),
             textAlign: TextAlign.center,
           ),
@@ -69,12 +71,12 @@ class CancelDialog extends StatelessWidget {
                 style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10), side: BorderSide(width: 2, color: Theme.of(context).primaryColor)),
                 ),
-                child: Text(getTranslated('maybe_later', context), style: poppinsMedium.copyWith(color: Theme.of(context).primaryColor)),
+                child: Text(getTranslated('maybe_later', context)!, style: poppinsMedium.copyWith(color: Theme.of(context).primaryColor)),
               ),
             )),
             SizedBox(width: 10),
             Expanded(child: CustomButton(buttonText: 'Order Details', onPressed: () {
-              Navigator.pop(context);
+              Navigator.pop(context, false);
             })),
           ]),
 

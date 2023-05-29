@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 class WebDailyItemView extends StatelessWidget {
   final ProductProvider productProvider;
   final int index;
-   WebDailyItemView({Key key,@required this.productProvider,@required this.index}) : super(key: key);
+   WebDailyItemView({Key? key,required this.productProvider,required this.index}) : super(key: key);
 
   final oneSideShadow = Padding(
     padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
@@ -38,8 +38,8 @@ class WebDailyItemView extends StatelessWidget {
       isItem: true,
       child: InkWell(
         onTap: (){
-          Navigator.of(context).pushNamed(RouteHelper.getProductDetailsRoute(product: productProvider.dailyItemList[index]),
-              arguments: ProductDetailsScreen(product: productProvider.dailyItemList[index]));
+          Navigator.of(context).pushNamed(RouteHelper.getProductDetailsRoute(product: productProvider.dailyItemList![index]),
+              arguments: ProductDetailsScreen(product: productProvider.dailyItemList![index]));
         },
         borderRadius: BorderRadius.circular(Dimensions.RADIUS_SIZE_TEN),
         child: Container(
@@ -85,8 +85,8 @@ class WebDailyItemView extends StatelessWidget {
                             height: 150,
                             fit: BoxFit.cover,
                             placeholder: Images.placeholder(context),
-                            image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.productImageUrl}'
-                                '/${productProvider.dailyItemList[index].image[0]}',
+                            image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.productImageUrl}'
+                                '/${productProvider.dailyItemList![index].image![0]}',
                             imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), width: 100, height: 150, fit: BoxFit.cover),
                           ),
                         ),
@@ -101,12 +101,12 @@ class WebDailyItemView extends StatelessWidget {
                   children: [
                     const SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                     Text(
-                      productProvider.dailyItemList[index].name,
+                      productProvider.dailyItemList![index].name!,
                       style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE),
                       maxLines: 1, overflow: TextOverflow.ellipsis,textAlign: TextAlign.center,
                     ),
                     Text(
-                      '${productProvider.dailyItemList[index].capacity} ${productProvider.dailyItemList[index].unit}',
+                      '${productProvider.dailyItemList![index].capacity} ${productProvider.dailyItemList![index].unit}',
                       style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL),
                       maxLines: 2, overflow: TextOverflow.ellipsis,
                     ),
@@ -115,16 +115,16 @@ class WebDailyItemView extends StatelessWidget {
 
                     Text(
                       PriceConverter.convertPrice(
-                        context, productProvider.dailyItemList[index].price,
-                        discount: productProvider.dailyItemList[index].discount,
-                        discountType: productProvider.dailyItemList[index].discountType,
+                        context, productProvider.dailyItemList![index].price!,
+                        discount: productProvider.dailyItemList![index].discount!,
+                        discountType: productProvider.dailyItemList![index].discountType!,
                       ),
                       style: poppinsBold.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE),
                     ),
 
-                    productProvider.dailyItemList[index].discount > 0 ? Text(
+                    productProvider.dailyItemList![index].discount! > 0 ? Text(
                       PriceConverter.convertPrice(
-                        context, productProvider.dailyItemList[index].price,
+                        context, productProvider.dailyItemList![index].price!,
                       ),
                       style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL, color: ColorResources.RED_COLOR,decoration: TextDecoration.lineThrough),
                     ) : SizedBox(),

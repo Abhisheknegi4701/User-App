@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'array_button.dart';
 import 'category_page_view.dart';
 class CategoriesWebView extends StatefulWidget {
-  const CategoriesWebView({Key key}) : super(key: key);
+  const CategoriesWebView({Key? key}) : super(key: key);
 
   @override
   _CategoriesWebViewState createState() => _CategoriesWebViewState();
@@ -38,9 +38,9 @@ class _CategoriesWebViewState extends State<CategoriesWebView> {
                 Expanded(
                   child: SizedBox(
                     height: 190,
-                    child:  category.categoryList != null ? category.categoryList.length > 0 ?
+                    child:  category.categoryList != null ? category.categoryList!.length > 0 ?
                     CategoryPageView(categoryProvider: category, pageController: pageController)
-                        : Center(child: Text(getTranslated('no_category_available', context))) : CategoryShimmer(),
+                        : Center(child: Text(getTranslated('no_category_available', context)!)) : CategoryShimmer(),
 
                   ),
                 ),
@@ -53,7 +53,7 @@ class _CategoriesWebViewState extends State<CategoriesWebView> {
           ), alignment: Provider.of<LocalizationProvider>(context).isLtr ? Alignment.centerLeft : Alignment.centerRight)),
           if(category.categoryList != null) Positioned.fill(child: Align(
               child: ArrayButton(isLeft: false, isLarge: true, onTop: _nextPage,
-                  isVisible:  !category.pageLastIndex && (category.categoryList != null ? category.categoryList.length > 7 : false)),
+                  isVisible:  !category.pageLastIndex && (category.categoryList != null ? category.categoryList!.length > 7 : false)),
               alignment: Provider.of<LocalizationProvider>(context).isLtr ? Alignment.centerRight : Alignment.centerLeft)),
 
         ],

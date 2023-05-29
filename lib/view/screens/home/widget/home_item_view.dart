@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/response/product_model.dart';
 import 'package:flutter_grocery/helper/product_type.dart';
@@ -9,20 +11,20 @@ import 'package:flutter_grocery/view/base/web_product_shimmer.dart';
 import 'package:provider/provider.dart';
 
 class HomeItemView extends StatelessWidget {
-  final bool isDailyItem;
+  final bool? isDailyItem;
 
-  const HomeItemView({Key key, this.isDailyItem}) : super(key: key);
+  const HomeItemView({Key? key, this.isDailyItem}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Consumer<ProductProvider>(builder: (context, productProvider, child) {
       List<Product> _productList = [];
-      if(isDailyItem) {
-        _productList = productProvider.dailyItemList;
+      if(isDailyItem!) {
+        _productList = productProvider.dailyItemList!;
       }else{
-        _productList = productProvider.popularProductList;
+        _productList = productProvider.popularProductList!;
       }
 
-      return _productList != null ? Column(children: [
+      return !_productList.isNull ? Column(children: [
 
         ResponsiveHelper.isDesktop(context) ? GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

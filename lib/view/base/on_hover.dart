@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_grocery/utill/color_resources.dart';
 
 class OnHover extends StatefulWidget {
-  final Widget child;
+  final Widget? child;
   final bool isItem;
-  OnHover({Key key, this.child, this.isItem = false}) : super(key: key);
+  OnHover({Key? key, this.child, this.isItem = false}) : super(key: key);
 
   @override
   State<OnHover> createState() => _OnHoverState();

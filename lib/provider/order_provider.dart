@@ -1,4 +1,6 @@
 
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/data/model/body/place_order_body.dart';
 import 'package:flutter_grocery/data/model/body/review_body.dart';
@@ -24,46 +26,46 @@ class
 OrderProvider extends ChangeNotifier {
   final OrderRepo orderRepo;
   final SharedPreferences sharedPreferences;
-  OrderProvider({ @required this.sharedPreferences,@required this.orderRepo});
+  OrderProvider({required this.sharedPreferences,required this.orderRepo});
 
-  List<OrderModel> _runningOrderList;
-  List<OrderModel> _historyOrderList;
-  List<OrderDetailsModel> _orderDetails;
-  int _paymentMethodIndex = 0;
-  OrderModel _trackModel;
-  int _addressIndex = -1;
-  bool _isLoading = false;
-  bool _showCancelled = false;
-  List<TimeSlotModel> _timeSlots;
-  List<TimeSlotModel> _allTimeSlots;
-  bool _isActiveOrder = true;
-  int _branchIndex = 0;
-  String _orderType = 'delivery';
-  ResponseModel _responseModel;
-  DeliveryManModel _deliveryManModel;
-  double _distance = -1;
+  List<OrderModel>? _runningOrderList;
+  List<OrderModel>? _historyOrderList;
+  List<OrderDetailsModel>? _orderDetails;
+  int? _paymentMethodIndex = 0;
+  OrderModel? _trackModel;
+  int? _addressIndex = -1;
+  bool? _isLoading = false;
+  bool? _showCancelled = false;
+  List<TimeSlotModel>? _timeSlots;
+  List<TimeSlotModel>? _allTimeSlots;
+  bool? _isActiveOrder = true;
+  int? _branchIndex = 0;
+  String? _orderType = 'delivery';
+  ResponseModel? _responseModel;
+  DeliveryManModel? _deliveryManModel;
+  double? _distance = -1;
 
 
-  List<TimeSlotModel> get timeSlots => _timeSlots;
-  List<TimeSlotModel> get allTimeSlots => _allTimeSlots;
-  List<OrderModel> get runningOrderList => _runningOrderList;
-  List<OrderModel> get historyOrderList => _historyOrderList;
-  List<OrderDetailsModel> get orderDetails => _orderDetails;
-  int get paymentMethodIndex => _paymentMethodIndex;
-  OrderModel get trackModel => _trackModel;
-  int get addressIndex => _addressIndex;
-  bool get isLoading => _isLoading;
-  bool get showCancelled => _showCancelled;
-  bool get isActiveOrder => _isActiveOrder;
-  int get branchIndex => _branchIndex;
-  String get orderType => _orderType;
-  ResponseModel get responseModel => _responseModel;
-  DeliveryManModel get deliveryManModel => _deliveryManModel;
-  double get distance => _distance;
+  List<TimeSlotModel>? get timeSlots => _timeSlots;
+  List<TimeSlotModel>? get allTimeSlots => _allTimeSlots;
+  List<OrderModel>? get runningOrderList => _runningOrderList;
+  List<OrderModel>? get historyOrderList => _historyOrderList;
+  List<OrderDetailsModel>? get orderDetails => _orderDetails;
+  int? get paymentMethodIndex => _paymentMethodIndex;
+  OrderModel? get trackModel => _trackModel;
+  int? get addressIndex => _addressIndex;
+  bool? get isLoading => _isLoading;
+  bool? get showCancelled => _showCancelled;
+  bool? get isActiveOrder => _isActiveOrder;
+  int? get branchIndex => _branchIndex;
+  String? get orderType => _orderType;
+  ResponseModel? get responseModel => _responseModel;
+  DeliveryManModel? get deliveryManModel => _deliveryManModel;
+  double? get distance => _distance;
 
   Future<void> getOrderList(BuildContext context) async {
     ApiResponse apiResponse = await orderRepo.getOrderList();
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
       _runningOrderList = [];
       _historyOrderList = [];
       apiResponse.response.data.forEach((order) {
@@ -72,12 +74,12 @@ OrderProvider extends ChangeNotifier {
             orderModel.orderStatus == 'processing' ||
             orderModel.orderStatus == 'out_for_delivery' ||
             orderModel.orderStatus == 'confirmed') {
-          _runningOrderList.add(orderModel);
+          _runningOrderList!.add(orderModel);
         } else if (orderModel.orderStatus == 'delivered'||
             orderModel.orderStatus == 'returned' ||
             orderModel.orderStatus == 'failed' ||
             orderModel.orderStatus == 'canceled') {
-          _historyOrderList.add(orderModel);
+          _historyOrderList!.add(orderModel);
         }
       });
     } else {
@@ -89,17 +91,17 @@ OrderProvider extends ChangeNotifier {
   Future<void> initializeTimeSlot(BuildContext context) async {
     _distance = -1;
     ApiResponse apiResponse = await orderRepo.getTimeSlot();
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
       _timeSlots = [];
       _allTimeSlots = [];
       apiResponse.response.data.forEach((timeSlot) {
 
-        _timeSlots.add(TimeSlotModel.fromJson(timeSlot));
+        _timeSlots!.add(TimeSlotModel.fromJson(timeSlot));
 
-        _allTimeSlots.add(TimeSlotModel.fromJson(timeSlot));
+        _allTimeSlots!.add(TimeSlotModel.fromJson(timeSlot));
 
       });
-      validateSlot(_allTimeSlots, 0);
+      validateSlot(_allTimeSlots!, 0);
     } else {
       ApiChecker.checkApi(context, apiResponse);
     }
@@ -123,9 +125,7 @@ OrderProvider extends ChangeNotifier {
 
   void updateDateSlot(int index) {
     _selectDateSlot = index;
-    if(_allTimeSlots != null) {
-      validateSlot(_allTimeSlots, index);
-    }
+    validateSlot(_allTimeSlots!, index);
     _selectTimeSlot = index;
     notifyListeners();
   }
@@ -135,14 +135,14 @@ OrderProvider extends ChangeNotifier {
     if(dateIndex == 0) {
       DateTime _date = DateTime.now();
       slots.forEach((slot) {
-        DateTime _time = DateConverter.stringTimeToDateTime(slot.endTime).subtract(Duration(/*hours: 1*/minutes: 30));
+        DateTime _time = DateConverter.stringTimeToDateTime(slot.endTime!).subtract(Duration(/*hours: 1*/minutes: 30));
         DateTime _dateTime = DateTime(_date.year, _date.month, _date.day, _time.hour, _time.minute, _time.second);
         if (_dateTime.isAfter(DateTime.now())) {
-          _timeSlots.add(slot);
+          _timeSlots!.add(slot);
         }
       });
     }else {
-      _timeSlots.addAll(_allTimeSlots);
+      _timeSlots!.addAll(_allTimeSlots!);
     }
   }
 
@@ -150,7 +150,7 @@ OrderProvider extends ChangeNotifier {
   double discount = 0;
   double totalPrice=0;
 
-  Future<List<OrderDetailsModel>> getOrderDetails(String orderID, BuildContext context) async {
+  Future<List<OrderDetailsModel>?> getOrderDetails(String orderID, BuildContext context) async {
     _orderDetails = null;
     _isLoading = true;
     _showCancelled = false;
@@ -160,13 +160,13 @@ OrderProvider extends ChangeNotifier {
     notifyListeners();
     ApiResponse apiResponse = await orderRepo.getOrderDetails(orderID, Provider.of<LocalizationProvider>(context, listen: false).locale.languageCode);
     _isLoading = false;
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
       _orderDetails = [];
-      apiResponse.response.data.forEach((orderDetail) => _orderDetails.add(OrderDetailsModel.fromJson(orderDetail)));
-      _orderDetails.forEach((element) {
+      apiResponse.response.data.forEach((orderDetail) => _orderDetails!.add(OrderDetailsModel.fromJson(orderDetail)));
+      _orderDetails!.forEach((element) {
         try{
-          subTotal += double.parse(element.productDetails.price.toString());
-          discount += double.parse(element.productDetails.discount.toString());
+          subTotal += double.parse(element.productDetails!.price.toString());
+          discount += double.parse(element.productDetails!.discount.toString());
           totalPrice += double.parse(element.price.toString());
         }catch(e){
           subTotal = 0;
@@ -195,7 +195,7 @@ OrderProvider extends ChangeNotifier {
 
   Future<void> getDeliveryManData(String orderID, BuildContext context) async {
     ApiResponse apiResponse = await orderRepo.getDeliveryManData(orderID);
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
       _deliveryManModel = DeliveryManModel.fromJson(apiResponse.response.data);
     } else {
       ApiChecker.checkApi(context, apiResponse);
@@ -210,10 +210,10 @@ OrderProvider extends ChangeNotifier {
       _orderDetails = null;
     }
     _showCancelled = false;
-    if(orderModel == null) {
+    if(orderModel.isNull) {
       _isLoading = true;
       ApiResponse apiResponse = await orderRepo.trackOrder(orderID);
-      if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+      if (apiResponse.response.statusCode == 200) {
         _trackModel = OrderModel.fromJson(apiResponse.response.data);
         _responseModel = ResponseModel(true, apiResponse.response.data.toString());
       } else {
@@ -235,7 +235,7 @@ OrderProvider extends ChangeNotifier {
     print(placeOrderBody.toJson());
     ApiResponse apiResponse = await orderRepo.placeOrder(placeOrderBody);
     _isLoading = false;
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
 
       String message = apiResponse.response.data['message'];
       String orderID = apiResponse.response.data['order_id'].toString();
@@ -250,8 +250,8 @@ OrderProvider extends ChangeNotifier {
         errorMessage = apiResponse.error.toString();
       } else {
         ErrorResponse errorResponse = apiResponse.error;
-        print(errorResponse.errors[0].message);
-        errorMessage = errorResponse.errors[0].message;
+        print(errorResponse.errors![0].message);
+        errorMessage = errorResponse.errors![0].message!;
       }
       callback(false, errorMessage, '-1');
     }
@@ -275,15 +275,15 @@ OrderProvider extends ChangeNotifier {
     notifyListeners();
     ApiResponse apiResponse = await orderRepo.cancelOrder(orderID);
     _isLoading = false;
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
      if(fromOrder){
-       OrderModel orderModel;
-       _runningOrderList.forEach((order) {
+       OrderModel? orderModel;
+       _runningOrderList!.forEach((order) {
          if (order.id.toString() == orderID) {
            orderModel = order;
          }
        });
-       _runningOrderList.remove(orderModel);
+       _runningOrderList!.remove(orderModel);
      }
       _showCancelled = true;
       callback(apiResponse.response.data['message'], true, orderID);
@@ -313,20 +313,18 @@ OrderProvider extends ChangeNotifier {
     notifyListeners();
     ApiResponse apiResponse = await orderRepo.updatePaymentMethod(orderID);
     _isLoading = false;
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response.statusCode == 200) {
       if(fromOrder){
-        int orderIndex;
-        for(int index=0; index<_runningOrderList.length; index++) {
-          if(_runningOrderList[index].id.toString() == orderID) {
+        int orderIndex = 0;
+        for(int index=0; index<_runningOrderList!.length; index++) {
+          if(_runningOrderList![index].id.toString() == orderID) {
             orderIndex = index;
             break;
           }
         }
-        if(orderIndex != null) {
-          _runningOrderList[orderIndex].paymentMethod = 'cash_on_delivery';
-        }
+        _runningOrderList![orderIndex].paymentMethod = 'cash_on_delivery';
       }
-      _trackModel.paymentMethod = 'cash_on_delivery';
+      _trackModel!.paymentMethod = 'cash_on_delivery';
       callback(apiResponse.response.data['message'], true);
     } else {
       print(apiResponse.error.errors[0].message);
@@ -381,7 +379,7 @@ OrderProvider extends ChangeNotifier {
 
     ApiResponse response = await orderRepo.submitReview(reviewBody);
     ResponseModel responseModel;
-    if (response.response != null && response.response.statusCode == 200) {
+    if (response.response.statusCode == 200) {
       _submitList[index] = true;
       responseModel = ResponseModel(true, 'Review submitted successfully');
       notifyListeners();
@@ -404,7 +402,7 @@ OrderProvider extends ChangeNotifier {
     notifyListeners();
     ApiResponse response = await orderRepo.submitDeliveryManReview(reviewBody);
     ResponseModel responseModel;
-    if (response.response != null && response.response.statusCode == 200) {
+    if (response.response.statusCode == 200) {
       _deliveryManRating = 0;
       responseModel = ResponseModel(true, 'Review submitted successfully');
       notifyListeners();
@@ -429,7 +427,7 @@ OrderProvider extends ChangeNotifier {
     try {
       if (response.response.statusCode == 200 && response.response.data['status'] == 'OK') {
         _isSuccess = true;
-        _distance = DistanceModel.fromJson(response.response.data).rows[0].elements[0].distance.value / 1000;
+        _distance = DistanceModel.fromJson(response.response.data).rows![0].elements![0].distance!.value! / 1000;
       } else {
         _distance = Geolocator.distanceBetween(
           originLatLng.latitude, originLatLng.longitude, destinationLatLng.latitude, destinationLatLng.longitude,
@@ -448,7 +446,7 @@ OrderProvider extends ChangeNotifier {
     await sharedPreferences.setString(AppConstants.PLACE_ORDER_DATA, placeOrder);
   }
   String getPlaceOrder(){
-    return sharedPreferences.getString(AppConstants.PLACE_ORDER_DATA);
+    return sharedPreferences.getString(AppConstants.PLACE_ORDER_DATA)!;
   }
   Future<void> clearPlaceOrder()async{
     await sharedPreferences.remove(AppConstants.PLACE_ORDER_DATA);

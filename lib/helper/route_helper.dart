@@ -119,7 +119,7 @@ class RouteHelper {
     String _data = base64Url.encode(utf8.encode(jsonEncode(addressModel.toJson())));
     return '$updateAddress?address=$_data';
   }
-  static String getPaymentRoute({@required String page, String id, int user, String selectAddress, PlaceOrderBody placeOrderBody}) {
+  static String getPaymentRoute({@required String? page, String? id, int? user, String? selectAddress, PlaceOrderBody? placeOrderBody}) {
     String _address = selectAddress != null ? base64Encode(utf8.encode(selectAddress)) : 'null';
     String _data = placeOrderBody != null ? base64Url.encode(utf8.encode(jsonEncode(placeOrderBody.toJson()))) : 'null';
     return '$payment?page=$page&id=$id&user=$user&address=$_address&place_order=$_data';
@@ -127,14 +127,14 @@ class RouteHelper {
   static String getCheckoutRoute(double amount, double discount, String type, String code) => '$checkout?amount=$amount&discount=$discount&type=$type&code=$code';
   static String getOrderTrackingRoute(int id) => '$trackOrder?id=$id';
   // static String getCategoryProductsRoute(int id) => '$categoryProducts?id=$id';
-  static String getCategoryProductsRouteNew({CategoryModel categoryModel, String subCategory}) {
-    String _data = base64Url.encode(utf8.encode(jsonEncode(categoryModel.toJson())));
+  static String getCategoryProductsRouteNew({CategoryModel? categoryModel, String? subCategory}) {
+    String _data = base64Url.encode(utf8.encode(jsonEncode(categoryModel!.toJson())));
     return '$categoryProductsNew?category=$_data&subcategory=$subCategory';
   }
   static String getProductDescriptionRoute(String description) => '$productDescription?description=$description';
   ///..........................
-  static String getProductDetailsRoute({@required Product product}) {
-    String _product1 = Uri.encodeComponent(jsonEncode(product.toJson()));
+  static String getProductDetailsRoute({required Product? product}) {
+    String _product1 = Uri.encodeComponent(jsonEncode(product!.toJson()));
     return '$productDetails?product=$_product1';
   }
   static String getProductImagesRoute(String name, String images) => '$productImages?name=$name&images=$images';
@@ -153,7 +153,7 @@ class RouteHelper {
     String _data = base64Encode(_encoded);
     return '$searchResult?text=$_data';
   }
-  static String getChatRoute({OrderModel orderModel}) {
+  static String getChatRoute({OrderModel? orderModel}) {
     String _orderModel = base64Encode(utf8.encode(jsonEncode(orderModel)));
     return '$CHAT_SCREEN?order=$_orderModel';
   }
@@ -161,51 +161,51 @@ class RouteHelper {
   static String getFavoriteRoute() => favorite;
 
 
-  static Handler _splashHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => SplashScreen());
+  static Handler _splashHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => SplashScreen());
 
-  static Handler _orderDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    OrderDetailsScreen _orderDetailsScreen = ModalRoute.of(context).settings.arguments;
-    return _orderDetailsScreen != null ? _orderDetailsScreen : OrderDetailsScreen(orderId: int.parse(params['id'][0]), orderModel: null);
+  static Handler _orderDetailsHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
+    OrderDetailsScreen? _orderDetailsScreen = ModalRoute.of(context!)!.settings.arguments as OrderDetailsScreen?;
+    return _orderDetailsScreen != null ? _orderDetailsScreen : OrderDetailsScreen(orderId: int.parse(params!['id'][0]), orderModel: null);
   });
 
-  static Handler _onBoardingHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => OnBoardingScreen());
+  static Handler _onBoardingHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => OnBoardingScreen());
 
-  static Handler _menuHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => MenuScreen());
+  static Handler _menuHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => MenuScreen());
 
-  static Handler _loginHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => LoginScreen());
+  static Handler _loginHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => LoginScreen());
 
-  static Handler _forgetPassHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => ForgotPasswordScreen());
+  static Handler _forgetPassHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => ForgotPasswordScreen());
 
-  static Handler _signUpHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => SignUpScreen());
+  static Handler _signUpHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => SignUpScreen());
 
-  static Handler _verificationHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    VerificationScreen _verificationScreen = ModalRoute.of(context).settings.arguments;
+  static Handler _verificationHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
+    VerificationScreen? _verificationScreen = ModalRoute.of(context!)!.settings.arguments as VerificationScreen?;
     return _verificationScreen != null ? _verificationScreen : VerificationScreen(
-      fromSignUp: params['page'][0] == 'sign-up', emailAddress: params['email'][0],
+      fromSignUp: params!['page'][0] == 'sign-up', emailAddress: params['email'][0],
     );
   });
 
-  static Handler _createAccountHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => CreateAccountScreen());
+  static Handler _createAccountHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => CreateAccountScreen());
 
-  static Handler _resetPassHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    CreateNewPasswordScreen _createPassScreen = ModalRoute.of(context).settings.arguments;
+  static Handler _resetPassHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
+    CreateNewPasswordScreen? _createPassScreen = ModalRoute.of(context!)!.settings.arguments as CreateNewPasswordScreen?;
     return _createPassScreen != null ? _createPassScreen : CreateNewPasswordScreen(
-      email: params['email'][0], resetToken: params['token'][0],
+      email: params!['email'][0], resetToken: params['token'][0],
     );
   });
 
 
-  static Handler _updateAddressHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    AddNewAddressScreen _addNewAddressScreen = ModalRoute.of(context).settings.arguments;
+  static Handler _updateAddressHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
+    AddNewAddressScreen? _addNewAddressScreen = ModalRoute.of(context!)!.settings.arguments as AddNewAddressScreen?;
 
-    String _decoded = utf8.decode(base64Url.decode(params['address'][0].replaceAll(' ', '+')));
+    String _decoded = utf8.decode(base64Url.decode(params!['address'][0].replaceAll(' ', '+')));
     return _addNewAddressScreen != null ? _addNewAddressScreen : AddNewAddressScreen(
       isEnableUpdate: true, fromCheckout: false, address:  AddressModel.fromJson(jsonDecode(_decoded)),
     );
   });
 
   static Handler _selectLocationHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) {
-    SelectLocationScreen _locationScreen =  ModalRoute.of(context).settings.arguments;
+    SelectLocationScreen? _locationScreen =  ModalRoute.of(context!)!.settings.arguments as SelectLocationScreen?;
     return _locationScreen != null ? _locationScreen : Center(child: Container(child: Text('Not Found')));
   });
 
@@ -231,8 +231,8 @@ class RouteHelper {
   );
 
 
-  static Handler _paymentHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    bool _fromCheckOut = params['page'][0] == 'checkout';
+  static Handler _paymentHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
+    bool _fromCheckOut = params!['page'][0] == 'checkout';
     String _decoded = _fromCheckOut ? utf8.decode(base64Url.decode(params['place_order'][0].replaceAll(' ', '+'))) : 'null';
 
     return PaymentScreen(
@@ -243,19 +243,19 @@ class RouteHelper {
     );
   });
 
-  static Handler _checkoutHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    CheckoutScreen _checkoutScreen = ModalRoute.of(context).settings.arguments;
+  static Handler _checkoutHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
+    CheckoutScreen? _checkoutScreen = ModalRoute.of(context!)!.settings.arguments as CheckoutScreen?;
     return _checkoutScreen != null ? _checkoutScreen : CheckoutScreen(
-      orderType: params['type'][0], discount: double.parse(params['discount'][0]), amount: double.parse(params['amount'][0]),
+      orderType: params!['type'][0], discount: double.parse(params['discount'][0]), amount: double.parse(params['amount'][0]),
       couponCode: params['code'][0],
     );
   });
 
-  static Handler _notificationHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => NotificationScreen());
+  static Handler _notificationHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => NotificationScreen());
 
-  static Handler _trackOrderHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    TrackOrderScreen _trackOrderScreen = ModalRoute.of(context).settings.arguments;
-    return _trackOrderScreen != null ? _trackOrderScreen : TrackOrderScreen(orderID: params['id'][0]);
+  static Handler _trackOrderHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
+    TrackOrderScreen? _trackOrderScreen = ModalRoute.of(context!)!.settings.arguments as TrackOrderScreen?;
+    return _trackOrderScreen != null ? _trackOrderScreen : TrackOrderScreen(orderID: params!['id'][0]);
   });
 
   /*static Handler _categoryProductsHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
@@ -264,61 +264,61 @@ class RouteHelper {
       id: int.parse(params['id'][0]),
     ));
   });*/
-  static Handler _categoryProductsHandlerNew = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    String _decoded = utf8.decode(base64Url.decode(params['category'][0]));
+  static Handler _categoryProductsHandlerNew = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
+    String _decoded = utf8.decode(base64Url.decode(params!['category'][0]));
     return CategoryProductScreenNew(
       categoryModel: CategoryModel.fromJson(jsonDecode(_decoded)),
       subCategoryName: params['subcategory'][0],
     );
   });
 
-  static Handler _productDescriptionHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    DescriptionScreen _descriptionScreen = ModalRoute.of(context).settings.arguments;
-    List<int> _decode = base64Decode(params['description'][0].replaceAll('-', '+'));
+  static Handler _productDescriptionHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
+    DescriptionScreen? _descriptionScreen = ModalRoute.of(context!)!.settings.arguments as DescriptionScreen?;
+    List<int> _decode = base64Decode(params!['description'][0].replaceAll('-', '+'));
     String _data = utf8.decode(_decode);
     return _descriptionScreen != null ? _descriptionScreen : DescriptionScreen(description: _data);
   });
 
-  static Handler _productDetailsHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    Product _product = Product.fromJson(jsonDecode(params['product'][0]));
+  static Handler _productDetailsHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
+    Product _product = Product.fromJson(jsonDecode(params!['product'][0]));
     return ProductDetailsScreen(product: _product);
   });
 
   ///...............
-  static Handler _productImagesHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    ProductImageScreen _productImageScreen = ModalRoute.of(context).settings.arguments;
+  static Handler _productImagesHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
+    ProductImageScreen? _productImageScreen = ModalRoute.of(context!)!.settings.arguments as ProductImageScreen?;
     return _productImageScreen != null ? _productImageScreen : ProductImageScreen(
-      title: params['name'][0], imageList: jsonDecode(params['images'][0]),
+      title: params!['name'][0], imageList: jsonDecode(params['images'][0]),
     );
   });
 
-  static Handler _profileHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => ProfileScreen());
+  static Handler _profileHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => ProfileScreen());
 
-  static Handler _searchProductHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => SearchScreen());
+  static Handler _searchProductHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => SearchScreen());
   ///.................
-  static Handler _profileEditHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    String _decoded = utf8.decode(base64Url.decode(params['user'][0]));
+  static Handler _profileEditHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
+    String _decoded = utf8.decode(base64Url.decode(params!['user'][0]));
     return ProfileEditScreen(userInfoModel: UserInfoModel.fromJson(jsonDecode(_decoded)));
   });
 
-  static Handler _searchResultHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-    List<int> _decode = base64Decode(params['text'][0]);
+  static Handler _searchResultHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
+    List<int> _decode = base64Decode(params!['text'][0]);
     String _data = utf8.decode(_decode);
     return SearchResultScreen(searchString: _data);
   });
-  static Handler _cartHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => CartScreen());
-  static Handler _categorysHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+  static Handler _cartHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => CartScreen());
+  static Handler _categorysHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) {
     return AllCategoryScreen();
   } );
-  static Handler _profileMenusHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => MenuWidget());
-  static Handler _myOrderHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => MyOrderScreen());
-  static Handler _addressHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => AddressScreen());
-  static Handler _couponHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => CouponScreen());
+  static Handler _profileMenusHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => MenuWidget());
+  static Handler _myOrderHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => MyOrderScreen());
+  static Handler _addressHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => AddressScreen());
+  static Handler _couponHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => CouponScreen());
   static Handler _chatHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) {
     final _orderModel = jsonDecode(utf8.decode(base64Url.decode(params['order'][0].replaceAll(' ', '+'))));
     return ChatScreen(orderModel : _orderModel != null ? OrderModel.fromJson(_orderModel) : null);
   });
-  static Handler _settingsHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) => SettingsScreen());
+  static Handler _settingsHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic>? params) => SettingsScreen());
   static Handler _termsHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => HtmlViewerScreen(htmlType: HtmlType.TERMS_AND_CONDITION));
 
   static Handler _policyHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => HtmlViewerScreen(htmlType: HtmlType.PRIVACY_POLICY));
@@ -342,8 +342,9 @@ class RouteHelper {
     if(_isUpdate) {
       String _decoded = utf8.decode(base64Url.decode(params['address'][0].replaceAll(' ', '+')));
       _addressModel = AddressModel.fromJson(jsonDecode(_decoded));
+      return AddNewAddressScreen(fromCheckout: params['page'][0] == 'checkout', isEnableUpdate: _isUpdate, address: _addressModel);
     }
-    return AddNewAddressScreen(fromCheckout: params['page'][0] == 'checkout', isEnableUpdate: _isUpdate, address: _isUpdate ? _addressModel : null);
+    return AddNewAddressScreen(fromCheckout: params['page'][0] == 'checkout', isEnableUpdate: _isUpdate, address : null);
   });
   static Handler _favoriteHandler = Handler(handlerFunc: (context, Map<String, dynamic> params) => WishListScreen());
 

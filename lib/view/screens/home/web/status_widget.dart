@@ -25,7 +25,7 @@ class StatusWidget extends StatelessWidget {
                           children: [
                             Expanded(
                                 child: Text(
-                              getTranslated('on', context),
+                              getTranslated('on', context)!,
                               textAlign: TextAlign.center, style: TextStyle(color: ColorResources.getTextColor(context), fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL),
                             )),
                             CircleAvatar(
@@ -49,7 +49,7 @@ class StatusWidget extends StatelessWidget {
                               backgroundColor: ColorResources.getBackgroundColor(context),
                             ),
                             Expanded(
-                                child: Text(getTranslated('off', context),
+                                child: Text(getTranslated('off', context)!,
                                     textAlign: TextAlign.center, style: TextStyle(color: ColorResources.getAppBarHeaderColor(context), fontSize: Dimensions.FONT_SIZE_EXTRA_SMALL)
                             )),
                           ],

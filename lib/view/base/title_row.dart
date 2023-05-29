@@ -6,20 +6,18 @@ import 'package:flutter_grocery/utill/styles.dart';
 
 class TitleRow extends StatelessWidget {
   final String title;
-  final Function onTap;
-  final Duration eventDuration;
-  final bool isDetailsPage;
-  TitleRow({@required this.title, this.onTap, this.eventDuration, this.isDetailsPage});
+  final VoidCallback? onTap;
+  final Duration? eventDuration;
+  final bool? isDetailsPage;
+  TitleRow({required this.title, this.onTap, this.eventDuration, this.isDetailsPage});
 
   @override
   Widget build(BuildContext context) {
     int days, hours, minutes, seconds;
-    if (eventDuration != null) {
-      days = eventDuration.inDays;
-      hours = eventDuration.inHours - days * 24;
-      minutes = eventDuration.inMinutes - (24 * days * 60) - (hours * 60);
-      seconds = eventDuration.inSeconds - (24 * days * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
-    }
+    days = eventDuration!.inDays;
+    hours = eventDuration!.inHours - days * 24;
+    minutes = eventDuration!.inMinutes - (24 * days * 60) - (hours * 60);
+    seconds = eventDuration!.inSeconds - (24 * days * 60 * 60) - (hours * 60 * 60) - (minutes * 60);
 
     return Row(children: [
       Text(title, style: poppinsBold),
@@ -41,7 +39,7 @@ class TitleRow extends StatelessWidget {
               onTap: onTap,
               child: Row(children: [
                 isDetailsPage == null
-                    ? Text(getTranslated('VIEW_ALL', context),
+                    ? Text(getTranslated('VIEW_ALL', context)!,
                         style: poppinsRegular.copyWith(
                           color: Theme.of(context).primaryColor,
                           fontSize: Dimensions.FONT_SIZE_SMALL,
@@ -66,7 +64,7 @@ class TimerBox extends StatelessWidget {
   final int time;
   final bool isBorder;
 
-  TimerBox({@required this.time, this.isBorder = false});
+  TimerBox({required this.time, this.isBorder = false});
 
   @override
   Widget build(BuildContext context) {

@@ -35,17 +35,17 @@ class _CategoryViewState extends State<CategoryView> {
               padding: const EdgeInsets.only(top: Dimensions.PADDING_SIZE_DEFAULT),
               child: Align(
                 alignment: Alignment.center,
-                child: Text(getTranslated('category', context),style: poppinsBold.copyWith(fontSize: Dimensions.FONT_SIZE_OVER_LARGE, color: ColorResources.getTextColor(context))),
+                child: Text(getTranslated('category', context)!,style: poppinsBold.copyWith(fontSize: Dimensions.FONT_SIZE_OVER_LARGE, color: ColorResources.getTextColor(context))),
               ),
             ) : Padding(
               padding: EdgeInsets.fromLTRB(0, 5, 10, 0),
-              child: TitleWidget(title: getTranslated('category', context)),
+              child: TitleWidget(title: getTranslated('category', context)!),
             ),
 
             ResponsiveHelper.isDesktop(context)
                 ? CategoriesWebView() :
              GridView.builder(
-              itemCount: category.categoryList.length > 5 ? 6 : category.categoryList.length,
+              itemCount: category.categoryList!.length > 5 ? 6 : category.categoryList!.length,
               padding: EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -64,7 +64,7 @@ class _CategoryViewState extends State<CategoryView> {
 
                     } else {
                       Navigator.of(context).pushNamed(
-                        RouteHelper.getCategoryProductsRouteNew(categoryModel: category.categoryList[index]),
+                        RouteHelper.getCategoryProductsRouteNew(categoryModel: category.categoryList![index]),
                       );
                     }
                   },
@@ -74,7 +74,7 @@ class _CategoryViewState extends State<CategoryView> {
                       color: Colors.white.withOpacity(Provider.of<ThemeProvider>(context).darkTheme ? 0.05 : 1),
                       boxShadow: Provider.of<ThemeProvider>(context).darkTheme
                           ? null
-                          : [BoxShadow(color: Colors.grey[200], spreadRadius: 1, blurRadius: 5)],
+                          : [BoxShadow(color: Colors.grey[200]!, spreadRadius: 1, blurRadius: 5)],
                     ),
                     child: Column(children: [
                       Expanded(
@@ -91,7 +91,7 @@ class _CategoryViewState extends State<CategoryView> {
                             borderRadius: BorderRadius.circular(50),
                             child: FadeInImage.assetNetwork(
                               placeholder: Images.placeholder(context),
-                              image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.categoryImageUrl}/${category.categoryList[index].image}',
+                              image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.categoryImageUrl}/${category.categoryList![index].image}',
                               fit: BoxFit.cover, height: 100, width: 100,
                               imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 100, width: 100, fit: BoxFit.cover),
                             ),
@@ -102,7 +102,7 @@ class _CategoryViewState extends State<CategoryView> {
                               color: Theme.of(context).primaryColor,
                             ),
                             alignment: Alignment.center,
-                            child: Text('${category.categoryList.length - 5}+', style: poppinsRegular.copyWith(color: Theme.of(context).cardColor)),
+                            child: Text('${category.categoryList!.length - 5}+', style: poppinsRegular.copyWith(color: Theme.of(context).cardColor)),
                           ),
                         ),
                       ),
@@ -111,7 +111,7 @@ class _CategoryViewState extends State<CategoryView> {
                         child: Padding(
                           padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
                           child: Text(
-                            index != 5 ? category.categoryList[index].name : getTranslated('view_all', context),
+                            index != 5 ? category.categoryList![index].name! : getTranslated('view_all', context)!,
                             style: poppinsRegular,
                             textAlign: TextAlign.center,
                             maxLines: 2,
@@ -151,7 +151,7 @@ class CategoryShimmer extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             color: Colors.white.withOpacity(Provider.of<ThemeProvider>(context).darkTheme ? 0.05 : 1),
-            boxShadow: Provider.of<ThemeProvider>(context).darkTheme ? null : [BoxShadow(color: Colors.grey[200], spreadRadius: 1, blurRadius: 5)],
+            boxShadow: Provider.of<ThemeProvider>(context).darkTheme ? null : [BoxShadow(color: Colors.grey[200]!, spreadRadius: 1, blurRadius: 5)],
           ),
           child: Shimmer(
             duration: Duration(seconds: 2),

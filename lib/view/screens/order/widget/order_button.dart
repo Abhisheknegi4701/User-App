@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class OrderButton extends StatelessWidget {
   final String title;
   final bool isActive;
-  OrderButton({@required this.isActive, @required this.title});
+  OrderButton({required this.isActive, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +24,9 @@ class OrderButton extends StatelessWidget {
                 color: orderProvider.isActiveOrder == isActive ? Theme.of(context).primaryColor : ColorResources.getGreyColor(context),
                 borderRadius: BorderRadius.circular(5)),
             child: Text(
-              '$title (${isActive ? orderProvider.runningOrderList.length : orderProvider.historyOrderList.length})',
+              '$title (${isActive ? orderProvider.runningOrderList!.length : orderProvider.historyOrderList!.length})',
               style: poppinsRegular.copyWith(color: orderProvider.isActiveOrder == isActive
-                  ? Theme.of(context).cardColor : Theme.of(context).textTheme.bodyText1.color),
+                  ? Theme.of(context).cardColor : Theme.of(context).textTheme.bodyLarge!.color),
             ),
           ),
         );

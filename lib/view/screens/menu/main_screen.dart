@@ -27,7 +27,7 @@ import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   final CustomDrawerController drawerController;
-  MainScreen({@required this.drawerController});
+  MainScreen({required this.drawerController});
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -102,7 +102,7 @@ class _MainScreenState extends State<MainScreen> {
                 leading: IconButton(
                     icon: Image.asset(Images.more_icon, color: Theme.of(context).primaryColor, height: 30, width: 30),
                     onPressed: () {
-                      widget.drawerController.toggle();
+                      widget.drawerController.toggle!();
                     }),
                 title: splash.pageIndex == 0 ? Row(children: [
                   Image.asset(Images.app_logo, width: 25),
@@ -112,14 +112,14 @@ class _MainScreenState extends State<MainScreen> {
                     style: poppinsMedium.copyWith(color: Theme.of(context).primaryColor),
                   )),
                 ]) : Text(
-                  getTranslated(_keys[splash.pageIndex], context),
+                  getTranslated(_keys[splash.pageIndex], context)!,
                   style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE, color: Theme.of(context).primaryColor),
                 ),
 
                 actions: splash.pageIndex == 0 ? [
                   IconButton(
                       icon: Stack(clipBehavior: Clip.none, children: [
-                        Image.asset(Images.cart_icon, color: Theme.of(context).textTheme.bodyText1.color, width: 25),
+                        Image.asset(Images.cart_icon, color: Theme.of(context).textTheme.bodyLarge!.color, width: 25),
                         Positioned(
                           top: -7,
                           right: -2,
@@ -135,7 +135,7 @@ class _MainScreenState extends State<MainScreen> {
                        ResponsiveHelper.isMobilePhone()? splash.setPageIndex(2): Navigator.pushNamed(context, RouteHelper.cart);
                       }),
                   IconButton(
-                      icon: Icon(Icons.search, size: 30, color: Theme.of(context).textTheme.bodyText1.color),
+                      icon: Icon(Icons.search, size: 30, color: Theme.of(context).textTheme.bodyLarge!.color),
                       onPressed: () {
                         Navigator.pushNamed(context, RouteHelper.searchProduct);
                       }),

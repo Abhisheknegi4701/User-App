@@ -1,8 +1,8 @@
 class SocialLoginModel {
-  String token;
-  String uniqueId;
-  String medium;
-  String email;
+  String? token;
+  String? uniqueId;
+  String? medium;
+  String? email;
 
   SocialLoginModel({this.token, this.uniqueId, this.medium, this.email});
 

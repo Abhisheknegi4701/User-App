@@ -52,7 +52,7 @@ class _MenuScreenState extends State<MenuScreen> {
 }
 
 class MenuWidget extends StatelessWidget {
-  final CustomDrawerController drawerController;
+  final CustomDrawerController? drawerController;
 
   MenuWidget({ this.drawerController});
 
@@ -63,8 +63,8 @@ class MenuWidget extends StatelessWidget {
 
     return WillPopScope(
       onWillPop: () async {
-        if (drawerController.isOpen()) {
-          drawerController.toggle();
+        if (drawerController!.isOpen!()) {
+          drawerController!.toggle!();
           return false;
         } else {
           return true;
@@ -94,7 +94,7 @@ class MenuWidget extends StatelessWidget {
                                 color: Provider.of<ThemeProvider>(context).darkTheme
                                 ? ColorResources.getTextColor(context)
                                 : ResponsiveHelper.isDesktop(context)? ColorResources.getBackgroundColor(context): ColorResources.getBackgroundColor(context)),
-                            onPressed: () => drawerController.toggle(),
+                            onPressed: () => drawerController!.toggle!(),
                           ),
                         ):SizedBox(),
                         Consumer<ProfileProvider>(
@@ -111,8 +111,8 @@ class MenuWidget extends StatelessWidget {
                                       builder: (context) {
                                         return FadeInImage.assetNetwork(
                                           placeholder: Images.placeholder(context),
-                                          image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.customerImageUrl}/'
-                                              '${profileProvider.userInfoModel != null ? profileProvider.userInfoModel.image : ''}',
+                                          image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.customerImageUrl}/'
+                                              '${profileProvider.userInfoModel != null ? profileProvider.userInfoModel!.image : ''}',
                                           height: 50, width: 50, fit: BoxFit.cover,
                                           imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 50, width: 50, fit: BoxFit.cover),
                                         );
@@ -132,18 +132,18 @@ class MenuWidget extends StatelessWidget {
                                               mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                             _isLoggedIn ? profileProvider.userInfoModel != null ? Text(
-                                              '${profileProvider.userInfoModel.fName ?? ''} ${profileProvider.userInfoModel.lName ?? ''}',
+                                              '${profileProvider.userInfoModel!.fName ?? ''} ${profileProvider.userInfoModel!.lName ?? ''}',
                                               style: poppinsRegular.copyWith(color: Provider.of<ThemeProvider>(context).darkTheme
                                                   ? ColorResources.getTextColor(context)
                                                   : ResponsiveHelper.isDesktop(context)? ColorResources.getDarkColor(context): ColorResources.getBackgroundColor(context),),
                                             ) : Container(height: 10, width: 150, color: ResponsiveHelper.isDesktop(context)? ColorResources.getDarkColor(context): ColorResources.getBackgroundColor(context)) : Text(
-                                              getTranslated('guest', context),
+                                              getTranslated('guest', context)!,
                                               style: poppinsRegular.copyWith( color: Provider.of<ThemeProvider>(context).darkTheme
                                                   ? ColorResources.getTextColor(context)
                                                   : ResponsiveHelper.isDesktop(context)? ColorResources.getDarkColor(context): ColorResources.getBackgroundColor(context),),
                                             ),
                                             _isLoggedIn ? profileProvider.userInfoModel != null ? Text(
-                                              '${profileProvider.userInfoModel.phone ?? ''}',
+                                              '${profileProvider.userInfoModel!.phone ?? ''}',
                                               style: poppinsRegular.copyWith(color: Provider.of<ThemeProvider>(context).darkTheme
                                                   ? ColorResources.getTextColor(context)
                                                   : ResponsiveHelper.isDesktop(context)? ColorResources.getDarkColor(context): ColorResources.getBackgroundColor(context),)
@@ -265,7 +265,7 @@ class MenuWidget extends StatelessWidget {
                                           }
                                         },
                                         child: Text(
-                                          getTranslated(_isLoggedIn ? 'log_out' : 'login', context),
+                                          getTranslated(_isLoggedIn ? 'log_out' : 'login', context)!,
                                           style: poppinsRegular.copyWith(
                                             fontSize: Dimensions.FONT_SIZE_LARGE,
                                             color: Provider.of<ThemeProvider>(context).darkTheme
@@ -293,23 +293,23 @@ class MenuWidget extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 50),
-                       ResponsiveHelper.isDesktop(context) ? SizedBox() : MenuButton(drawerController: drawerController, index: 0, icon: Images.home, title: getTranslated('home', context)),
-                        MenuButton(drawerController: drawerController, index: 1, icon: Images.list, title: getTranslated('all_categories', context)),
-                        MenuButton(drawerController: drawerController, index: 2, icon: Images.order_bag, title: getTranslated('shopping_bag', context)),
-                        MenuButton(drawerController: drawerController, index: 3, iconData: Icons.favorite_border, icon: null, title: getTranslated('favourite', context)),
-                        MenuButton(drawerController: drawerController, index: 4, icon: Images.order_list, title: getTranslated('my_order', context)),
-                        MenuButton(drawerController: drawerController, index: 5, icon: Images.location, title: getTranslated('address', context)),
-                        MenuButton(drawerController: drawerController, index: 6, icon: Images.coupon, title: getTranslated('coupon', context)),
-                        MenuButton(drawerController: drawerController, index: 7, icon: Images.chat, title: getTranslated('contact_us', context)),
-                        MenuButton(drawerController: drawerController, index: 8, icon: Images.settings, title: getTranslated('settings', context)),
+                       ResponsiveHelper.isDesktop(context) ? SizedBox() : MenuButton(drawerController: drawerController!, index: 0, icon: Images.home, title: getTranslated('home', context)!),
+                        MenuButton(drawerController: drawerController!, index: 1, icon: Images.list, title: getTranslated('all_categories', context)!),
+                        MenuButton(drawerController: drawerController!, index: 2, icon: Images.order_bag, title: getTranslated('shopping_bag', context)!),
+                        MenuButton(drawerController: drawerController!, index: 3, iconData: Icons.favorite_border, icon: Images.app_logo, title: getTranslated('favourite', context)!),
+                        MenuButton(drawerController: drawerController!, index: 4, icon: Images.order_list, title: getTranslated('my_order', context)!),
+                        MenuButton(drawerController: drawerController!, index: 5, icon: Images.location, title: getTranslated('address', context)!),
+                        MenuButton(drawerController: drawerController!, index: 6, icon: Images.coupon, title: getTranslated('coupon', context)!),
+                        MenuButton(drawerController: drawerController!, index: 7, icon: Images.chat, title: getTranslated('contact_us', context)!),
+                        MenuButton(drawerController: drawerController!, index: 8, icon: Images.settings, title: getTranslated('settings', context)!),
                         MenuButton(
-                          drawerController: drawerController, index: 9,
+                          drawerController: drawerController!, index: 9,
                           icon: Images.terms_and_conditions,
-                          title: getTranslated('terms_and_condition', context),
+                          title: getTranslated('terms_and_condition', context)!,
                         ),
-                        MenuButton(drawerController: drawerController, index: 10, icon: Images.privacy, title: getTranslated('privacy_policy', context)),
-                        MenuButton(drawerController: drawerController, index: 11, icon: Images.about_us, title: getTranslated('about_us', context)),
-                        MenuButton(drawerController: drawerController, index: 12, icon: Images.faq,iconData: Icons.question_answer_outlined, title: getTranslated('faq', context)),
+                        MenuButton(drawerController: drawerController!, index: 10, icon: Images.privacy, title: getTranslated('privacy_policy', context)!),
+                        MenuButton(drawerController: drawerController!, index: 11, icon: Images.about_us, title: getTranslated('about_us', context)!),
+                        MenuButton(drawerController: drawerController!, index: 12, icon: Images.faq,iconData: Icons.question_answer_outlined, title: getTranslated('faq', context)!),
                             SizedBox(height: 20),
                             Text("All Rights Reserved 2023\n Developed by LTE IT SERVICES | Sullurpeta", textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white),),

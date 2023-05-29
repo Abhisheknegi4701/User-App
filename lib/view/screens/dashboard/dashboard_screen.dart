@@ -19,7 +19,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final PageController _pageController = PageController();
   int _pageIndex = 0;
-  List<Widget> _screens;
+  List<Widget>? _screens;
   GlobalKey<ScaffoldMessengerState> _scaffoldKey = GlobalKey();
 
   @override
@@ -59,15 +59,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
           currentIndex: _pageIndex,
           type: BottomNavigationBarType.fixed,
           items: [
-            _barItem(Images.home, getTranslated('home', context), 0),
-            _barItem(Images.list, getTranslated('all_categories', context), 1),
-            _barItem(Images.order_bag, getTranslated('shopping_bag', context), 2),
-            _barItem(Images.order_bag, getTranslated('favourite', context), 3),
-            _barItem(Images.order_list, getTranslated('my_order', context), 4),
-            _barItem(Images.location, getTranslated('address', context), 5),
-            _barItem(Images.coupon, getTranslated('coupon', context), 6),
-            _barItem(Images.chat, getTranslated('live_chat', context), 7),
-            _barItem(Images.settings, getTranslated('settings', context), 8),
+            _barItem(Images.home, getTranslated('home', context)!, 0),
+            _barItem(Images.list, getTranslated('all_categories', context)!, 1),
+            _barItem(Images.order_bag, getTranslated('shopping_bag', context)!, 2),
+            _barItem(Images.order_bag, getTranslated('favourite', context)!, 3),
+            _barItem(Images.order_list, getTranslated('my_order', context)!, 4),
+            _barItem(Images.location, getTranslated('address', context)!, 5),
+            _barItem(Images.coupon, getTranslated('coupon', context)!, 6),
+            _barItem(Images.chat, getTranslated('live_chat', context)!, 7),
+            _barItem(Images.settings, getTranslated('settings', context)!, 8),
           ],
           onTap: (int index) {
             _setPage(index);
@@ -75,10 +75,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         body: PageView.builder(
           controller: _pageController,
-          itemCount: _screens.length,
+          itemCount: _screens!.length,
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (context, index) {
-            return _screens[index];
+            return _screens![index];
           },
         ),
       ),

@@ -11,18 +11,18 @@ import 'package:flutter_grocery/utill/styles.dart';
 import 'package:flutter_grocery/view/base/custom_app_bar.dart';
 import 'package:flutter_grocery/view/base/custom_button.dart';
 import 'package:flutter_grocery/view/base/custom_snackbar.dart';
+import 'package:flutter_grocery/view/base/preferedsizewidgetdem.dart';
 import 'package:flutter_grocery/view/screens/auth/create_account_screen.dart';
 import 'package:flutter_grocery/view/screens/forgot_password/create_new_password_screen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 
 import '../../base/footer_view.dart';
-import '../../base/web_app_bar/web_app_bar.dart';
 
 class VerificationScreen extends StatelessWidget {
   final String emailAddress;
   final bool fromSignUp;
-  VerificationScreen({@required this.emailAddress, this.fromSignUp = false});
+  VerificationScreen({required this.emailAddress, this.fromSignUp = false});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class VerificationScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: ColorResources.getCardBgColor(context),
-      appBar: ResponsiveHelper.isDesktop(context)? PreferredSize(child: WebAppBar(), preferredSize: Size.fromHeight(120)) : CustomAppBar(title: getTranslated('verify_email', context)),
+      appBar: ResponsiveHelper.isDesktop(context)? preferredSizeWidgetDem() : CustomAppBar(title: getTranslated('verify_email', context)),
       body: SafeArea(
         child: Scrollbar(
           child: SingleChildScrollView(
@@ -48,7 +48,7 @@ class VerificationScreen extends StatelessWidget {
                               margin: EdgeInsets.only(top: _width > 700 ? 55 : 0,bottom: _width > 700 ? 55 : 0),
                               decoration: _width > 700 ? BoxDecoration(
                                 color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(10),
-                                boxShadow: [BoxShadow(color: Colors.grey[300], blurRadius: 5, spreadRadius: 1)],
+                                boxShadow: [BoxShadow(color: Colors.grey[300]!, blurRadius: 5, spreadRadius: 1)],
                               ) : null,
                           child: Column(
                             children: [
@@ -96,7 +96,7 @@ class VerificationScreen extends StatelessWidget {
                               ),
                               Center(
                                   child: Text(
-                                getTranslated('i_didnt_receive_the_code', context),
+                                getTranslated('i_didnt_receive_the_code', context)!,
                                 style: poppinsRegular.copyWith(
                                   color: ColorResources.getHintColor(context),
                                 ),
@@ -125,7 +125,7 @@ class VerificationScreen extends StatelessWidget {
                                   child: Padding(
                                     padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
                                     child: Text(
-                                      getTranslated('resend_code', context),
+                                      getTranslated('resend_code', context)!,
                                       style: poppinsMedium.copyWith(
                                         color: ColorResources.getTextColor(context),
                                       ),
@@ -139,10 +139,10 @@ class VerificationScreen extends StatelessWidget {
                                       ? Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: Dimensions.PADDING_SIZE_LARGE),
                                           child: CustomButton(
-                                            buttonText: getTranslated('verify', context),
+                                            buttonText: getTranslated('verify', context)!,
                                             onPressed: () {
                                               if (fromSignUp) {
-                                                if(Provider.of<SplashProvider>(context, listen: false).configModel.phoneVerification) {
+                                                if(Provider.of<SplashProvider>(context, listen: false).configModel!.phoneVerification!) {
                                                   Provider.of<AuthProvider>(context, listen: false).verifyPhone(emailAddress.trim()).then((value) {
                                                     if (value.isSuccess) {
                                                       Navigator.of(context).pushNamed(RouteHelper.createAccount, arguments: CreateAccountScreen());
@@ -160,7 +160,7 @@ class VerificationScreen extends StatelessWidget {
                                                   });
                                                 }
                                               } else {
-                                                String _mail = Provider.of<SplashProvider>(context, listen: false).configModel.phoneVerification
+                                                String _mail = Provider.of<SplashProvider>(context, listen: false).configModel!.phoneVerification!
                                                     ? emailAddress.trim() : emailAddress;
                                                 Provider.of<AuthProvider>(context, listen: false).verifyToken(_mail).then((value) {
                                                   if(value.isSuccess) {

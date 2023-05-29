@@ -19,7 +19,7 @@ import '../../../base/footer_view.dart';
 
 class ProductReviewWidget extends StatelessWidget {
   final List<OrderDetailsModel> orderDetailsList;
-  ProductReviewWidget({@required this.orderDetailsList});
+  ProductReviewWidget({required this.orderDetailsList});
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +58,9 @@ class ProductReviewWidget extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(10),
                                     child: FadeInImage.assetNetwork(
                                       placeholder: Images.placeholder(context),
-                                      image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.productImageUrl}/${
-                                          orderDetailsList[index].productDetails.image.isNotEmpty ?
-                                          orderDetailsList[index].productDetails.image[0] : ''
+                                      image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.productImageUrl}/${
+                                          orderDetailsList[index].productDetails!.image!.isNotEmpty ?
+                                          orderDetailsList[index].productDetails!.image![0] : ''
                                       }',
                                       height: 70, width: 85, fit: BoxFit.cover,
                                       imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), height: 70, width: 85, fit: BoxFit.cover),
@@ -71,9 +71,9 @@ class ProductReviewWidget extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(orderDetailsList[index].productDetails.name, style: poppinsMedium, maxLines: 2, overflow: TextOverflow.ellipsis),
+                                      Text(orderDetailsList[index].productDetails!.name!, style: poppinsMedium, maxLines: 2, overflow: TextOverflow.ellipsis),
                                       SizedBox(height: 10),
-                                      Text(PriceConverter.convertPrice(context, orderDetailsList[index].productDetails.price), style: poppinsBold),
+                                      Text(PriceConverter.convertPrice(context, orderDetailsList[index].productDetails!.price!), style: poppinsBold),
                                     ],
                                   )),
                                   Row(children: [
@@ -93,7 +93,7 @@ class ProductReviewWidget extends StatelessWidget {
 
                               // Rate
                               Text(
-                                getTranslated('rate_the_order', context),
+                                getTranslated('rate_the_order', context)!,
                                 style: poppinsMedium.copyWith(color: ColorResources.getTextColor(context)), overflow: TextOverflow.ellipsis,
                               ),
                               SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
@@ -123,7 +123,7 @@ class ProductReviewWidget extends StatelessWidget {
                               ),
                               SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
                               Text(
-                                getTranslated('share_your_opinion', context),
+                                getTranslated('share_your_opinion', context)!,
                                 style: poppinsMedium.copyWith(color: ColorResources.getTextColor(context)), overflow: TextOverflow.ellipsis,
                               ),
                               SizedBox(height: Dimensions.PADDING_SIZE_LARGE),
@@ -131,7 +131,7 @@ class ProductReviewWidget extends StatelessWidget {
                                 maxLines: 3,
                                 capitalization: TextCapitalization.sentences,
                                 isEnabled: !orderProvider.submitList[index],
-                                hintText: getTranslated('write_your_review_here', context),
+                                hintText: getTranslated('write_your_review_here', context)!,
                                 fillColor: ColorResources.getCardBgColor(context),
                                 onChanged: (text) {
                                   orderProvider.setReview(index, text);
@@ -145,13 +145,13 @@ class ProductReviewWidget extends StatelessWidget {
                                 child: Column(
                                   children: [
                                     !orderProvider.loadingList[index] ? CustomButton(
-                                      buttonText: getTranslated(orderProvider.submitList[index] ? 'submitted' : 'submit', context),
-                                      onPressed: orderProvider.submitList[index] ? null : () {
+                                      buttonText: getTranslated(orderProvider.submitList[index] ? 'submitted' : 'submit', context)!,
+                                      onPressed: orderProvider.submitList[index] ? (){} : () {
                                         if(!orderProvider.submitList[index]) {
                                           if (orderProvider.ratingList[index] == 0) {
-                                            showCustomSnackBar(getTranslated('give_a_rating', context), context);
+                                            showCustomSnackBar(getTranslated('give_a_rating', context)!, context);
                                           } else if (orderProvider.reviewList[index].isEmpty) {
-                                            showCustomSnackBar(getTranslated('write_a_review', context), context);
+                                            showCustomSnackBar(getTranslated('write_a_review', context)!, context);
                                           } else {
                                             FocusScopeNode currentFocus = FocusScope.of(context);
                                             if (!currentFocus.hasPrimaryFocus) {
@@ -161,7 +161,7 @@ class ProductReviewWidget extends StatelessWidget {
                                               productId: orderDetailsList[index].productId.toString(),
                                               rating: orderProvider.ratingList[index].toString(),
                                               comment: orderProvider.reviewList[index],
-                                              orderId: orderDetailsList[index].orderId.toString(),
+                                              orderId: orderDetailsList[index].orderId.toString(), deliveryManId: orderProvider.deliveryManModel!.id.toString(), fileUpload: [],
                                             );
                                             orderProvider.submitReview(index, reviewBody).then((value) {
                                               if (value.isSuccess) {

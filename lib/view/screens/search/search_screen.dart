@@ -18,7 +18,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  int pageSize;
+  int? pageSize;
   final ScrollController scrollController = ScrollController();
   TextEditingController _searchController = TextEditingController();
 
@@ -50,7 +50,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         children: [
                           Expanded(
                             child: CustomTextField(
-                              hintText: getTranslated('search_item_here', context),
+                              hintText: getTranslated('search_item_here', context)!,
                               isShowBorder: true,
                               isShowPrefixIcon: true,
                               prefixIconUrl: Icons.search,
@@ -78,7 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               shadowColor: Theme.of(context).primaryColor,
                             ),
                               child: Text(
-                                getTranslated('cancel', context),
+                                getTranslated('cancel', context)!,
                                 style: poppinsRegular.copyWith(color: ColorResources.getTextColor(context))),
                               )
                         ],
@@ -89,14 +89,14 @@ class _SearchScreenState extends State<SearchScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            getTranslated('recent_search', context),
+                            getTranslated('recent_search', context)!,
                             style: poppinsMedium.copyWith(color: ColorResources.getTextColor(context),fontSize: Dimensions.FONT_SIZE_LARGE),
                           ),
                           searchProvider.historyList.length > 0
                               ? TextButton(
                                   onPressed: searchProvider.clearSearchAddress,
                                   child: Text(
-                                    getTranslated('remove_all', context),
+                                    getTranslated('remove_all', context)!,
                                     style: poppinsMedium.copyWith(color: ColorResources.getTextColor(context),fontSize: Dimensions.FONT_SIZE_LARGE),
                                   ))
                               : SizedBox.shrink(),
@@ -129,7 +129,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                               searchProvider.historyList[index],
                                               style: Theme.of(context)
                                                   .textTheme
-                                                  .headline2
+                                                  .displayMedium!
                                                   .copyWith(color: ColorResources.getHintColor(context), fontSize: Dimensions.FONT_SIZE_SMALL),
                                             )
                                           ],

@@ -1,23 +1,23 @@
 class CategoryModel {
-  int _id;
-  String _name;
-  String _image;
-  int _parentId;
-  int _position;
-  int _status;
-  String _createdAt;
-  String _updatedAt;
+  int? _id;
+  String? _name;
+  String? _image;
+  int? _parentId;
+  int? _position;
+  int? _status;
+  String? _createdAt;
+  String? _updatedAt;
 
 
   CategoryModel(
-      {int id,
-        String name,
-        String image,
-        int parentId,
-        int position,
-        int status,
-        String createdAt,
-        String updatedAt}) {
+      {required int id,
+        required String name,
+        required String image,
+        required int parentId,
+        required int position,
+        required int status,
+        required String createdAt,
+        required String updatedAt}) {
     this._id = id;
     this._name = name;
     this._image = image;
@@ -28,14 +28,14 @@ class CategoryModel {
     this._updatedAt = updatedAt;
   }
 
-  int get id => _id;
-  String get name => _name;
-  String get image => _image;
-  int get parentId => _parentId;
-  int get position => _position;
-  int get status => _status;
-  String get createdAt => _createdAt;
-  String get updatedAt => _updatedAt;
+  int? get id => _id;
+  String? get name => _name;
+  String? get image => _image;
+  int? get parentId => _parentId;
+  int? get position => _position;
+  int? get status => _status;
+  String? get createdAt => _createdAt;
+  String? get updatedAt => _updatedAt;
 
   CategoryModel.fromJson(Map<String, dynamic> json) {
     _id = json['id'];

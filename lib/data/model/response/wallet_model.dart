@@ -1,13 +1,11 @@
 
 class WalletModel {
-  String balance;
+  String? balance;
 
   WalletModel(
-      {String balance}) {
+      {required String balance}) {
     this.balance = balance;
   }
-
-  String get _balance => balance;
 
   WalletModel.fromJson(Map<String, dynamic> json) {
     balance = json['balance'];

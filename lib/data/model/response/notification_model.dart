@@ -1,20 +1,20 @@
 class NotificationModel {
-  int _id;
-  String _title;
-  String _description;
-  String _image;
-  int _status;
-  String _createdAt;
-  String _updatedAt;
+  int? _id;
+  String? _title;
+  String? _description;
+  String? _image;
+  int? _status;
+  String? _createdAt;
+  String? _updatedAt;
 
   NotificationModel(
-      {int id,
-        String title,
-        String description,
-        String image,
-        int status,
-        String createdAt,
-        String updatedAt}) {
+      {required int id,
+        required String title,
+        required String description,
+        required String image,
+        required int status,
+        required String createdAt,
+        required String updatedAt}) {
     this._id = id;
     this._title = title;
     this._description = description;
@@ -24,13 +24,13 @@ class NotificationModel {
     this._updatedAt = updatedAt;
   }
 
-  int get id => _id;
-  String get title => _title;
-  String get description => _description;
-  String get image => _image;
-  int get status => _status;
-  String get createdAt => _createdAt;
-  String get updatedAt => _updatedAt;
+  int? get id => _id;
+  String? get title => _title;
+  String? get description => _description;
+  String? get image => _image;
+  int? get status => _status;
+  String? get createdAt => _createdAt;
+  String? get updatedAt => _updatedAt;
 
   NotificationModel.fromJson(Map<String, dynamic> json) {
     _id = json['id'];

@@ -6,7 +6,7 @@ import 'package:flutter_grocery/data/repository/language_repo.dart';
 class LanguageProvider with ChangeNotifier {
   final LanguageRepo languageRepo;
 
-  LanguageProvider({this.languageRepo});
+  LanguageProvider({required this.languageRepo});
 
   int _selectIndex = 0;
 
@@ -30,7 +30,7 @@ class LanguageProvider with ChangeNotifier {
       _selectIndex = -1;
       _languages = [];
       languageRepo.getAllLanguages(context: context).forEach((product) async {
-        if (product.languageName.toLowerCase().contains(query.toLowerCase())) {
+        if (product.languageName!.toLowerCase().contains(query.toLowerCase())) {
           _languages.add(product);
         }
       });

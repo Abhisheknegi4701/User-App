@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery/utill/color_resources.dart';
 import 'package:flutter_grocery/utill/dimensions.dart';
@@ -7,10 +9,10 @@ class CustomStepper extends StatelessWidget {
   final bool isActive;
   final bool haveTopBar;
   final String title;
-  final Widget child;
+  final Widget? child;
   final double height;
 
-  CustomStepper({@required this.title, @required this.isActive, this.child, this.haveTopBar = true, this.height = 30});
+  CustomStepper({required this.title, required this.isActive, this.child, this.haveTopBar = true, this.height = 30});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class CustomStepper extends StatelessWidget {
                 margin: EdgeInsets.only(left: 14),
                 color: isActive ? Theme.of(context).primaryColor : ColorResources.getGreyColor(context),
               ),
-              child == null ? SizedBox() : child,
+              child.isNull ? SizedBox() : child!,
             ])
           : SizedBox(),
       Row(children: [

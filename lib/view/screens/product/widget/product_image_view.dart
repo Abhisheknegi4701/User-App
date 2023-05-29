@@ -14,7 +14,7 @@ import '../image_zoom_screen.dart';
 
 class ProductImageView extends StatelessWidget {
   final Product productModel;
-  ProductImageView({@required this.productModel});
+  ProductImageView({required this.productModel});
 
 
   @override
@@ -25,21 +25,21 @@ class ProductImageView extends StatelessWidget {
         Stack(children: [
           InkWell(
             onTap: () => Navigator.of(context).pushNamed(
-              RouteHelper.getProductImagesRoute(productModel.name, jsonEncode(productModel.image)),
-              arguments: ProductImageScreen(imageList: productModel.image, title: productModel.name),
+              RouteHelper.getProductImagesRoute(productModel.name!, jsonEncode(productModel.image)),
+              arguments: ProductImageScreen(imageList: productModel.image!, title: productModel.name!),
             ),
 
             child: SizedBox(
 
              height: ResponsiveHelper.isDesktop(context) ? 350 : MediaQuery.of(context).size.width - 100,
               child: PageView.builder(
-                itemCount: productModel.image.length,
+                itemCount: productModel.image!.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: EdgeInsets.fromLTRB(20, 20, 20, 50),
                     child: FadeInImage.assetNetwork(
                         placeholder: Images.placeholder(context),
-                        image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls.productImageUrl}/${productModel.image[index]}',
+                        image: '${Provider.of<SplashProvider>(context, listen: false).baseUrls!.productImageUrl}/${productModel.image![index]}',
                         width: 85,
                       imageErrorBuilder: (c, o, s) => Image.asset(Images.placeholder(context), width: 85),
                     ),
@@ -70,7 +70,7 @@ class ProductImageView extends StatelessWidget {
 
   List<Widget> _indicators(BuildContext context) {
     List<Widget> indicators = [];
-    for (int index = 0; index < productModel.image.length; index++) {
+    for (int index = 0; index < productModel.image!.length; index++) {
       indicators.add(Container(
         width: index == Provider.of<ProductProvider>(context).imageSliderIndex ? 18 : 7,
         height: 7,

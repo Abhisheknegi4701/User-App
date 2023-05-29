@@ -9,12 +9,12 @@ import 'package:provider/provider.dart';
 
 class CustomTextField extends StatefulWidget {
   final String hintText;
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final FocusNode nextFocus;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final FocusNode? nextFocus;
   final TextInputType inputType;
   final TextInputAction inputAction;
-  final Color fillColor;
+  final Color? fillColor;
   final int maxLines;
   final bool isPassword;
   final bool isCountryPicker;
@@ -22,18 +22,18 @@ class CustomTextField extends StatefulWidget {
   final bool isIcon;
   final bool isShowSuffixIcon;
   final bool isShowPrefixIcon;
-  final Function onTap;
-  final Function onSuffixTap;
-  final IconData suffixIconUrl;
-  final String suffixAssetUrl;
-  final IconData prefixIconUrl;
+  final VoidCallback? onTap;
+  final VoidCallback? onSuffixTap;
+  final IconData? suffixIconUrl;
+  final String? suffixAssetUrl;
+  final IconData? prefixIconUrl;
   final bool isSearch;
-  final Function onSubmit;
+  final Function? onSubmit;
   final bool isEnabled;
   final TextCapitalization capitalization;
   final bool isElevation;
   final bool isPadding;
-  final Function onChanged;
+  final Function? onChanged;
   //final LanguageProvider languageProvider;
 
   CustomTextField(
@@ -77,7 +77,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         borderRadius: BorderRadius.circular(ResponsiveHelper.isDesktop(context)? 20 : 12),
         boxShadow: [
           BoxShadow(
-              color: widget.isElevation ? Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 200] : Colors.transparent,
+              color: widget.isElevation ? Colors.grey[Provider.of<ThemeProvider>(context).darkTheme ? 700 : 200]! : Colors.transparent,
               spreadRadius: 0.5,
               blurRadius: 0.5,
             // changes position of shadow
@@ -90,7 +90,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         controller: widget.controller,
         focusNode: widget.focusNode,
         style:
-            Theme.of(context).textTheme.headline2.copyWith(color: Theme.of(context).textTheme.bodyText1.color, fontSize: Dimensions.FONT_SIZE_LARGE),
+            Theme.of(context).textTheme.displayMedium!.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color, fontSize: Dimensions.FONT_SIZE_LARGE),
         textInputAction: widget.inputAction,
         keyboardType: widget.inputType,
         cursorColor: Theme.of(context).primaryColor,
@@ -133,19 +133,21 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       ? IconButton(
                           onPressed: widget.onSuffixTap,
                           icon: ResponsiveHelper.isDesktop(context)? Image.asset(
-                            widget.suffixAssetUrl,
+                            widget.suffixAssetUrl!,
                             width: 15,
                             height: 15,
-                            color: Theme.of(context).textTheme.bodyText1.color,
+                            color: Theme.of(context).textTheme.bodyLarge!.color,
                           ) : Icon(widget.suffixIconUrl, color: ColorResources.getHintColor(context)),
                         )
                       : null
               : null,
         ),
         onTap: widget.onTap,
-        onChanged: widget.onChanged,
+        onChanged: (s){
+          widget.onChanged!(s);
+        },
         onSubmitted: (text) => widget.nextFocus != null ? FocusScope.of(context).requestFocus(widget.nextFocus)
-            : widget.onSubmit != null ? widget.onSubmit(text) : null,
+            : widget.onSubmit != null ? widget.onSubmit!(text) : null,
       ),
     );
   }

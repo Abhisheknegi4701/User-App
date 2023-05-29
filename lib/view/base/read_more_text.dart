@@ -1,5 +1,7 @@
 library readmore;
 
+import 'dart:js_interop';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +13,7 @@ enum TrimMode {
 class ReadMoreText extends StatefulWidget {
   const ReadMoreText(
       this.data, {
-        Key key,
+        Key? key,
         this.preDataText,
         this.postDataText,
         this.preDataTextStyle,
@@ -38,26 +40,26 @@ class ReadMoreText extends StatefulWidget {
   final int trimLength;
   final int trimLines;
   final TrimMode trimMode;
-  final TextStyle moreStyle;
-  final TextStyle lessStyle;
-  final String preDataText;
-  final String postDataText;
-  final TextStyle preDataTextStyle;
-  final TextStyle postDataTextStyle;
-  final Function(bool val) callback;
+  final TextStyle? moreStyle;
+  final TextStyle? lessStyle;
+  final String? preDataText;
+  final String? postDataText;
+  final TextStyle? preDataTextStyle;
+  final TextStyle? postDataTextStyle;
+  final Function(bool val)? callback;
 
   final String delimiter;
   final String data;
   final String trimExpandedText;
   final String trimCollapsedText;
-  final Color colorClickableText;
-  final TextStyle style;
-  final TextAlign textAlign;
-  final TextDirection textDirection;
-  final Locale locale;
-  final double textScaleFactor;
-  final String semanticsLabel;
-  final TextStyle delimiterStyle;
+  final Color? colorClickableText;
+  final TextStyle? style;
+  final TextAlign? textAlign;
+  final TextDirection? textDirection;
+  final Locale? locale;
+  final double? textScaleFactor;
+  final String? semanticsLabel;
+  final TextStyle? delimiterStyle;
 
   @override
   ReadMoreTextState createState() => ReadMoreTextState();
@@ -73,15 +75,15 @@ class ReadMoreTextState extends State<ReadMoreText> {
   void _onTapLink() {
     setState(() {
       _readMore = !_readMore;
-      widget.callback?.call(_readMore);
+      widget.callback!.call(_readMore);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
-    TextStyle effectiveTextStyle = widget.style;
-    if (widget.style?.inherit ?? false) {
+    TextStyle effectiveTextStyle = widget.style!;
+    if (widget.style!.inherit) {
       effectiveTextStyle = defaultTextStyle.style.merge(widget.style);
     }
 
@@ -96,9 +98,9 @@ class ReadMoreTextState extends State<ReadMoreText> {
     final colorClickableText =
         widget.colorClickableText ?? Theme.of(context).colorScheme.secondary;
     final _defaultLessStyle = widget.lessStyle ??
-        effectiveTextStyle?.copyWith(color: colorClickableText);
+        effectiveTextStyle.copyWith(color: colorClickableText);
     final _defaultMoreStyle = widget.moreStyle ??
-        effectiveTextStyle?.copyWith(color: colorClickableText);
+        effectiveTextStyle.copyWith(color: colorClickableText);
     final _defaultDelimiterStyle = widget.delimiterStyle ?? effectiveTextStyle;
 
     TextSpan link = TextSpan(
@@ -124,23 +126,21 @@ class ReadMoreTextState extends State<ReadMoreText> {
 
         TextSpan preTextSpan;
         TextSpan postTextSpan;
-        if (widget.preDataText != null)
-          preTextSpan = TextSpan(
-            text: widget.preDataText + " ",
-            style: widget.preDataTextStyle ?? effectiveTextStyle,
-          );
-        if (widget.postDataText != null)
-          postTextSpan = TextSpan(
-            text: " " + widget.postDataText,
-            style: widget.postDataTextStyle ?? effectiveTextStyle,
-          );
+        preTextSpan = TextSpan(
+          text: widget.preDataText! + " ",
+          style: widget.preDataTextStyle ?? effectiveTextStyle,
+        );
+        postTextSpan = TextSpan(
+          text: " " + widget.postDataText!,
+          style: widget.postDataTextStyle ?? effectiveTextStyle,
+        );
 
         // Create a TextSpan with data
         final text = TextSpan(
           children: [
-            if (preTextSpan != null) preTextSpan,
+            if (!preTextSpan.isNull) preTextSpan,
             TextSpan(text: widget.data, style: effectiveTextStyle),
-            if (postTextSpan != null) postTextSpan
+            if (!postTextSpan.isNull) postTextSpan
           ],
         );
 
@@ -235,9 +235,9 @@ class ReadMoreTextState extends State<ReadMoreText> {
           child: Text.rich(
             TextSpan(
               children: [
-                if (preTextSpan != null) preTextSpan,
+                if (!preTextSpan.isNull) preTextSpan,
                 textSpan,
-                if (postTextSpan != null) postTextSpan,
+                if (!postTextSpan.isNull) postTextSpan,
               ],
             ),
             textAlign: textAlign,
@@ -249,15 +249,13 @@ class ReadMoreTextState extends State<ReadMoreText> {
         );
       },
     );
-    if (widget.semanticsLabel != null) {
-      result = Semantics(
-        textDirection: widget.textDirection,
-        label: widget.semanticsLabel,
-        child: ExcludeSemantics(
-          child: result,
-        ),
-      );
-    }
+    result = Semantics(
+      textDirection: widget.textDirection,
+      label: widget.semanticsLabel,
+      child: ExcludeSemantics(
+        child: result,
+      ),
+    );
     return result;
   }
 }

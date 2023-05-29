@@ -47,14 +47,14 @@ class NoDataScreen extends StatelessWidget {
           SizedBox(height: _height*0.03),
 
           Text(
-            getTranslated(isOrder ? 'no_order_history' : isCart ? 'empty_shopping_bag' : isProfile ? 'no_address_found' : 'no_result_found', context),
+            getTranslated(isOrder ? 'no_order_history' : isCart ? 'empty_shopping_bag' : isProfile ? 'no_address_found' : 'no_result_found', context)!,
             style: poppinsMedium.copyWith(color: Theme.of(context).primaryColor, fontSize: _height*0.02),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: _height*0.01),
 
           Text(
-            isOrder ? getTranslated('buy_something_to_see', context) : isCart ? getTranslated('look_like_you_have_not_added', context) : '',
+            isOrder ? getTranslated('buy_something_to_see', context)! : isCart ? getTranslated('look_like_you_have_not_added', context)! : '',
             style: poppinsRegular.copyWith(fontSize: _height*0.02),
             textAlign: TextAlign.center,
           ),
@@ -63,7 +63,7 @@ class NoDataScreen extends StatelessWidget {
           SizedBox(
             height: 40, width: 150,
             child: CustomButton(
-              buttonText: getTranslated('lets_shop', context),
+              buttonText: getTranslated('lets_shop', context)!,
               onPressed: () {
                 Provider.of<SplashProvider>(context, listen: false).setPageIndex(0);
                 // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => MenuScreen()), (route) => false);
