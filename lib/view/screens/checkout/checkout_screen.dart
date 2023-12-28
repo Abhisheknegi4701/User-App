@@ -41,7 +41,6 @@ import 'package:flutter_grocery/view/screens/checkout/widget/delivery_fee_dialog
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:universal_html/html.dart' as html;
 
 class CheckoutScreen extends StatefulWidget {
   final double amount;
@@ -939,24 +938,26 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             if(_isCashOnDeliveryActive && Provider.of<OrderProvider>(context, listen: false).paymentMethodIndex == 0) {
               order.placeOrder(_placeOrderBody, _callback);
             }else{
-              String hostname = html.window.location.hostname!;
-              String protocol = html.window.location.protocol;
-              String port = html.window.location.port;
-              final String _placeOrder =  convert.base64Url.encode(convert.utf8.encode(convert.jsonEncode(_placeOrderBody.toJson())));
+              // String hostname = html.window.location.hostname!;
+              // String protocol = html.window.location.protocol;
+              // String port = html.window.location.port;
+              //final String _placeOrder =  convert.base64Url.encode(convert.utf8.encode(convert.jsonEncode(_placeOrderBody.toJson())));
 
               String _url = "customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel!.id}"
                   "&&callback=${AppConstants.BASE_URL}${RouteHelper.orderSuccessful}&&order_amount=${widget.amount + _deliveryCharge}";
 
               String _webUrl = "customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel!.id}"
-                  "&&callback=$protocol//$hostname:$port${RouteHelper.ORDER_WEB_PAYMENT}&&order_amount=${widget.amount + _deliveryCharge}&&status=";
+                  "&&callback=${RouteHelper.ORDER_WEB_PAYMENT}&&order_amount=${widget.amount + _deliveryCharge}&&status=";
+ // String _webUrl = "customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel!.id}"
+ //                  "&&callback=$protocol//$hostname:$port${RouteHelper.ORDER_WEB_PAYMENT}&&order_amount=${widget.amount + _deliveryCharge}&&status=";
 
               String _tokenUrl = convert.base64Encode(convert.utf8.encode(ResponsiveHelper.isWeb() ? _webUrl : _url));
-              String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?token=$_tokenUrl';
+              //String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?token=$_tokenUrl';
               if(ResponsiveHelper.isWeb()) {
 
-                order.clearPlaceOrder().then((_) {
-                  order.setPlaceOrder(_placeOrder).then((value) => html.window.open(selectedUrl,"_self"));
-                });
+                // order.clearPlaceOrder().then((_) {
+                //   order.setPlaceOrder(_placeOrder).then((value) => html.window.open(selectedUrl,"_self"));
+                // });
 
               } else{
                 Navigator.pushReplacementNamed(

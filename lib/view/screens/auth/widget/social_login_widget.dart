@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_grocery/data/model/social_login_model.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
 import 'package:flutter_grocery/helper/route_helper.dart';
@@ -121,20 +120,20 @@ class _SocialLoginWidgetState extends State<SocialLoginWidget> {
             if(Provider.of<SplashProvider>(context,listen: false).configModel!.socialLoginStatus!.isFacebook!)
               InkWell(
               onTap: () async{
-                LoginResult _result = await FacebookAuth.instance.login();
-
-                if (_result.status == LoginStatus.success) {
-                 Map _userData = await FacebookAuth.instance.getUserData();
-
-                 Provider.of<AuthProvider>(context, listen: false).socialLogin(
-                   SocialLoginModel(
-                     email: _userData['email'],
-                     token: _result.accessToken!.token,
-                     uniqueId: _result.accessToken!.userId,
-                     medium: 'facebook',
-                   ), route,
-                 );
-                }
+                // LoginResult _result = await FacebookAuth.instance.login();
+                //
+                // if (_result.status == LoginStatus.success) {
+                //  Map _userData = await FacebookAuth.instance.getUserData();
+                //
+                //  Provider.of<AuthProvider>(context, listen: false).socialLogin(
+                //    SocialLoginModel(
+                //      email: _userData['email'],
+                //      token: _result.accessToken!.token,
+                //      uniqueId: _result.accessToken!.userId,
+                //      medium: 'facebook',
+                //    ), route,
+                //  );
+                // }
               },
               child: Container(
                 height: ResponsiveHelper.isDesktop(context)?50 :ResponsiveHelper.isTab(context)? 40:40,

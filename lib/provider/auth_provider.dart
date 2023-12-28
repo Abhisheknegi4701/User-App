@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_grocery/data/model/response/base/api_response.dart';
 import 'package:flutter_grocery/data/model/response/base/error_response.dart';
 import 'package:flutter_grocery/data/model/response/response_model.dart';
@@ -398,7 +397,7 @@ class AuthProvider with ChangeNotifier {
   Future<void> socialLogout() async {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     _googleSignIn.disconnect();
-    await FacebookAuth.instance.logOut();
+    //await FacebookAuth.instance.logOut();
   }
 
 

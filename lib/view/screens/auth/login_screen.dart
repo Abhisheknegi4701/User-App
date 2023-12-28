@@ -279,13 +279,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
                                 // for create an account
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                                 InkWell(
                                   onTap: () {
                                     Navigator.of(context).pushNamed(RouteHelper.signUp, arguments: SignUpScreen());
                                   },
                                   child: Padding(
-                                    padding: EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -293,7 +293,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           getTranslated('create_an_account', context)!,
                                           style: poppinsRegular.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL, color: ColorResources.getHintColor(context)),
                                         ),
-                                        SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
+                                        const SizedBox(width: Dimensions.PADDING_SIZE_SMALL),
                                         Text(
                                           getTranslated('signup', context)!,
                                           style: poppinsMedium.copyWith(fontSize: Dimensions.FONT_SIZE_SMALL, color: ColorResources.getTextColor(context)),
@@ -312,7 +312,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 Center(
                                   child: TextButton(
                                     style: TextButton.styleFrom(
-                                      minimumSize: Size(1, 40),
+                                      minimumSize: const Size(1, 40),
                                     ),
                                     onPressed: () {
                                       Navigator.pushReplacementNamed(context, RouteHelper.menu, arguments: MenuScreen());
@@ -329,8 +329,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    ResponsiveHelper.isDesktop(context) ? SizedBox(height: 50,) : SizedBox(),
-                    ResponsiveHelper.isDesktop(context) ? FooterView() : SizedBox(),
+                    ResponsiveHelper.isDesktop(context) ? const SizedBox(height: 50,) : const SizedBox(),
+                    ResponsiveHelper.isDesktop(context) ? const FooterView() : const SizedBox(),
                   ],
                 ),
               ),

@@ -22,19 +22,19 @@ import '../../base/footer_view.dart';
 class VerificationScreen extends StatelessWidget {
   final String emailAddress;
   final bool fromSignUp;
-  VerificationScreen({required this.emailAddress, this.fromSignUp = false});
+  const VerificationScreen({super.key, required this.emailAddress, this.fromSignUp = false});
 
   @override
   Widget build(BuildContext context) {
-    double _width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: ColorResources.getCardBgColor(context),
-      appBar: ResponsiveHelper.isDesktop(context)? preferredSizeWidgetDem() : CustomAppBar(title: getTranslated('verify_email', context)),
+      appBar: ResponsiveHelper.isDesktop(context)? preferredSizeWidgetDem() : CustomAppBar(title: getTranslated('verify_otp', context)),
       body: SafeArea(
         child: Scrollbar(
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 children: [
@@ -45,16 +45,16 @@ class VerificationScreen extends StatelessWidget {
                       child: Consumer<AuthProvider>(
                         builder: (context, authProvider, child) =>
                             Container(
-                              margin: EdgeInsets.only(top: _width > 700 ? 55 : 0,bottom: _width > 700 ? 55 : 0),
-                              decoration: _width > 700 ? BoxDecoration(
+                              margin: EdgeInsets.only(top: width > 700 ? 55 : 0,bottom: width > 700 ? 55 : 0),
+                              decoration: width > 700 ? BoxDecoration(
                                 color: Theme.of(context).cardColor, borderRadius: BorderRadius.circular(10),
                                 boxShadow: [BoxShadow(color: Colors.grey[300]!, blurRadius: 5, spreadRadius: 1)],
                               ) : null,
                           child: Column(
                             children: [
-                              SizedBox(height: 55),
+                              const SizedBox(height: 55),
                               Image.asset(Images.email_with_background, width: 142, height: 142, color: Theme.of(context).primaryColor),
-                              SizedBox(height: 40),
+                              const SizedBox(height: 40),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 50),
                                 child: Center(
@@ -65,7 +65,7 @@ class VerificationScreen extends StatelessWidget {
                                 )),
                               ),
                               Padding(
-                                padding:  EdgeInsets.symmetric(horizontal: _width > 850 ? 300 : 39, vertical: 35),
+                                padding:  EdgeInsets.symmetric(horizontal: width > 850 ? 300 : 39, vertical: 35),
                                 child: PinCodeTextField(
                                   length: 4,
                                   appContext: context,
@@ -85,7 +85,7 @@ class VerificationScreen extends StatelessWidget {
                                     activeColor: Theme.of(context).primaryColor.withOpacity(.4),
                                     activeFillColor: ColorResources.getCardBgColor(context),
                                   ),
-                                  animationDuration: Duration(milliseconds: 300),
+                                  animationDuration: const Duration(milliseconds: 300),
                                   backgroundColor: Colors.transparent,
                                   enableActiveFill: true,
                                   onChanged: authProvider.updateVerificationCode,
@@ -123,7 +123,7 @@ class VerificationScreen extends StatelessWidget {
                                     }
                                   },
                                   child: Padding(
-                                    padding: EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
+                                    padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_EXTRA_SMALL),
                                     child: Text(
                                       getTranslated('resend_code', context)!,
                                       style: poppinsMedium.copyWith(
@@ -133,7 +133,7 @@ class VerificationScreen extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 48),
+                              const SizedBox(height: 48),
                               authProvider.isEnableVerificationCode
                                   ? !authProvider.isPhoneNumberVerificationButtonLoading
                                       ? Padding(
@@ -160,13 +160,13 @@ class VerificationScreen extends StatelessWidget {
                                                   });
                                                 }
                                               } else {
-                                                String _mail = Provider.of<SplashProvider>(context, listen: false).configModel!.phoneVerification!
+                                                String mail = Provider.of<SplashProvider>(context, listen: false).configModel!.phoneVerification!
                                                     ? emailAddress.trim() : emailAddress;
-                                                Provider.of<AuthProvider>(context, listen: false).verifyToken(_mail).then((value) {
+                                                Provider.of<AuthProvider>(context, listen: false).verifyToken(mail).then((value) {
                                                   if(value.isSuccess) {
                                                     Navigator.of(context).pushNamed(
-                                                      RouteHelper.getNewPassRoute(_mail, authProvider.verificationCode),
-                                                      arguments: CreateNewPasswordScreen(email: _mail, resetToken: authProvider.verificationCode),
+                                                      RouteHelper.getNewPassRoute(mail, authProvider.verificationCode),
+                                                      arguments: CreateNewPasswordScreen(email: mail, resetToken: authProvider.verificationCode),
                                                     );
                                                   }else {
                                                     showCustomSnackBar(value.message, context);
@@ -177,15 +177,15 @@ class VerificationScreen extends StatelessWidget {
                                           ),
                                         )
                                       : Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)))
-                                  : SizedBox.shrink(),
-                              SizedBox(height: 48),
+                                  : const SizedBox.shrink(),
+                              const SizedBox(height: 48),
                             ],
                           ),
                         ),
                       ),
                     ),
                   ),
-                  ResponsiveHelper.isDesktop(context) ? FooterView() : SizedBox(),
+                  ResponsiveHelper.isDesktop(context) ? const FooterView() : const SizedBox(),
                 ],
               ),
             ),

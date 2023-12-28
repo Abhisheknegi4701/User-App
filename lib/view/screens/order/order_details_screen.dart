@@ -12,10 +12,8 @@ import 'package:flutter_grocery/provider/localization_provider.dart';
 import 'package:flutter_grocery/provider/location_provider.dart';
 import 'package:flutter_grocery/provider/order_provider.dart';
 import 'package:flutter_grocery/provider/product_provider.dart';
-import 'package:flutter_grocery/provider/profile_provider.dart';
 import 'package:flutter_grocery/provider/splash_provider.dart';
 import 'package:flutter_grocery/provider/theme_provider.dart';
-import 'package:flutter_grocery/utill/app_constants.dart';
 import 'package:flutter_grocery/utill/color_resources.dart';
 import 'package:flutter_grocery/utill/dimensions.dart';
 import 'package:flutter_grocery/utill/images.dart';
@@ -27,7 +25,6 @@ import 'package:flutter_grocery/view/base/custom_snackbar.dart';
 import 'package:flutter_grocery/view/base/footer_view.dart';
 import 'package:flutter_grocery/view/base/preferedsizewidgetdem.dart';
 import 'package:flutter_grocery/view/screens/address/widget/map_widget.dart';
-import 'package:universal_html/html.dart' as html;
 import 'package:flutter_grocery/view/screens/order/widget/cancel_dialog.dart';
 import 'package:flutter_grocery/view/screens/order/widget/change_method_dialog.dart';
 import 'package:flutter_grocery/view/screens/review/rate_review_screen.dart';
@@ -442,10 +439,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                           buttonText: getTranslated('pay_now', context)!,
                                           onPressed: () async {
                                             if(ResponsiveHelper.isWeb()) {
-                                              String hostname = html.window.location.hostname!;
-                                              String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=${order.trackModel!.id}&&customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel!.id}'
-                                                  '&&callback=http://$hostname${RouteHelper.orderSuccessful}${order.trackModel!.id}';
-                                              html.window.open(selectedUrl, "_self");
+                                              //String hostname = html.window.location.hostname!;
+                                              //String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=${order.trackModel!.id}&&customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel!.id}''&&callback=http://${RouteHelper.orderSuccessful}${order.trackModel!.id}';
+                                              //html.window.open(selectedUrl, "_self");
                                             }else {
                                               Navigator.pushReplacementNamed(context, RouteHelper.getPaymentRoute(page: 'order',id:  order.trackModel!.id.toString(),user:  order.trackModel!.userId!));
                                             }
@@ -832,10 +828,9 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   buttonText: getTranslated('pay_now', context)!,
                   onPressed: () async {
                     if(ResponsiveHelper.isWeb()) {
-                      String hostname = html.window.location.hostname!;
-                      String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=${order.trackModel!.id}&&customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel!.id}'
-                          '&&callback=http://$hostname${RouteHelper.orderSuccessful}${order.trackModel!.id}';
-                      html.window.open(selectedUrl, "_self");
+                      //String hostname = html.window.location.hostname!;
+                      //String selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?order_id=${order.trackModel!.id}&&customer_id=${Provider.of<ProfileProvider>(context, listen: false).userInfoModel!.id}''&&callback=http://${RouteHelper.orderSuccessful}${order.trackModel!.id}';
+                     // html.window.open(selectedUrl, "_self");
                     }else {
                       Navigator.pushReplacementNamed(context, RouteHelper.getPaymentRoute(page: 'order',id:  order.trackModel!.id.toString(),user:  order.trackModel!.userId!));
                     }

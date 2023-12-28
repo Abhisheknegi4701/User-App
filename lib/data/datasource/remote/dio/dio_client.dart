@@ -24,8 +24,8 @@ class DioClient {
     dio = dioC;
     dio!
       ..options.baseUrl = baseUrl
-      ..options.connectTimeout = ResponsiveHelper.isMobilePhone() ? 30000 : 60 * 30000
-      ..options.receiveTimeout = ResponsiveHelper.isMobilePhone() ? 30000 : 60 * 30000
+      ..options.connectTimeout = ResponsiveHelper.isMobilePhone() ? Duration(milliseconds: 30000) : Duration(milliseconds: 60 * 30000)
+      ..options.receiveTimeout = ResponsiveHelper.isMobilePhone() ? Duration(milliseconds: 30000) : Duration(milliseconds: 60 * 30000)
       ..httpClientAdapter
       ..options.headers = {
         'Content-Type': 'application/json; charset=UTF-8',

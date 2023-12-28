@@ -68,6 +68,7 @@
   "login": "Login",
   "signup": "Signup",
   "email": "Email",
+  "verify_otp": "Verify OTP",
   "demo_gmail": "demo@gmail.com",
   "password_did_not_match": "Password does not matched",
   "mobile_number": "Mobile Number",

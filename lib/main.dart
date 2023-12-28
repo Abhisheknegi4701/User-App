@@ -6,7 +6,6 @@ import 'dart:ui';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_grocery/helper/responsive_helper.dart';
 import 'package:flutter_grocery/provider/auth_provider.dart';
 import 'package:flutter_grocery/provider/banner_provider.dart';
@@ -32,6 +31,8 @@ import 'package:flutter_grocery/provider/wishlist_provider.dart';
 import 'package:flutter_grocery/theme/dark_theme.dart';
 import 'package:flutter_grocery/theme/light_theme.dart';
 import 'package:flutter_grocery/utill/app_constants.dart';
+import 'package:flutter_grocery/view/screens/dashboard/dashboard_screen.dart';
+import 'package:flutter_grocery/view/screens/onboarding/on_boarding_screen.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -42,8 +43,7 @@ import 'localization/app_localization.dart';
 import 'helper/notification_helper.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 AndroidNotificationChannel? channel;
@@ -63,7 +63,7 @@ Future<void> main() async {
 
 Future<void> myMainApp() async {
   if (ResponsiveHelper.isMobilePhone()) {
-    HttpOverrides.global = new MyHttpOverrides();
+    HttpOverrides.global = MyHttpOverrides();
   }
   setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
@@ -71,7 +71,7 @@ Future<void> myMainApp() async {
     await Firebase.initializeApp();
   } else {
     await Firebase.initializeApp(
-        options: FirebaseOptions(
+        options: const FirebaseOptions(
             apiKey: "AIzaSyAhUVJFBJQeya6yYp7q3Y4fFnFtNv-vi3s",
             authDomain: "thefreshmartapp.firebaseapp.com",
             projectId: "thefreshmartapps",
@@ -80,15 +80,15 @@ Future<void> myMainApp() async {
             appId: "1:683048467505:ios:436779ab794aea61046910",
             measurementId: "G-B6388W4VYB"));
 
-    await FacebookAuth.instance.webAndDesktopInitialize(
-      appId: "1216934565526698",
-      cookie: true,
-      xfbml: true,
-      version: "v13.0",
-    );
+    // await FacebookAuth.instance.webAndDesktopInitialize(
+    //   appId: "1216934565526698",
+    //   cookie: true,
+    //   xfbml: true,
+    //   version: "v13.0",
+    // );
   }
   await di.init();
-  int? _orderID;
+  int? orderID;
   try {
     if (!kIsWeb) {
       channel = const AndroidNotificationChannel(
@@ -97,22 +97,22 @@ Future<void> myMainApp() async {
         importance: Importance.high,
       );
     }
-    final RemoteMessage? remoteMessage =
-        await FirebaseMessaging.instance.getInitialMessage();
+    final RemoteMessage? remoteMessage = await FirebaseMessaging.instance.getInitialMessage();
     if (remoteMessage != null) {
-      _orderID = remoteMessage.notification!.titleLocKey != null
+      orderID = remoteMessage.notification!.titleLocKey != null
           ? int.parse(remoteMessage.notification!.titleLocKey!)
           : null;
     }
     await NotificationHelper.initialize(flutterLocalNotificationsPlugin);
     FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
-  } catch (e) {}
+  } catch (e) {
+    print("ERrorororororor8    $e");
+  }
 
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => di.sl<ThemeProvider>()),
-      ChangeNotifierProvider(
-          create: (context) => di.sl<LocalizationProvider>()),
+      ChangeNotifierProvider(create: (context) => di.sl<LocalizationProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<SplashProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<OnBoardingProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<CategoryProvider>()),
@@ -132,24 +132,24 @@ Future<void> myMainApp() async {
       ChangeNotifierProvider(create: (context) => di.sl<NewsLetterProvider>()),
       ChangeNotifierProvider(create: (context) => di.sl<WishListProvider>()),
     ],
-    child: MyApp(orderID: _orderID, isWeb: kIsWeb,),
+    child: MyApp(orderID: orderID, isWeb: kIsWeb,),
   ));
 }
 
 class MyApp extends StatefulWidget {
   final int? orderID;
   final bool isWeb;
-  MyApp({required this.orderID, required this.isWeb});
+  const MyApp({super.key, required this.orderID, required this.isWeb});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  MyAppState createState() => MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
+    print("ERrorororororor8 ${widget.orderID}");
     RouteHelper.setupRouter();
 
     if (kIsWeb) {
@@ -160,17 +160,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _route() {
-    Provider.of<SplashProvider>(context, listen: false)
-        .initConfig(context)
-        .then((bool isSuccess) {
+    Provider.of<SplashProvider>(context, listen: false).initConfig(context).then((bool isSuccess) {
       if (isSuccess) {
-        Timer(Duration(seconds: 1), () async {
+        Timer(const Duration(seconds: 1), () async {
           if (Provider.of<AuthProvider>(context, listen: false).isLoggedIn()) {
             Provider.of<AuthProvider>(context, listen: false).updateToken();
             // Navigator.of(context).pushReplacementNamed(RouteHelper.menu, arguments: MenuScreen());
-            //Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => DashboardScreen()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => DashboardScreen()));
           } else {
-            // Navigator.of(context).pushReplacementNamed(RouteHelper.onBoarding, arguments: OnBoardingScreen());
+             Navigator.of(context).pushReplacementNamed(RouteHelper.onBoarding, arguments: OnBoardingScreen());
           }
         });
       }
@@ -179,10 +177,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    List<Locale> _locals = [];
-    AppConstants.languages.forEach((language) {
-      _locals.add(Locale(language.languageCode!, language.countryCode));
-    });
+    List<Locale> locals = [];
+    for (var language in AppConstants.languages) {
+      locals.add(Locale(language.languageCode!, language.countryCode));
+    }
     return Consumer<SplashProvider>(
       builder: (context, splashProvider, child) {
         return (kIsWeb && splashProvider.configModel != null)
@@ -204,14 +202,14 @@ class _MyAppState extends State<MyApp> {
                 navigatorKey: navigatorKey,
                 theme: Provider.of<ThemeProvider>(context).darkTheme ? dark : light,
                 locale: Provider.of<LocalizationProvider>(context).locale,
-                localizationsDelegates: [
+                localizationsDelegates: const [
                   AppLocalization.delegate,
                   GlobalMaterialLocalizations.delegate,
                   GlobalWidgetsLocalizations.delegate,
                   GlobalCupertinoLocalizations.delegate,
                 ],
-                supportedLocales: _locals,
-                scrollBehavior: MaterialScrollBehavior().copyWith(dragDevices: {
+                supportedLocales: locals,
+                scrollBehavior: const MaterialScrollBehavior().copyWith(dragDevices: {
                   PointerDeviceKind.mouse,
                   PointerDeviceKind.touch,
                   PointerDeviceKind.stylus,
